@@ -12,6 +12,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.modules.ABPSController;
 import org.firstinspires.ftc.teamcode.modules.Arm.ArmController;
+import org.firstinspires.ftc.teamcode.modules.Camera.AutonomousCameraManager;
+import org.firstinspires.ftc.teamcode.modules.Camera.CameraManager;
+import org.firstinspires.ftc.teamcode.modules.Camera.ManualCameraManager;
 import org.firstinspires.ftc.teamcode.modules.Module;
 import org.firstinspires.ftc.teamcode.modules.MovementController;
 import org.firstinspires.ftc.teamcode.modules.WheelController;
@@ -28,6 +31,8 @@ public class MainOp extends BaseOp {
     public Gamepad gamepad;
     
     public ArrayList<Module> modules = new ArrayList<Module>();
+    
+    public CameraManager camera;
     
     public WheelController wheels;
     public MovementController movements;
@@ -50,16 +55,18 @@ public class MainOp extends BaseOp {
             gamepad = gamepad1;
         }
         
+        WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
+        camera = isAutonomous ? new AutonomousCameraManager(webcam) : new ManualCameraManager(webcam);
+        camera.init();
+        
         wheels = new WheelController(
                 hardwareMap.get(DcMotorEx.class, "back_left"),
                 hardwareMap.get(DcMotorEx.class, "back_right"),
                 hardwareMap.get(DcMotorEx.class, "front_left"),
                 hardwareMap.get(DcMotorEx.class, "front_right"));
-        
         wheels.init();
         
         movements = new MovementController(hardwareMap.get(IMU.class, "imu"), gamepad, !isAutonomous);
-        
         movements.init();
         
         arm = new ArmController(
@@ -68,12 +75,9 @@ public class MainOp extends BaseOp {
                 hardwareMap.get(DcMotorEx.class, "arm"),
                 hardwareMap.get(Servo.class, "wrist"),
                 hardwareMap.get(Servo.class, "hand"));
-        
         arm.init();
         
-        abps = new ABPSController(this, gamepad, hardwareMap.get(WebcamName.class, "Webcam 1"));
-        
-        abps.init();
+        abps = new ABPSController(this, gamepad);
         
         telemetry.addLine("--- Bot ---");
         telemetry.addLine();
@@ -114,6 +118,8 @@ public class MainOp extends BaseOp {
     public void loop() {
         frames += 1;
         movements.updatePowers(wheels);
+        
+        camera.loop();
         
         wheels.update();
         

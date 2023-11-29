@@ -4,11 +4,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.modules.ABPS.ABPSThread;
-import org.firstinspires.ftc.teamcode.modules.Camera.CameraManager;
-import org.firstinspires.ftc.teamcode.modules.Camera.ManualCameraManager;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.List;
@@ -22,19 +19,15 @@ public class ABPSController extends Module {
     
     public final Gamepad gamepad;
     
-    public final CameraManager camera;
-    
     public final ABPSThread thread;
     public final Runnable emptyRunnable;
     public final ExecutorService executor = Executors.newSingleThreadExecutor();
     public ABPSState state = ABPSState.STOPPED;
     
-    public ABPSController(MainOp op, Gamepad gamepad, WebcamName camera) {
+    public ABPSController(MainOp op, Gamepad gamepad) {
         this.op = op;
         
         this.gamepad = gamepad;
-        
-        this.camera = new ManualCameraManager(camera);
         
         thread = new ABPSThread(op);
         emptyRunnable = new Runnable() {
@@ -44,13 +37,7 @@ public class ABPSController extends Module {
         };
     }
     
-    public void init() {
-        camera.init();
-    }
-    
     public void loop() {
-        camera.loop();
-    
         if (executor.isTerminated()) {
             state = ABPSState.STOPPED;
         }
@@ -93,13 +80,13 @@ public class ABPSController extends Module {
                 .addData("Detections", new Func<String>() {
                     @Override
                     public String value() {
-                        return camera.processor.getDetections().size() + "";
+                        return op.camera.processor.getDetections().size() + "";
                     }
                 })
                 .addData("Info", new Func<String>() {
                     @Override
                     public String value() {
-                        List<AprilTagDetection> detections = camera.processor.getDetections();
+                        List<AprilTagDetection> detections = op.camera.processor.getDetections();
                         
                         StringBuilder msg = new StringBuilder();
                         

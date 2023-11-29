@@ -21,9 +21,7 @@ public class ABPSThread extends Thread {
         
         op.movements.desiredAngle = op.abps.state == ABPSState.LEFT ? 90d : -90d;
         
-        while ((Math.round(op.movements.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) / 10) != Math
-                .round(op.movements.desiredAngle / 10)
-                || op.abps.camera.processor.getDetections().size() == 0) && op.abps.state != ABPSState.STOPPED) {
+        while ((Math.round(op.movements.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) / 10) != Math.round(op.movements.desiredAngle / 10) || op.camera.processor.getDetections().size() == 0) && op.abps.state != ABPSState.STOPPED) {
             pause();
         }
         
@@ -32,7 +30,7 @@ public class ABPSThread extends Thread {
         }
         
         while (op.abps.state != ABPSState.STOPPED) {
-            List<AprilTagDetection> detections = op.abps.camera.processor.getDetections();
+            List<AprilTagDetection> detections = op.camera.processor.getDetections();
             
             if (detections.size() == 0) continue;
             
@@ -41,13 +39,10 @@ public class ABPSThread extends Thread {
             for (AprilTagDetection detection : detections) {
                 if (detection.ftcPose == null) continue;
                 
-                if (bestDetection == null)
-                    bestDetection = detection;
+                if (bestDetection == null) bestDetection = detection;
                 
-                if (detection.id == 1)
-                    bestDetection = detection;
-                else if (detection.id == 2 && bestDetection.id != 1)
-                    bestDetection = detection;
+                if (detection.id == 1) bestDetection = detection;
+                else if (detection.id == 2 && bestDetection.id != 1) bestDetection = detection;
                 else if (detection.id == 3 && bestDetection.id != 1 && bestDetection.id != 2)
                     bestDetection = detection;
             }
@@ -56,19 +51,15 @@ public class ABPSThread extends Thread {
             
             double distance = bestDetection.ftcPose.range;
             
-            if (distance <= 14)
-                break;
+            if (distance <= 14) break;
             
             int wheelTicks = (int) (distance - 14) * 40;
             
-            if (wheelTicks < 2)
-                continue;
+            if (wheelTicks < 2) continue;
             
-            op.wheels.setTarget(
-                    new WheelTarget(wheelTicks, wheelTicks, wheelTicks, wheelTicks, (int) (wheelTicks / 1.6)));
+            op.wheels.setTarget(new WheelTarget(wheelTicks, wheelTicks, wheelTicks, wheelTicks, (int) (wheelTicks / 1.6)));
             
-            while (op.wheels.target != null && op.abps.state != ABPSState.STOPPED)
-                pause();
+            while (op.wheels.target != null && op.abps.state != ABPSState.STOPPED) pause();
         }
         
         if (op.abps.state != ABPSState.STOPPED) {
@@ -79,8 +70,7 @@ public class ABPSThread extends Thread {
     }
     
     private void pause() {
-        if (Thread.currentThread().isInterrupted())
-            return;
+        if (Thread.currentThread().isInterrupted()) return;
         try {
             Thread.sleep(5);
         } catch (InterruptedException exc) {
