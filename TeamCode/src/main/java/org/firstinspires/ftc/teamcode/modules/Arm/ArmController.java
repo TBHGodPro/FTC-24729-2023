@@ -19,7 +19,7 @@ public class ArmController extends Module {
     
     public static final int armManualInterval = 20;
     
-    public static int armMaxPos = 3000;
+    public static final int armMaxPos = 2650;
     
     public static final int armSpeed = 1200;
     
@@ -32,31 +32,43 @@ public class ArmController extends Module {
     
     public static final double handOpenPos = 0.65;
     public static final double handClosedPos = 1;
+    
+    // - Intake Position
     public static final int armIntakePosManual = 175;
     public static final int armIntakePosAutonomous = 315;
-    public static final double wristIntakePos = 0.52;
-    public static final int armBackboardPosManual = 480;
-    public static final int armBackboardPosAutonomous = 625;
-    public static final double wristBackboardPos = 0.89;
-    // - Overhead Position
-    public static final int armOverheadPos = 1950;
-    public static final double wristOverheadPos = 1.8;
-    public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
-    public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;
-    public static final Servo.Direction wristDirection = Servo.Direction.REVERSE;
-    
-    // -----------------
-    public static final Servo.Direction handDirection = Servo.Direction.FORWARD;
-    // - Intake Position
     public final int armIntakePos;
     public final boolean shouldOpenHandAtIntake;
+    public static double wristIntakePos = 0.38;
+    
     // - Backboard Position
+    
+    public static final int armBackboardPosManual = 480;
+    public static final int armBackboardPosAutonomous = 625;
     public final int armBackboardPos;
+    public static double wristBackboardPos = 0.75;
+    
+    // - Overhead Position
+    public static final int armOverheadPos = 1950;
+    public static double wristOverheadPos = 1.66;
+    
+    public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
+    public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;
+    
+    public static final Servo.Direction wristDirection = Servo.Direction.REVERSE;
+    
+    public static final Servo.Direction handDirection = Servo.Direction.FORWARD;
+    
+    // -----------------
+    
     public final boolean isAutonomous;
     public final Gamepad gamepad;
+    
     public final DcMotorEx arm;
+    public final ArmPowerController armPower;
+    
     public final Servo wrist;
     public final Servo hand;
+    
     public int armPos = 0;
     public double wristPos = 1;
     public boolean isHandClosed = false;
@@ -67,6 +79,8 @@ public class ArmController extends Module {
         this.gamepad = gamepad;
         
         this.arm = arm;
+        this.armPower = new ArmPowerController();
+        
         this.wrist = wrist;
         this.hand = hand;
         
@@ -92,17 +106,21 @@ public class ArmController extends Module {
     
     public void update() {
         // Arm Control
+        
+        // - Manual Power
         double armPower = 0;
         
         armPower += Math.pow(gamepad.right_trigger, armNonLinearity);
         armPower -= Math.pow(gamepad.left_trigger, armNonLinearity);
         
+        // - Avoid Over-going
         int nextPos = (int) (armPos + armPower * armManualInterval);
         if (nextPos <= armMaxPos) {
             armPos = nextPos;
         }
         
-        arm.setTargetPosition(armPos);
+        // - Set Power
+        arm.setPower(this.armPower.calc(arm.getCurrentPosition(), armPos));
         
         // Wrist Control
         if (gamepad.right_bumper) {
@@ -154,7 +172,7 @@ public class ArmController extends Module {
         
         arm.setTargetPosition(armPos);
         
-        arm.setMode(RunMode.RUN_TO_POSITION);
+        arm.setMode(RunMode.RUN_WITHOUT_ENCODER);
         
         arm.setVelocity(armSpeed);
     }

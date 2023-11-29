@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Utils;
+import org.firstinspires.ftc.teamcode.Utils.Utils;
 
 public class WheelController extends Module {
     // --- Constants ---
