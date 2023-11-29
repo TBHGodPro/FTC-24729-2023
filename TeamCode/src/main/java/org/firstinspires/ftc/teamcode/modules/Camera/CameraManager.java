@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules.Camera;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -10,13 +11,14 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.concurrent.TimeUnit;
 
+@Config
 public abstract class CameraManager {
     // --- Constants ---
     
-    public static final float aprilTagDecimation = 2.5f;
+    public static float aprilTagDecimation = 2.5f;
     
-    public static final int cameraExposureMS = 6;
-    public static final int cameraGain = 250;
+    public static int cameraExposureMS = 6;
+    public static int cameraGain = 250;
     
     // -----------------
     

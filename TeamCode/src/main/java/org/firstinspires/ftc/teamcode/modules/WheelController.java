@@ -12,10 +12,10 @@ import org.firstinspires.ftc.teamcode.Utils.Utils;
 public class WheelController extends Module {
     // --- Constants ---
     
-    public static final int setPositionClearance = 10;
-    public static final int setPositionTimeLeewayMS = 200;
+    public static int setPositionClearance = 10;
+    public static int setPositionTimeLeewayMS = 200;
     
-    public static final double wheelMaxPower = 0.75;
+    public static double wheelMaxPower = 0.75;
     
     // -----------------
     

@@ -16,9 +16,9 @@ public class MovementController extends Module {
             RevHubOrientationOnRobot.LogoFacingDirection.UP,
             RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD);
     
-    public static final double turningNonLinearity = 1.75; // 1 = linear
+    public static double turningNonLinearity = 1.75; // 1 = linear
     
-    public static final double steeringCounterCoeff = 30; // Lower = more power
+    public static double steeringCounterCoeff = 30; // Lower = more power
     
     // -----------------
     

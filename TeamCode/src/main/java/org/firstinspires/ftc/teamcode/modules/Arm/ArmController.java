@@ -15,40 +15,40 @@ import org.firstinspires.ftc.teamcode.modules.Module;
 public class ArmController extends Module {
     // --- Constants ---
     
-    public static final double armNonLinearity = 2; // 1 = linear
+    public static double armNonLinearity = 2; // 1 = linear
     
-    public static final int armManualInterval = 20;
+    public static int armManualInterval = 20;
     
-    public static final int armMaxPos = 2650;
+    public static int armMaxPos = 2600;
     
-    public static final int armSpeed = 1200;
+    public static int armSpeed = 1200;
     
-    public static final double wristPosInterval = 0.0045;
+    public static double wristPosInterval = 0.0045;
     
-    public static final double wristMinRange = 0.25;
-    public static final double wristMaxRange = 1;
+    public static double wristMinRange = 0.25;
+    public static double wristMaxRange = 1;
     
-    public static final double wristAngleCorrectionCoeff = 2500;
+    public static double wristAngleCorrectionCoeff = 2500;
     
-    public static final double handOpenPos = 0.65;
-    public static final double handClosedPos = 1;
+    public static double handOpenPos = 0.65;
+    public static double handClosedPos = 1;
     
     // - Intake Position
-    public static final int armIntakePosManual = 175;
-    public static final int armIntakePosAutonomous = 315;
+    public static int armIntakePosManual = 175;
+    public static int armIntakePosAutonomous = 315;
     public final int armIntakePos;
     public final boolean shouldOpenHandAtIntake;
     public static double wristIntakePos = 0.38;
     
     // - Backboard Position
     
-    public static final int armBackboardPosManual = 480;
-    public static final int armBackboardPosAutonomous = 625;
+    public static int armBackboardPosManual = 480;
+    public static int armBackboardPosAutonomous = 625;
     public final int armBackboardPos;
     public static double wristBackboardPos = 0.75;
     
     // - Overhead Position
-    public static final int armOverheadPos = 1950;
+    public static int armOverheadPos = 1950;
     public static double wristOverheadPos = 1.66;
     
     public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
@@ -231,7 +231,8 @@ public class ArmController extends Module {
     
     @Override
     public void getDashboardTelemetry(Telemetry telemetry) {
-        telemetry.addData("Target Pos", armPos);
-        telemetry.addData("Current Pos", arm.getCurrentPosition());
+        telemetry.addData("Arm Target Pos", armPos);
+        telemetry.addData("Arm Current Pos", arm.getCurrentPosition());
+        telemetry.addData("Arm Power", arm.getPower());
     }
 }
