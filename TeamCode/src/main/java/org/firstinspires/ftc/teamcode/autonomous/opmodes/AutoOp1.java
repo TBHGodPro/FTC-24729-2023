@@ -10,11 +10,11 @@ public class AutoOp1 extends AutoOp {
     public void runOP() {
         gamepad.guide = true;
         gamepad.right_stick_x = 0.5f;
-
+        
         awaitFrame();
-
+        
         gamepad.guide = false;
-
+        
         sleep(3000);
     }
 }
