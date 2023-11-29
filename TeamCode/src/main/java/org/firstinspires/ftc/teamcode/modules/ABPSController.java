@@ -49,6 +49,8 @@ public class ABPSController extends Module {
     }
     
     public void loop() {
+        camera.loop();
+    
         if (executor.isTerminated()) {
             state = ABPSState.STOPPED;
         }

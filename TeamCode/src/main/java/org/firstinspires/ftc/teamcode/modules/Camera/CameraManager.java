@@ -36,18 +36,21 @@ public abstract class CameraManager {
         stream = new CameraStreamProcessor();
         
         processor = AprilTagProcessor.easyCreateWithDefaults();
-        
-        processor.setDecimation(aprilTagDecimation);
     }
     
     public abstract void init();
     
     public void setupCameraSettings() {
         setManualExposure(cameraExposureMS, cameraGain);
+        processor.setDecimation(aprilTagDecimation);
     }
     
     public void setupDashboard() {
         FtcDashboard.getInstance().startCameraStream(stream, 0);
+    }
+    
+    public void loop() {
+        setupCameraSettings();
     }
     
     /*
@@ -69,15 +72,22 @@ public abstract class CameraManager {
         }
         
         ExposureControl exposureControl = portal.getCameraControl(ExposureControl.class);
-        if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
-            exposureControl.setMode(ExposureControl.Mode.Manual);
-            sleep(50);
+        
+        if (exposureControl.getExposure(TimeUnit.MILLISECONDS) != exposureMS) {
+            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
+                exposureControl.setMode(ExposureControl.Mode.Manual);
+                sleep(50);
+            }
+            exposureControl.setExposure(exposureMS, TimeUnit.MILLISECONDS);
+            sleep(20);
         }
-        exposureControl.setExposure(exposureMS, TimeUnit.MILLISECONDS);
-        sleep(20);
+        
         GainControl gainControl = portal.getCameraControl(GainControl.class);
-        gainControl.setGain(gain);
-        sleep(20);
+        
+        if (gainControl.getGain() != gain) {
+            gainControl.setGain(gain);
+            sleep(20);
+        }
     }
     
     private void sleep(long ms) {
