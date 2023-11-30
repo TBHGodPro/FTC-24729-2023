@@ -1,15 +1,26 @@
 package org.firstinspires.ftc.teamcode.modules.ABPS;
 
+import com.acmerobotics.dashboard.config.Config;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.modules.ABPS.ABPSController.ABPSState;
-import org.firstinspires.ftc.teamcode.modules.WheelController.WheelTarget;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.List;
 
+@Config
 public class ABPSThread extends Thread {
+    // --- Constants ---
+    
+    public static double desiredDistance = 14;
+    public static double forwardGain = 0.08;
+    public static double strafeGain = 0.05;
+    public static double turnGain = 0.02;
+    
+    // -----------------
+    
     public MainOp op;
     
     public ABPSThread(MainOp op) {
@@ -25,6 +36,8 @@ public class ABPSThread extends Thread {
         while ((Math.round(op.movements.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) / 10) != Math.round(op.movements.desiredAngle / 10) || op.camera.processor.getDetections().size() == 0) && op.abps.state != ABPSState.STOPPED) {
             pause();
         }
+        
+        op.movements.deactivate();
         
         if (op.abps.state != ABPSState.STOPPED) {
             op.arm.gotToBackboardPosition();
@@ -52,15 +65,25 @@ public class ABPSThread extends Thread {
             
             AprilTagPoseFtc pose = bestDetection.ftcPose;
             
-            if (pose.range <= 14) break;
+            double trueYaw = 0;
             
-            int wheelTicks = (int) (pose.range - 14) * 40;
+            if (bestDetection.id == 1) {
+                trueYaw = pose.yaw;
+            } else if (bestDetection.id == 2) {
+                trueYaw = pose.yaw + 5;
+            } else if (bestDetection.id == 3) {
+                trueYaw = pose.yaw + 5;
+            }
             
-            if (wheelTicks < 2) continue;
+            if (pose.range <= desiredDistance) break;
             
-            op.wheels.setTarget(new WheelTarget(wheelTicks, wheelTicks, wheelTicks, wheelTicks, (int) (wheelTicks / 1.6)));
+            double forwardPower = (pose.range - desiredDistance) * forwardGain;
+            double strafePower = (-trueYaw) * strafeGain;
+            double turnPower = (pose.bearing) * turnGain;
             
-            while (op.wheels.target != null && op.abps.state != ABPSState.STOPPED) pause();
+            turnPower += op.movements.getYawCorrections(op.movements.getRawAngle());
+            
+            op.movements.setPowers(op.wheels, forwardPower, strafePower, turnPower);
         }
         
         if (op.abps.state != ABPSState.STOPPED) {
@@ -68,6 +91,8 @@ public class ABPSThread extends Thread {
         }
         
         op.abps.state = ABPSState.STOPPED;
+        
+        op.movements.activate();
     }
     
     private void pause() {

@@ -30,6 +30,8 @@ public class MovementController extends Module {
     
     public Double desiredAngle;
     
+    public boolean shouldRun = true;
+    
     public MovementController(IMU imu, Gamepad gamepad, boolean doYawCorrections) {
         this.imu = imu;
         
@@ -47,13 +49,15 @@ public class MovementController extends Module {
     }
     
     public void updatePowers(WheelController wheelController) {
+        if (!shouldRun) return;
+        
         // Allow Input Changing
         double rawY = -gamepad.left_stick_y;
         double rawX = gamepad.left_stick_x;
         double rawTurn = gamepad.right_stick_x;
         
         // Get Facing Angle
-        double rawAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        double rawAngle = getRawAngle();
         
         // Headless Control Rotation
         
@@ -94,45 +98,13 @@ public class MovementController extends Module {
                         desiredAngle = rawAngle;
                     }
                 } else {
-                    if (rawAngle != desiredAngle) {
-                        if (rawAngle > desiredAngle) {
-                            controlTurn += (((rawAngle - desiredAngle) + 180) % 360 - 180) / steeringCounterCoeff;
-                        } else {
-                            controlTurn -= (((desiredAngle - rawAngle) + 180) % 360 - 180) / steeringCounterCoeff;
-                        }
-                    }
+                    controlTurn += getYawCorrections(rawAngle);
                 }
             }
         }
         
-        // Declare Power Variables
-        double backLeft = 0;
-        double backRight = 0;
-        double frontLeft = 0;
-        double frontRight = 0;
-        
-        // Add Powers
-        
-        // - Forward/Backward
-        backLeft += controlY;
-        backRight += controlY;
-        frontLeft += controlY;
-        frontRight += controlY;
-        
-        // - Strafing
-        backLeft -= controlX;
-        backRight += controlX;
-        frontLeft += controlX;
-        frontRight -= controlX;
-        
-        // - Turning
-        backLeft += controlTurn;
-        backRight -= controlTurn;
-        frontLeft += controlTurn;
-        frontRight -= controlTurn;
-        
-        // Send Powers
-        wheelController.setPowers(backLeft, backRight, frontLeft, frontRight);
+        // Calculate and Send Powers
+        setPowers(wheelController, controlY, controlX, controlTurn);
     }
     
     public void addTelemetry(Telemetry telemetry) {
@@ -148,5 +120,40 @@ public class MovementController extends Module {
                         return Utils.round(desiredAngle == null ? 0 : desiredAngle) + "°";
                     }
                 });
+    }
+    
+    public void setPowers(WheelController wheels, double forward, double strafe, double turn) {
+        // Calculate Powers
+        double backLeft = forward - strafe + turn;
+        double backRight = forward + strafe - turn;
+        double frontLeft = forward + strafe + turn;
+        double frontRight = forward - strafe - turn;
+        
+        // Send Powers
+        wheels.setPowers(backLeft, backRight, frontLeft, frontRight);
+    }
+    
+    public double getRawAngle() {
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    }
+    
+    public double getYawCorrections(double angle) {
+        if (angle != desiredAngle) {
+            if (angle > desiredAngle) {
+                return (((angle - desiredAngle) + 180) % 360 - 180) / steeringCounterCoeff;
+            } else {
+                return -(((desiredAngle - angle) + 180) % 360 - 180) / steeringCounterCoeff;
+            }
+        }
+        
+        return 0;
+    }
+    
+    public void activate() {
+        shouldRun = true;
+    }
+    
+    public void deactivate() {
+        shouldRun = false;
     }
 }

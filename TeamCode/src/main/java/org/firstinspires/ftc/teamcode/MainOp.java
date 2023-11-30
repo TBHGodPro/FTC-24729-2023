@@ -77,7 +77,7 @@ public class MainOp extends BaseOp {
                 hardwareMap.get(Servo.class, "hand"));
         arm.init();
         
-        abps = new ABPSController(this, gamepad);
+        abps = new ABPSController(this);
         
         telemetry.addLine("--- Bot ---");
         telemetry.addLine();
@@ -119,7 +119,8 @@ public class MainOp extends BaseOp {
         frames += 1;
         movements.updatePowers(wheels);
         
-        camera.loop();
+        // Commented due to major performance boost
+        // camera.loop();
         
         wheels.update();
         

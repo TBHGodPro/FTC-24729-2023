@@ -19,6 +19,13 @@ public class WheelController extends Module {
     
     // -----------------
     
+    public enum Wheel {
+        BACK_LEFT,
+        BACK_RIGHT,
+        FRONT_LEFT,
+        FRONT_RIGHT,
+    }
+    
     public static final class WheelTarget {
         public int backLeft;
         public int backRight;

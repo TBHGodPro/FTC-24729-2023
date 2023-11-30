@@ -24,10 +24,10 @@ public class ABPSController extends Module {
     public final ExecutorService executor = Executors.newSingleThreadExecutor();
     public ABPSState state = ABPSState.STOPPED;
     
-    public ABPSController(MainOp op, Gamepad gamepad) {
+    public ABPSController(MainOp op) {
         this.op = op;
         
-        this.gamepad = gamepad;
+        this.gamepad = op.gamepad;
         
         thread = new ABPSThread(op);
         emptyRunnable = new Runnable() {
@@ -38,8 +38,10 @@ public class ABPSController extends Module {
     }
     
     public void loop() {
-        if (executor.isTerminated()) {
+        if (executor.isTerminated() && state != ABPSState.STOPPED) {
             state = ABPSState.STOPPED;
+            
+            op.movements.activate();
         }
         
         if (gamepad.dpad_left) {
@@ -65,6 +67,8 @@ public class ABPSController extends Module {
             executor.submit(emptyRunnable);
             
             op.wheels.setTarget(null);
+            
+            op.movements.activate();
         }
     }
     

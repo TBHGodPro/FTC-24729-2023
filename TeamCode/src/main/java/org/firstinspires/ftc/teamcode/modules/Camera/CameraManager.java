@@ -22,13 +22,16 @@ public abstract class CameraManager {
     
     // -----------------
     
-    public WebcamName camera;
+    public final WebcamName camera;
     
     public VisionPortal portal;
     
-    public CameraStreamProcessor stream;
+    public final CameraStreamProcessor stream;
     
-    public AprilTagProcessor processor;
+    public final AprilTagProcessor processor;
+    
+    public ExposureControl exposure;
+    public GainControl gain;
     
     public CameraManager(WebcamName camera) {
         this.camera = camera;
@@ -41,6 +44,10 @@ public abstract class CameraManager {
     public abstract void init();
     
     public void setupCameraSettings() {
+        updateCameraExposure();
+    }
+    
+    public void updateCameraExposure() {
         setManualExposure(cameraExposureMS, cameraGain);
         processor.setDecimation((float) aprilTagDecimation);
     }
@@ -50,7 +57,7 @@ public abstract class CameraManager {
     }
     
     public void loop() {
-        setupCameraSettings();
+        updateCameraExposure();
     }
     
     /*
@@ -71,21 +78,25 @@ public abstract class CameraManager {
             }
         }
         
-        ExposureControl exposureControl = portal.getCameraControl(ExposureControl.class);
+        if (exposure == null) {
+            exposure = portal.getCameraControl(ExposureControl.class);
+        }
         
-        if (exposureControl.getExposure(TimeUnit.MILLISECONDS) != exposureMS) {
-            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
-                exposureControl.setMode(ExposureControl.Mode.Manual);
+        if (exposure.getExposure(TimeUnit.MILLISECONDS) != exposureMS) {
+            if (exposure.getMode() != ExposureControl.Mode.Manual) {
+                exposure.setMode(ExposureControl.Mode.Manual);
                 sleep(50);
             }
-            exposureControl.setExposure(exposureMS, TimeUnit.MILLISECONDS);
+            exposure.setExposure(exposureMS, TimeUnit.MILLISECONDS);
             sleep(20);
         }
         
-        GainControl gainControl = portal.getCameraControl(GainControl.class);
+        if (this.gain == null) {
+            this.gain = portal.getCameraControl(GainControl.class);
+        }
         
-        if (gainControl.getGain() != gain) {
-            gainControl.setGain(gain);
+        if (this.gain.getGain() != gain) {
+            this.gain.setGain(gain);
             sleep(20);
         }
     }
