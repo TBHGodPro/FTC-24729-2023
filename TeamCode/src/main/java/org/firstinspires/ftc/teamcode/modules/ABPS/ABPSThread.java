@@ -2,9 +2,10 @@ package org.firstinspires.ftc.teamcode.modules.ABPS;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MainOp;
-import org.firstinspires.ftc.teamcode.modules.ABPSController.ABPSState;
+import org.firstinspires.ftc.teamcode.modules.ABPS.ABPSController.ABPSState;
 import org.firstinspires.ftc.teamcode.modules.WheelController.WheelTarget;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.List;
 
@@ -49,11 +50,11 @@ public class ABPSThread extends Thread {
             
             if (bestDetection == null) continue;
             
-            double distance = bestDetection.ftcPose.range;
+            AprilTagPoseFtc pose = bestDetection.ftcPose;
             
-            if (distance <= 14) break;
+            if (pose.range <= 14) break;
             
-            int wheelTicks = (int) (distance - 14) * 40;
+            int wheelTicks = (int) (pose.range - 14) * 40;
             
             if (wheelTicks < 2) continue;
             

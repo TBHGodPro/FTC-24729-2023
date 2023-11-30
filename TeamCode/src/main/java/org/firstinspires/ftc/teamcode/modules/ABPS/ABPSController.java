@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.modules;
+package org.firstinspires.ftc.teamcode.modules.ABPS;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MainOp;
-import org.firstinspires.ftc.teamcode.modules.ABPS.ABPSThread;
+import org.firstinspires.ftc.teamcode.modules.Module;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.List;
@@ -94,10 +94,10 @@ public class ABPSController extends Module {
                             if (detection.ftcPose == null) msg.append("\n\nNULL");
                             else {
                                 msg.append("\n");
-                                msg.append("\nID = ").append(detection.id);
-                                msg.append("\nXYZ = ").append(detection.ftcPose.x).append(", ").append(detection.ftcPose.y).append(",").append(detection.ftcPose.z);
-                                msg.append("\nYaw = ").append(detection.ftcPose.yaw);
-                                msg.append("\nRange = ").append(detection.ftcPose.range);
+                                msg.append("\nFound" + " = " + "ID " + detection.id + " (" + detection.metadata.name + ")");
+                                msg.append("\nRange" + " = " + detection.ftcPose.range + " inches");
+                                msg.append("\nBearing" + " = " + detection.ftcPose.bearing + " degrees");
+                                msg.append("\nYaw" + " = " + detection.ftcPose.yaw + " degrees");
                             }
                         }
                         
