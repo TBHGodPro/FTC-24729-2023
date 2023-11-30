@@ -8,8 +8,8 @@ public class ArmPowerController {
     // --- Constants ---
     
     public static double kP = 0.002;
-    public static double kI = 0.001;
-    public static double kD = 0.00003;
+    public static double kI = 0.002;
+    public static double kD = 0.0002;
     
     // -----------------
     

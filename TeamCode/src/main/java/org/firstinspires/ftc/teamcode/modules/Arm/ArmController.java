@@ -17,13 +17,11 @@ public class ArmController extends Module {
     
     public static double armNonLinearity = 2; // 1 = linear
     
-    public static int armManualInterval = 20;
+    public static int armManualInterval = 60;
     
     public static int armMaxPos = 2600;
     
-    public static int armSpeed = 1200;
-    
-    public static double wristPosInterval = 0.0045;
+    public static double wristPosInterval = 0.01;
     
     public static double wristMinRange = 0.25;
     public static double wristMaxRange = 1;
@@ -170,11 +168,7 @@ public class ArmController extends Module {
         
         armPos = 0;
         
-        arm.setTargetPosition(armPos);
-        
         arm.setMode(RunMode.RUN_WITHOUT_ENCODER);
-        
-        arm.setVelocity(armSpeed);
     }
     
     public void goToIntakePosition() {
@@ -233,6 +227,6 @@ public class ArmController extends Module {
     public void getDashboardTelemetry(Telemetry telemetry) {
         telemetry.addData("Arm Target Pos", armPos);
         telemetry.addData("Arm Current Pos", arm.getCurrentPosition());
-        telemetry.addData("Arm Power", arm.getPower());
+        telemetry.addData("Arm Power", arm.getPower() * 100);
     }
 }
