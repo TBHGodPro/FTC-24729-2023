@@ -15,7 +15,7 @@ public class ABPSThread extends Thread {
     // --- Constants ---
     
     public static double desiredDistance = 14;
-    public static double forwardGain = 0.08;
+    public static double forwardGain = 1;
     public static double strafeGain = 0.05;
     public static double turnGain = 0.02;
     
@@ -42,6 +42,8 @@ public class ABPSThread extends Thread {
         if (op.abps.state != ABPSState.STOPPED) {
             op.arm.gotToBackboardPosition();
         }
+        
+        double startRangeMult = 0;
         
         while (op.abps.state != ABPSState.STOPPED) {
             List<AprilTagDetection> detections = op.camera.processor.getDetections();
@@ -77,7 +79,9 @@ public class ABPSThread extends Thread {
             
             if (pose.range <= desiredDistance) break;
             
-            double forwardPower = (pose.range - desiredDistance) * forwardGain;
+            if (startRangeMult == 0) startRangeMult = ABPSMath.calc(pose.range);
+            
+            double forwardPower = (pose.range - desiredDistance) * startRangeMult * forwardGain;
             double strafePower = (-trueYaw) * strafeGain;
             double turnPower = (pose.bearing) * turnGain;
             
