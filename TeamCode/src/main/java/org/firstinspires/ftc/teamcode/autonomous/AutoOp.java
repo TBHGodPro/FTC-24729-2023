@@ -11,6 +11,8 @@ public abstract class AutoOp extends MainOp {
     public AutoOp() {
         super();
         
+        isAutonomous = true;
+        
         gamepad = new Gamepad();
         
         controller = new AutonController(this, gamepad);

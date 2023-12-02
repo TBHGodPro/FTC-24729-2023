@@ -50,6 +50,8 @@ public abstract class CameraManager {
     public void updateCameraExposure() {
         setManualExposure(cameraExposureMS, cameraGain);
         processor.setDecimation(aprilTagDecimation);
+        
+        disableAprilTag();
     }
     
     public void setupDashboard() {
@@ -106,5 +108,19 @@ public abstract class CameraManager {
             Thread.sleep(20);
         } catch (Exception e) {
         }
+    }
+    
+    public void enableAprilTag() {
+        portal.setProcessorEnabled(processor, true);
+    }
+    
+    public void disableAprilTag() {
+        portal.setProcessorEnabled(processor, false);
+    }
+    
+    public void enablePropDetection() {
+    }
+    
+    public void disablePropDetection() {
     }
 }

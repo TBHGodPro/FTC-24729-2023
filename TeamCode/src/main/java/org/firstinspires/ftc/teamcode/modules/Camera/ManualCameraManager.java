@@ -10,9 +10,9 @@ public class ManualCameraManager extends CameraManager {
     
     public void init() {
         portal = new VisionPortal.Builder()
+                .setCamera(camera)
                 .addProcessor(processor)
                 .addProcessor(stream)
-                .setCamera(camera)
                 .build();
         
         setupCameraSettings();

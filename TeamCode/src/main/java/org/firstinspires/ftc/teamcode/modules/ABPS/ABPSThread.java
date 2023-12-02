@@ -37,6 +37,8 @@ public class ABPSThread extends Thread {
     public void run() {
         if (op.abps.state == ABPSState.STOPPED) return;
         
+        op.camera.enableAprilTag();
+        
         op.arm.gotToBackboardPosition();
         
         op.movements.desiredAngle = op.abps.state == ABPSState.LEFT ? 90d : -90d;
@@ -93,6 +95,8 @@ public class ABPSThread extends Thread {
             
             op.movements.setPowers(op.wheels, forwardPower, strafePower, turnPower);
         }
+        
+        op.camera.disableAprilTag();
         
         if (op.abps.state != ABPSState.STOPPED) {
             op.arm.isHandClosed = false;

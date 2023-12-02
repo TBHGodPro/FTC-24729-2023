@@ -57,7 +57,7 @@ public abstract class MainOp extends BaseOp {
         }
         
         WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
-        camera = isAutonomous ? new AutonomousCameraManager(webcam) : new ManualCameraManager(webcam);
+        camera = isAutonomous ? new AutonomousCameraManager(webcam, getAlliance()) : new ManualCameraManager(webcam);
         camera.init();
         
         wheels = new WheelController(
