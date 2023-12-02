@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules.ABPS;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.controller.PDController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MainOp;
@@ -14,14 +15,18 @@ import java.util.List;
 public class ABPSThread extends Thread {
     // --- Constants ---
     
-    public static double desiredDistance = 14;
-    public static double forwardGain = 1;
+    public static double desiredDistance = 19;
     public static double strafeGain = 0.05;
     public static double turnGain = 0.02;
     
+    public static double kP = -0.1;
+    public static double kD = 0;
+    
     // -----------------
     
-    public MainOp op;
+    public final MainOp op;
+    
+    public final PDController pd = new PDController(kP, kD);
     
     public ABPSThread(MainOp op) {
         this.op = op;
@@ -43,7 +48,8 @@ public class ABPSThread extends Thread {
             op.arm.gotToBackboardPosition();
         }
         
-        double startRangeMult = 0;
+        pd.setP(kP);
+        pd.setD(kD);
         
         while (op.abps.state != ABPSState.STOPPED) {
             List<AprilTagDetection> detections = op.camera.processor.getDetections();
@@ -77,11 +83,9 @@ public class ABPSThread extends Thread {
                 trueYaw = pose.yaw + 5;
             }
             
-            if (pose.range <= desiredDistance) break;
+            if (Math.abs(pose.range - desiredDistance) < 0.1) break;
             
-            if (startRangeMult == 0) startRangeMult = ABPSMath.calc(pose.range);
-            
-            double forwardPower = (pose.range - desiredDistance) * startRangeMult * forwardGain;
+            double forwardPower = pd.calculate(pose.range, desiredDistance);
             double strafePower = (-trueYaw) * strafeGain;
             double turnPower = (pose.bearing) * turnGain;
             
