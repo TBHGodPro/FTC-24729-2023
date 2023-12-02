@@ -15,10 +15,10 @@ import java.util.concurrent.TimeUnit;
 public abstract class CameraManager {
     // --- Constants ---
     
-    public static double aprilTagDecimation = 2;
+    public static float aprilTagDecimation = 2f;
     
-    public static int cameraExposureMS = 15;
-    public static int cameraGain = 250;
+    public static int cameraExposureMS = 10;
+    public static int cameraGain = 100;
     
     // -----------------
     
@@ -49,7 +49,7 @@ public abstract class CameraManager {
     
     public void updateCameraExposure() {
         setManualExposure(cameraExposureMS, cameraGain);
-        processor.setDecimation((float) aprilTagDecimation);
+        processor.setDecimation(aprilTagDecimation);
     }
     
     public void setupDashboard() {

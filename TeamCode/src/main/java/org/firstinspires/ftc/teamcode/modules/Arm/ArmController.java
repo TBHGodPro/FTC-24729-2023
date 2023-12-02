@@ -33,21 +33,21 @@ public class ArmController extends Module {
     
     // - Intake Position
     public static int armIntakePosManual = 175;
-    public static int armIntakePosAutonomous = 315;
+    public static int armIntakePosAutonomous = 305;
     public final int armIntakePos;
     public final boolean shouldOpenHandAtIntake;
-    public static double wristIntakePos = 0.38;
+    public static double wristIntakePos = 0.29;
     
     // - Backboard Position
     
-    public static int armBackboardPosManual = 480;
-    public static int armBackboardPosAutonomous = 625;
+    public static int armBackboardPosManual = 510;
+    public static int armBackboardPosAutonomous = 655;
     public final int armBackboardPos;
-    public static double wristBackboardPos = 0.75;
+    public static double wristBackboardPos = 0.66;
     
     // - Overhead Position
     public static int armOverheadPos = 1950;
-    public static double wristOverheadPos = 1.66;
+    public static double wristOverheadPos = 1.7;
     
     public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
     public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;

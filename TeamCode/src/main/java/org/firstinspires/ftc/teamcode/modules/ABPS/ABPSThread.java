@@ -15,12 +15,13 @@ import java.util.List;
 public class ABPSThread extends Thread {
     // --- Constants ---
     
-    public static double desiredDistance = 19;
-    public static double strafeGain = 0.05;
-    public static double turnGain = 0.02;
+    public static double desiredDistance = 12;
+    public static double desiredDistancePDOffset = -11;
+    public static double strafeGain = 0.0025;
+    public static double turnGain = 0.01;
     
-    public static double kP = -0.1;
-    public static double kD = 0;
+    public static double kP = 0.02;
+    public static double kD = 0.005;
     
     // -----------------
     
@@ -36,6 +37,8 @@ public class ABPSThread extends Thread {
     public void run() {
         if (op.abps.state == ABPSState.STOPPED) return;
         
+        op.arm.gotToBackboardPosition();
+        
         op.movements.desiredAngle = op.abps.state == ABPSState.LEFT ? 90d : -90d;
         
         while ((Math.round(op.movements.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) / 10) != Math.round(op.movements.desiredAngle / 10) || op.camera.processor.getDetections().size() == 0) && op.abps.state != ABPSState.STOPPED) {
@@ -43,10 +46,6 @@ public class ABPSThread extends Thread {
         }
         
         op.movements.deactivate();
-        
-        if (op.abps.state != ABPSState.STOPPED) {
-            op.arm.gotToBackboardPosition();
-        }
         
         pd.setP(kP);
         pd.setD(kD);
@@ -83,11 +82,12 @@ public class ABPSThread extends Thread {
                 trueYaw = pose.yaw + 5;
             }
             
-            if (Math.abs(pose.range - desiredDistance) < 0.1) break;
-            
-            double forwardPower = pd.calculate(pose.range, desiredDistance);
             double strafePower = (-trueYaw) * strafeGain;
             double turnPower = (pose.bearing) * turnGain;
+            
+            if (Math.abs(pose.range - desiredDistance) < 1) break;
+            
+            double forwardPower = -pd.calculate(pose.range, desiredDistance + desiredDistancePDOffset);
             
             turnPower += op.movements.getYawCorrections(op.movements.getRawAngle());
             
