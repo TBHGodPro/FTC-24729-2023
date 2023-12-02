@@ -1,66 +1,23 @@
-package org.firstinspires.ftc.teamcode.modules;
+package org.firstinspires.ftc.teamcode.modules.Wheels;
 
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Utils.Utils;
+import org.firstinspires.ftc.teamcode.modules.Module;
 
 public class WheelController extends Module {
     // --- Constants ---
     
-    public static int setPositionClearance = 10;
+    public static int setPositionClearance = 5;
     public static int setPositionTimeLeewayMS = 200;
     
     public static double wheelMaxPower = 0.75;
     
     // -----------------
-    
-    public enum Wheel {
-        BACK_LEFT,
-        BACK_RIGHT,
-        FRONT_LEFT,
-        FRONT_RIGHT,
-    }
-    
-    public static final class WheelTarget {
-        public int backLeft;
-        public int backRight;
-        public int frontLeft;
-        public int frontRight;
-        public int targetTime;
-        public ElapsedTime currentTime;
-        
-        public WheelTarget(int backLeft, int backRight, int frontLeft, int frontRight, int targetTime) {
-            this.backLeft = backLeft;
-            this.backRight = backRight;
-            this.frontLeft = frontLeft;
-            this.frontRight = frontRight;
-            this.targetTime = targetTime;
-            this.currentTime = new ElapsedTime();
-        }
-    }
-    
-    public static final class WheelPowers {
-        public double backLeft;
-        public double backRight;
-        public double frontLeft;
-        public double frontRight;
-        
-        public WheelPowers(double backLeft, double backRight, double frontLeft, double frontRight) {
-            this.set(backLeft, backRight, frontLeft, frontRight);
-        }
-        
-        public void set(double backLeft, double backRight, double frontLeft, double frontRight) {
-            this.backLeft = backLeft;
-            this.backRight = backRight;
-            this.frontLeft = frontLeft;
-            this.frontRight = frontRight;
-        }
-    }
     
     public final DcMotorEx backLeft;
     public final DcMotorEx backRight;
@@ -120,24 +77,27 @@ public class WheelController extends Module {
                 target = null;
                 
                 setRunMode(RunMode.RUN_WITHOUT_ENCODER);
-            } else {
-                setRunMode(RunMode.RUN_TO_POSITION);
-                
+            } else if (backLeft.getMode() != RunMode.RUN_TO_POSITION) {
                 backLeft.setTargetPosition(target.backLeft);
                 backRight.setTargetPosition(target.backRight);
                 frontLeft.setTargetPosition(target.frontLeft);
                 frontRight.setTargetPosition(target.frontRight);
                 
-                backLeft.setVelocity(Math.abs(target.backLeft) / target.targetTime * 1000);
-                backRight.setVelocity(Math.abs(target.backRight) / target.targetTime * 1000);
-                frontLeft.setVelocity(Math.abs(target.frontLeft) / target.targetTime * 1000);
-                frontRight.setVelocity(Math.abs(target.frontRight) / target.targetTime * 1000);
+                setRunMode(RunMode.RUN_TO_POSITION);
+                
+                backLeft.setVelocity((double) Math.abs(target.backLeft) / target.targetTime * 1000);
+                backRight.setVelocity((double) Math.abs(target.backRight) / target.targetTime * 1000);
+                frontLeft.setVelocity((double) Math.abs(target.frontLeft) / target.targetTime * 1000);
+                frontRight.setVelocity((double) Math.abs(target.frontRight) / target.targetTime * 1000);
             }
         }
     }
     
     public void setTarget(WheelTarget target) {
         resetZeroPositions();
+        
+        if (target != null)
+            target.resetTimer();
         
         this.target = target;
     }
@@ -151,7 +111,7 @@ public class WheelController extends Module {
     }
     
     public boolean isAtTarget(int current, int target) {
-        return (Math.round(target / setPositionClearance * 2) - Math.round(current / setPositionClearance * 2)) == 0;
+        return Math.round(target / setPositionClearance) == Math.round(current / setPositionClearance);
     }
     
     public void setRunMode(RunMode mode) {

@@ -22,7 +22,7 @@ public class AutonController extends Thread {
     public void run() {
         op.runOP();
         
-        op.arm.armPos = 0;
+        op.arm.armPos = 50;
         op.arm.wristPos = 2;
         op.arm.isHandClosed = false;
     }

@@ -21,6 +21,10 @@ public class ArmController extends Module {
     
     public static int armMaxPos = 2600;
     
+    public static int armPositionClearance = 35;
+    
+    public static int armPositionOffset = 75;
+    
     public static double wristPosInterval = 0.01;
     
     public static double wristMinRange = 0.25;
@@ -33,21 +37,21 @@ public class ArmController extends Module {
     
     // - Intake Position
     public static int armIntakePosManual = 175;
-    public static int armIntakePosAutonomous = 305;
+    public static int armIntakePosAutonomous = 175;
     public final int armIntakePos;
     public final boolean shouldOpenHandAtIntake;
-    public static double wristIntakePos = 0.29;
+    public static double wristIntakePos = 0.4;
     
     // - Backboard Position
     
     public static int armBackboardPosManual = 510;
     public static int armBackboardPosAutonomous = 655;
     public final int armBackboardPos;
-    public static double wristBackboardPos = 0.66;
+    public static double wristBackboardPos = 0.77;
     
     // - Overhead Position
     public static int armOverheadPos = 1950;
-    public static double wristOverheadPos = 1.7;
+    public static double wristOverheadPos = 1.81;
     
     public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
     public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;
@@ -82,7 +86,7 @@ public class ArmController extends Module {
         this.wrist = wrist;
         this.hand = hand;
         
-        shouldOpenHandAtIntake = !isAutonomous;
+        this.shouldOpenHandAtIntake = !isAutonomous;
         this.armIntakePos = isAutonomous ? armIntakePosAutonomous : armIntakePosManual;
         this.armBackboardPos = isAutonomous ? armBackboardPosAutonomous : armBackboardPosManual;
     }
@@ -111,7 +115,7 @@ public class ArmController extends Module {
         armPower += Math.pow(gamepad.right_trigger, armNonLinearity);
         armPower -= Math.pow(gamepad.left_trigger, armNonLinearity);
         
-        // - Avoid Over-going
+        // - Avoid Over-Going Limit
         int nextPos = (int) (armPos + armPower * armManualInterval);
         if (nextPos <= armMaxPos) {
             armPos = nextPos;
@@ -189,6 +193,24 @@ public class ArmController extends Module {
         wristPos = wristOverheadPos;
     }
     
+    public void goToPosition(ArmPosition position) {
+        switch (position) {
+            case INTAKE:
+                goToIntakePosition();
+                break;
+            case BACKBOARD:
+                gotToBackboardPosition();
+                break;
+            case OVERHEAD:
+                goToOverheadPosition();
+                break;
+        }
+    }
+    
+    public boolean isAtPosition() {
+        return Math.round(armPos / armPositionClearance) == Math.round((arm.getCurrentPosition() + armPositionOffset) / armPositionClearance);
+    }
+    
     @Override
     public void addTelemetry(Telemetry telemetry) {
         telemetry.addData("Arm Position", new Func<String>() {
@@ -228,5 +250,6 @@ public class ArmController extends Module {
         telemetry.addData("Arm Target Pos", armPos);
         telemetry.addData("Arm Current Pos", arm.getCurrentPosition());
         telemetry.addData("Arm Power", arm.getPower() * 100);
+        telemetry.addData("At Position", isAtPosition());
     }
 }

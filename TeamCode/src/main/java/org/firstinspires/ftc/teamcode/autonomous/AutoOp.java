@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.autonomous.utils.AutonController;
+import org.firstinspires.ftc.teamcode.modules.Camera.AutonomousCameraManager;
 
 public abstract class AutoOp extends MainOp {
     public final AutonController controller;
@@ -16,6 +17,10 @@ public abstract class AutoOp extends MainOp {
         gamepad = new Gamepad();
         
         controller = new AutonController(this, gamepad);
+    }
+    
+    public AutonomousCameraManager getCamera() {
+        return (AutonomousCameraManager) camera;
     }
     
     @Override

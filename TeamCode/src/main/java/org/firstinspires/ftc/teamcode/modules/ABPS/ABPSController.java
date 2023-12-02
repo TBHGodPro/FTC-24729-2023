@@ -37,29 +37,35 @@ public class ABPSController extends Module {
         };
     }
     
+    public void activate(ABPSState state, double strafeGainMult) {
+        this.state = state;
+        
+        thread.dynamicStrafeGain = ABPSThread.strafeGain * strafeGainMult;
+        
+        executor.submit(emptyRunnable);
+        
+        executor.submit(thread);
+    }
+    
+    public boolean isDone() {
+        return state == ABPSState.STOPPED;
+    }
+    
     public void loop() {
-        if (executor.isTerminated() && state != ABPSState.STOPPED) {
+        if (executor.isTerminated() && !isDone()) {
             state = ABPSState.STOPPED;
             
             op.movements.activate();
         }
         
         if (gamepad.dpad_left) {
-            state = ABPSState.LEFT;
-            
-            executor.submit(emptyRunnable);
-            
-            executor.submit(thread);
+            activate(ABPSState.LEFT, 1);
         }
         if (gamepad.dpad_right) {
-            state = ABPSState.RIGHT;
-            
-            executor.submit(emptyRunnable);
-            
-            executor.submit(thread);
+            activate(ABPSState.RIGHT, 1);
         }
         
-        if (state != ABPSState.STOPPED
+        if (!isDone()
                 && (gamepad.left_stick_x != 0 || gamepad.left_stick_y != 0 || gamepad.right_stick_x != 0
                 || gamepad.right_stick_y != 0)) {
             state = ABPSState.STOPPED;

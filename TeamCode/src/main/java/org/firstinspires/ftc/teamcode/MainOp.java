@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.modules.Camera.CameraManager;
 import org.firstinspires.ftc.teamcode.modules.Camera.ManualCameraManager;
 import org.firstinspires.ftc.teamcode.modules.Module;
 import org.firstinspires.ftc.teamcode.modules.MovementController;
-import org.firstinspires.ftc.teamcode.modules.WheelController;
+import org.firstinspires.ftc.teamcode.modules.Wheels.WheelController;
 
 import java.util.ArrayList;
 
@@ -67,7 +67,7 @@ public abstract class MainOp extends BaseOp {
                 hardwareMap.get(DcMotorEx.class, "front_right"));
         wheels.init();
         
-        movements = new MovementController(hardwareMap.get(IMU.class, "imu"), gamepad, !isAutonomous);
+        movements = new MovementController(hardwareMap.get(IMU.class, "imu"), gamepad, /*!isAutonomous*/ true);
         movements.init();
         
         arm = new ArmController(

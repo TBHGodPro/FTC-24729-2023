@@ -27,6 +27,8 @@ public class ABPSThread extends Thread {
     
     public final MainOp op;
     
+    public double dynamicStrafeGain = strafeGain;
+    
     public final PDController pd = new PDController(kP, kD);
     
     public ABPSThread(MainOp op) {
@@ -35,7 +37,7 @@ public class ABPSThread extends Thread {
     
     @Override
     public void run() {
-        if (op.abps.state == ABPSState.STOPPED) return;
+        if (op.abps.isDone()) return;
         
         op.camera.enableAprilTag();
         
@@ -84,7 +86,7 @@ public class ABPSThread extends Thread {
                 trueYaw = pose.yaw + 5;
             }
             
-            double strafePower = (-trueYaw) * strafeGain;
+            double strafePower = (-trueYaw) * dynamicStrafeGain;
             double turnPower = (pose.bearing) * turnGain;
             
             if (Math.abs(pose.range - desiredDistance) < 1) break;
