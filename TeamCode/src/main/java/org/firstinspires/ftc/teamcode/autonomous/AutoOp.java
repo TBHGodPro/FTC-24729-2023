@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.autonomous.utils.AutonController;
 
 public abstract class AutoOp extends MainOp {

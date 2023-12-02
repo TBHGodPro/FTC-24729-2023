@@ -182,6 +182,12 @@ public class WheelController extends Module {
                                 + " in " + target.currentTime.milliseconds() + "/" + target.targetTime;
                     }
                 })
+                .addData("Current", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return backLeft == null ? "0 0 0 0" : backLeft.getCurrentPosition() + " " + backRight.getCurrentPosition() + " " + frontLeft.getCurrentPosition() + " " + frontRight.getCurrentPosition();
+                    }
+                })
                 .addData("Powers", new Func<String>() {
                     @Override
                     public String value() {

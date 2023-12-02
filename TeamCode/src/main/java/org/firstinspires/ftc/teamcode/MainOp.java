@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -10,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Utils.Alliance;
 import org.firstinspires.ftc.teamcode.modules.ABPS.ABPSController;
 import org.firstinspires.ftc.teamcode.modules.Arm.ArmController;
 import org.firstinspires.ftc.teamcode.modules.Camera.AutonomousCameraManager;
@@ -21,8 +21,7 @@ import org.firstinspires.ftc.teamcode.modules.WheelController;
 
 import java.util.ArrayList;
 
-@TeleOp(name = "MainOp")
-public class MainOp extends BaseOp {
+public abstract class MainOp extends BaseOp {
     public Boolean isAutonomous;
     
     public FtcDashboard dashboard;
@@ -38,6 +37,8 @@ public class MainOp extends BaseOp {
     public MovementController movements;
     public ArmController arm;
     public ABPSController abps;
+    
+    public abstract Alliance getAlliance();
     
     // Run once INIT is pressed
     public void init() {

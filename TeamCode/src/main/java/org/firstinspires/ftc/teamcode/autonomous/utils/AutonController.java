@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.autonomous.utils;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.AutoOp;
+import org.firstinspires.ftc.teamcode.autonomous.AutoOp;
 
 public class AutonController extends Thread {
     public final AutoOp op;
