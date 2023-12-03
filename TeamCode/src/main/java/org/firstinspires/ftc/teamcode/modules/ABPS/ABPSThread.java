@@ -89,7 +89,7 @@ public class ABPSThread extends Thread {
             double strafePower = (-trueYaw) * dynamicStrafeGain;
             double turnPower = (pose.bearing) * turnGain;
             
-            if (Math.abs(pose.range - desiredDistance) < 1) break;
+            if (Math.abs(pose.range - desiredDistance) < 1.5) break;
             
             double forwardPower = -pd.calculate(pose.range, desiredDistance + desiredDistancePDOffset);
             
@@ -100,7 +100,7 @@ public class ABPSThread extends Thread {
         
         op.camera.disableAprilTag();
         
-        if (op.abps.state != ABPSState.STOPPED) {
+        if (op.abps.state != ABPSState.STOPPED && op.abps.shouldOpenWristWhenDone) {
             op.arm.isHandClosed = false;
         }
         

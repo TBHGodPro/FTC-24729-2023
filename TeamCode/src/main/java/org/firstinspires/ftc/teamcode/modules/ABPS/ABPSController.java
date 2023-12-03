@@ -24,6 +24,8 @@ public class ABPSController extends Module {
     public final ExecutorService executor = Executors.newSingleThreadExecutor();
     public ABPSState state = ABPSState.STOPPED;
     
+    public boolean shouldOpenWristWhenDone = true;
+    
     public ABPSController(MainOp op) {
         this.op = op;
         
