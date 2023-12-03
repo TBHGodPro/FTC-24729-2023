@@ -60,7 +60,7 @@ public class RedBackstage extends AutoOp {
         
         while (!movements.isDone()) movements.runNext();
         
-        sleep(1500);
+        sleep(500);
     }
 }
 
@@ -73,8 +73,8 @@ class RedBackstagePaths {
             new MoveAction(Direction.FORWARD, 100, 200),
             new GamepadButtonAction(GamepadButton.y),
             new WaitAction(350),
-            new MultiMoveAction(-100, 1350, 650),
-            new MoveAction(Direction.FORWARD, 200, 200),
+            new MultiMoveAction(-200, 1350, 650),
+            new MoveAction(Direction.FORWARD, 300, 200),
             new TurnAction(-90)
     };
     
@@ -83,7 +83,7 @@ class RedBackstagePaths {
             new MoveAction(Direction.BACKWARD, 250, 125),
             new MultiMoveAction(200, 800, 500),
             new ABPSAction(SidewaysDirection.RIGHT, false),
-            new MultiMoveAction(-100, 950, 650),
+            new MultiMoveAction(-100, 1050, 650),
             new MoveAction(Direction.FORWARD, 200, 200),
             new TurnAction(-90)
     };

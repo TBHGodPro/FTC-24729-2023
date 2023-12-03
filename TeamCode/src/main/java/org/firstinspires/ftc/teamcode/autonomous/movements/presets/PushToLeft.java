@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.modules.Wheels.WheelTarget;
 
 public class PushToLeft extends ActionGroup {
     public static final Action[] actionsStraight = {
-            new MultiMoveAction(650, -400, 700),
+            new MultiMoveAction(650, -600, 700),
     };
     
     public static final Action[] actionsAround = {
