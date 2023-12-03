@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
-public enum StrafeDirection {
+public enum SidewaysDirection {
     LEFT,
     RIGHT
 }

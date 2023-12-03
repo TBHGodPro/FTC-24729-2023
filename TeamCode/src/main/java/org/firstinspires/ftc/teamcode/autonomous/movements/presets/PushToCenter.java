@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous.movements.presets;
 
-import org.firstinspires.ftc.teamcode.Utils.StrafeDirection;
+import org.firstinspires.ftc.teamcode.Utils.SidewaysDirection;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.Action;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.ActionGroup;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveAction;
@@ -14,7 +14,7 @@ public class PushToCenter extends ActionGroup {
             new MultiMoveAction(980, 200, 800),
     };
     
-    public PushToCenter(StrafeDirection strafeDirection) {
-        super(strafeDirection == StrafeDirection.LEFT ? actionsStrafeLeft : actionsStrafeRight);
+    public PushToCenter(SidewaysDirection sidewaysDirection) {
+        super(sidewaysDirection == SidewaysDirection.LEFT ? actionsStrafeLeft : actionsStrafeRight);
     }
 }

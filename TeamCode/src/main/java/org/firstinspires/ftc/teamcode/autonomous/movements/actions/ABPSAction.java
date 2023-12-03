@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.autonomous.movements.actions;
 
-import org.firstinspires.ftc.teamcode.Utils.StrafeDirection;
+import org.firstinspires.ftc.teamcode.Utils.SidewaysDirection;
 import org.firstinspires.ftc.teamcode.autonomous.AutoOp;
 import org.firstinspires.ftc.teamcode.modules.ABPS.ABPSController;
 
 public class ABPSAction extends Action {
     public final ABPSController.ABPSState state;
     
-    public ABPSAction(StrafeDirection direction) {
+    public ABPSAction(SidewaysDirection direction) {
         switch (direction) {
             case LEFT: {
                 state = ABPSController.ABPSState.LEFT;

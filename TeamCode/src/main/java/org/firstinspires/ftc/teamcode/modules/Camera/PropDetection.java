@@ -28,8 +28,8 @@ public class PropDetection implements VisionProcessor {
     public static int blueSatBrightMin = 0;
     public static int blueSatBrightMax = 255;
     
-    public static int redHueMin = 170;
-    public static int redHueMax = 180;
+    public static int redHueMin = 1;
+    public static int redHueMax = 10;
     public static int redSatBrightMin = 50;
     public static int redSatBrightMax = 255;
     
@@ -178,8 +178,15 @@ public class PropDetection implements VisionProcessor {
         
         // - Find Best Average
         
-        int avgOneTwo = Math.max(avg1, avg2);
-        int found = Math.max(avgOneTwo, avg3);
+        int found;
+        
+        if (alliance == Alliance.RED) {
+            int avgOneTwo = Math.max(avg1, avg2);
+            found = Math.max(avgOneTwo, avg3);
+        } else {
+            int avgOneTwo = Math.max(avg1, avg2);
+            found = Math.max(avgOneTwo, avg3);
+        }
         
         // Display and Record Findings
         

@@ -23,7 +23,7 @@ public class AutonomousCameraManager extends CameraManager {
         
         setupCameraSettings();
         
-        disablePropDetection();
+        enablePropDetection();
         
         setupDashboard();
     }
