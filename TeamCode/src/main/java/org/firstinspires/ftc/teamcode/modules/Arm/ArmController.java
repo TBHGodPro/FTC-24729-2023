@@ -38,20 +38,20 @@ public class ArmController extends Module {
     // - Intake Position
     public static int armIntakePosManual = 175;
     public static int armIntakePosAutonomous = 175;
-    public final int armIntakePos;
+    public int armIntakePos;
     public final boolean shouldOpenHandAtIntake;
-    public static double wristIntakePos = 0.4;
+    public double wristIntakePos = 0.4;
     
     // - Backboard Position
     
     public static int armBackboardPosManual = 510;
-    public static int armBackboardPosAutonomous = 655;
-    public final int armBackboardPos;
-    public static double wristBackboardPos = 0.77;
+    public static int armBackboardPosAutonomous = 510;
+    public int armBackboardPos;
+    public double wristBackboardPos = 0.77;
     
     // - Overhead Position
-    public static int armOverheadPos = 1950;
-    public static double wristOverheadPos = 1.81;
+    public int armOverheadPos = 1950;
+    public double wristOverheadPos = 1.81;
     
     public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
     public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;
@@ -161,9 +161,19 @@ public class ArmController extends Module {
             goToOverheadPosition();
         }
         
-        // Reset Arm
+        // Reset Intake Position
         if (gamepad.back) {
-            resetZeroPosition();
+            int offset = armIntakePos - arm.getCurrentPosition();
+            double wristOffset = wristIntakePos - wristPos;
+            
+            armIntakePos -= offset;
+            wristIntakePos -= wristOffset;
+            
+            armBackboardPos -= offset;
+            wristBackboardPos -= wristOffset;
+            
+            armOverheadPos -= offset;
+            wristOverheadPos -= wristOffset;
         }
     }
     

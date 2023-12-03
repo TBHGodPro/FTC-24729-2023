@@ -81,7 +81,7 @@ public class ABPSThread extends Thread {
             if (bestDetection.id == 1) {
                 trueYaw = pose.yaw;
             } else if (bestDetection.id == 2) {
-                trueYaw = pose.yaw + 5;
+                trueYaw = pose.yaw + 2.5;
             } else if (bestDetection.id == 3) {
                 trueYaw = pose.yaw + 5;
             }

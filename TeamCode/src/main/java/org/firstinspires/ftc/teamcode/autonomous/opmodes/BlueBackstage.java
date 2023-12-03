@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.TurnAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WaitAction;
+import org.firstinspires.ftc.teamcode.autonomous.movements.presets.ABPSPushAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushPresetPath;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToCenter;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToLeft;
@@ -70,12 +71,11 @@ class BlueBackstagePaths {
             new MultiMoveAction(-250, -550, 450),
             new MoveAction(Direction.FORWARD, 500, 150),
             new ABPSAction(SidewaysDirection.LEFT, true),
-            new MultiMoveAction(-100, -280, 500),
-            new MoveAction(Direction.FORWARD, 100, 200),
+            new MultiMoveAction(-100, -250, 500),
+            new MoveAction(Direction.FORWARD, 150, 100),
             new GamepadButtonAction(GamepadButton.y),
             new WaitAction(350),
-            new MultiMoveAction(-200, -600, 650),
-            new MoveAction(Direction.FORWARD, 300, 200),
+            new MultiMoveAction(-250, -600, 650),
             new TurnAction(90)
     };
     
@@ -83,18 +83,16 @@ class BlueBackstagePaths {
             new PushToCenter(SidewaysDirection.LEFT),
             new MoveAction(Direction.BACKWARD, 250, 125),
             new MultiMoveAction(200, -800, 500),
-            new ABPSAction(SidewaysDirection.LEFT, false),
-            new MultiMoveAction(-100, -1050, 650),
-            new MoveAction(Direction.FORWARD, 200, 200),
+            new ABPSPushAction(SidewaysDirection.LEFT),
+            new MultiMoveAction(-250, -1050, 650),
             new TurnAction(90)
     };
     
     public static final Action[] RIGHT = {
             new PushToRight(PushPresetPath.AROUND),
             new MultiMoveAction(-400, -100, 350),
-            new ABPSAction(SidewaysDirection.LEFT, false),
-            new MultiMoveAction(-100, -1350, 650),
-            new MoveAction(Direction.FORWARD, 200, 200),
+            new ABPSPushAction(SidewaysDirection.LEFT),
+            new MultiMoveAction(-250, -1350, 650),
             new TurnAction(90)
     };
 }
