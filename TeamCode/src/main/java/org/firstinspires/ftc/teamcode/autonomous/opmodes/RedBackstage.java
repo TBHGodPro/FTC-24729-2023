@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.autonomous.movements.actions.Action;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.TurnAction;
-import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PlaceCenter;
+import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToCenter;
 
 @Autonomous(name = "Red Backstage", group = "Backstage")
 public class RedBackstage extends AutoOp {
@@ -61,9 +61,11 @@ class RedBackstagePaths {
     public static final Action[] LEFT = {};
     
     public static final Action[] CENTER = {
-            new PlaceCenter(StrafeDirection.RIGHT),
+            new PushToCenter(StrafeDirection.RIGHT),
+            new MoveAction(Direction.BACKWARD, 250, 125),
+            new MultiMoveAction(200, 800, 500),
             new ABPSAction(StrafeDirection.RIGHT),
-            new MultiMoveAction(-100, 750, 450),
+            new MultiMoveAction(-100, 850, 650),
             new MoveAction(Direction.FORWARD, 200, 200),
             new TurnAction(-90)
     };

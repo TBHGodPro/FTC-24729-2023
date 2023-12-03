@@ -18,7 +18,7 @@ public class ABPSThread extends Thread {
     public static double desiredDistance = 12;
     public static double desiredDistancePDOffset = -11;
     public static double strafeGain = 0.0025;
-    public static double turnGain = 0.01;
+    public static double turnGain = 0.008;
     
     public static double kP = 0.02;
     public static double kD = 0.005;
