@@ -43,6 +43,7 @@ public abstract class MainOp extends BaseOp {
     // Run once INIT is pressed
     public void init() {
         // Get Dashboard
+        // http://192.168.43.1:8080/dash
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
         
@@ -56,10 +57,12 @@ public abstract class MainOp extends BaseOp {
             gamepad = gamepad1;
         }
         
+        // Camera
         WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
         camera = isAutonomous ? new AutonomousCameraManager(webcam, getAlliance()) : new ManualCameraManager(webcam);
         camera.init();
         
+        // Wheels
         wheels = new WheelController(
                 hardwareMap.get(DcMotorEx.class, "back_left"),
                 hardwareMap.get(DcMotorEx.class, "back_right"),
@@ -67,9 +70,11 @@ public abstract class MainOp extends BaseOp {
                 hardwareMap.get(DcMotorEx.class, "front_right"));
         wheels.init();
         
+        // Movements
         movements = new MovementController(hardwareMap.get(IMU.class, "imu"), gamepad, /*!isAutonomous*/ true);
         movements.init();
         
+        // Arm & Wrist & Hand
         arm = new ArmController(
                 isAutonomous,
                 gamepad,
@@ -78,8 +83,10 @@ public abstract class MainOp extends BaseOp {
                 hardwareMap.get(Servo.class, "hand"));
         arm.init();
         
+        // ABPS
         abps = new ABPSController(this);
         
+        // Telemetry
         telemetry.addLine("--- Bot ---");
         telemetry.addLine();
         telemetry.addData("FPS", new Func<String>() {
@@ -95,6 +102,7 @@ public abstract class MainOp extends BaseOp {
         arm.setupTelemetry(telemetry);
         abps.setupTelemetry(telemetry);
         
+        // Store Modules
         modules.add(movements);
         modules.add(wheels);
         modules.add(arm);

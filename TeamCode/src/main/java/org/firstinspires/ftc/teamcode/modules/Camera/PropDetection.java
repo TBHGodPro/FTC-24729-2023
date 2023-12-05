@@ -121,7 +121,7 @@ public class PropDetection implements VisionProcessor {
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         // Update Color Ranges (for Dashboard)
-        updateColorRange();
+        // updateColorRange();
         
         // Rotate Frame
         Core.rotate(frame, frame, Core.ROTATE_180);
@@ -181,9 +181,11 @@ public class PropDetection implements VisionProcessor {
         int found;
         
         if (alliance == Alliance.RED) {
+            // - Code run on Red Prop
             int avgOneTwo = Math.max(avg1, avg2);
             found = Math.max(avgOneTwo, avg3);
         } else {
+            // - Code run on Blue Prop
             int avgOneTwo = Math.max(avg1, avg2);
             found = Math.max(avgOneTwo, avg3);
         }
