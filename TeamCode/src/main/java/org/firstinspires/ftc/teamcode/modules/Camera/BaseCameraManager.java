@@ -12,7 +12,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.concurrent.TimeUnit;
 
 @Config
-public abstract class CameraManager {
+public abstract class BaseCameraManager {
     // --- Constants ---
     
     public static float aprilTagDecimation = 2f;
@@ -33,7 +33,7 @@ public abstract class CameraManager {
     public ExposureControl exposure;
     public GainControl gain;
     
-    public CameraManager(WebcamName camera) {
+    public BaseCameraManager(WebcamName camera) {
         this.camera = camera;
         
         stream = new CameraStreamProcessor();

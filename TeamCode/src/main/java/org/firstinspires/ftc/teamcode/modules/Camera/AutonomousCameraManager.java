@@ -4,7 +4,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Utils.Alliance;
 import org.firstinspires.ftc.vision.VisionPortal;
 
-public class AutonomousCameraManager extends CameraManager {
+public class AutonomousCameraManager extends BaseCameraManager {
     public PropDetection prop;
     
     public AutonomousCameraManager(WebcamName camera, Alliance alliance) {

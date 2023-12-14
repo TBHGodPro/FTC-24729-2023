@@ -9,10 +9,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.modules.Module;
+import org.firstinspires.ftc.teamcode.MainOp;
+import org.firstinspires.ftc.teamcode.modules.BaseModule;
 
 @Config
-public class ArmController extends Module {
+public class ArmController extends BaseModule {
     // --- Constants ---
     
     public static double armNonLinearity = 2; // 1 = linear
@@ -75,7 +76,9 @@ public class ArmController extends Module {
     public double wristPos = 1;
     public boolean isHandClosed = false;
     
-    public ArmController(boolean isAutonomous, Gamepad gamepad, DcMotorEx arm, Servo wrist, Servo hand) {
+    public ArmController(MainOp op, boolean isAutonomous, Gamepad gamepad, DcMotorEx arm, Servo wrist, Servo hand) {
+        super(op);
+        
         this.isAutonomous = isAutonomous;
         
         this.gamepad = gamepad;
@@ -91,6 +94,7 @@ public class ArmController extends Module {
         this.armBackboardPos = isAutonomous ? armBackboardPosAutonomous : armBackboardPosManual;
     }
     
+    @Override
     public void init() {
         arm.setDirection(armDirection);
         arm.setZeroPowerBehavior(armZeroPowerBehavior);
@@ -102,11 +106,13 @@ public class ArmController extends Module {
         hand.setDirection(handDirection);
     }
     
-    public void prep() {
+    @Override
+    public void start() {
         resetZeroPosition();
     }
     
-    public void update() {
+    @Override
+    public void loop() {
         // Arm Control
         
         // - Manual Power

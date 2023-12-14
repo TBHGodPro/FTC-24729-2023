@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode.modules;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.MainOp;
 
-public abstract class Module {
-    public abstract void addTelemetry(Telemetry telemetry);
+public abstract class BaseModule {
+    public final MainOp op;
+    
+    public BaseModule(MainOp op) {
+        this.op = op;
+    }
     
     public void setupTelemetry(Telemetry telemetry) {
         telemetry.addLine("--- " + this.getClass().getName().replace("Controller", "")
@@ -13,6 +18,21 @@ public abstract class Module {
         addTelemetry(telemetry);
         
         telemetry.addLine();
+    }
+    
+    public void init() {
+    }
+    
+    public void init_loop() {
+    }
+    
+    public void start() {
+    }
+    
+    public void loop() {
+    }
+    
+    public void addTelemetry(Telemetry telemetry) {
     }
     
     public void getDashboardTelemetry(Telemetry telemetry) {

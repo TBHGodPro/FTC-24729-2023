@@ -38,4 +38,9 @@ public abstract class AutoOp extends MainOp {
     }
     
     public abstract void runOP();
+    
+    @Override
+    public boolean shouldUseABPS() {
+        return true;
+    }
 }

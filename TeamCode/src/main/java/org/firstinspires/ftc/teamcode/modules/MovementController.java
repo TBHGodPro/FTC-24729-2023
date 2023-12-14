@@ -8,11 +8,12 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.Utils.Utils;
 import org.firstinspires.ftc.teamcode.modules.Wheels.WheelController;
 
 @Config
-public class MovementController extends Module {
+public class MovementController extends BaseModule {
     // --- Constants ---
     
     public static final RevHubOrientationOnRobot hubOrientation = new RevHubOrientationOnRobot(
@@ -23,41 +24,63 @@ public class MovementController extends Module {
     
     public static double steeringCounterCoeff = 30; // Lower = more power
     
+    public static double dpad_power = 0.3;
+    
     // -----------------
+    
+    public final WheelController wheelController;
     
     public final IMU imu;
     
     public final Gamepad gamepad;
     
+    public final boolean useDPadMovements;
     public final boolean doYawCorrections;
     
     public Double desiredAngle;
     
     public boolean shouldRun = true;
     
-    public MovementController(IMU imu, Gamepad gamepad, boolean doYawCorrections) {
+    public MovementController(MainOp op, WheelController wheelController, IMU imu, Gamepad gamepad, boolean useDPadMovements, boolean doYawCorrections) {
+        super(op);
+        
+        this.wheelController = wheelController;
+        
         this.imu = imu;
         
         this.gamepad = gamepad;
         
+        this.useDPadMovements = useDPadMovements;
         this.doYawCorrections = doYawCorrections;
     }
     
+    @Override
     public void init() {
         imu.initialize(new IMU.Parameters(hubOrientation));
     }
     
-    public void prep() {
+    @Override
+    public void start() {
         imu.resetYaw();
     }
     
-    public void updatePowers(WheelController wheelController) {
+    @Override
+    public void loop() {
         if (!shouldRun) return;
         
         // Allow Input Changing
         double rawY = -gamepad.left_stick_y;
         double rawX = gamepad.left_stick_x;
         double rawTurn = gamepad.right_stick_x;
+        
+        // D-Pad Movements
+        if (useDPadMovements) {
+            if (gamepad.dpad_up) rawY += dpad_power;
+            if (gamepad.dpad_down) rawY -= dpad_power;
+            
+            if (gamepad.dpad_right) rawX += dpad_power;
+            if (gamepad.dpad_left) rawX -= dpad_power;
+        }
         
         // Get Facing Angle
         double rawAngle = getRawAngle();
@@ -110,6 +133,7 @@ public class MovementController extends Module {
         setPowers(wheelController, controlY, controlX, controlTurn);
     }
     
+    @Override
     public void addTelemetry(Telemetry telemetry) {
         telemetry.addData("Angle", new Func<String>() {
                     @Override

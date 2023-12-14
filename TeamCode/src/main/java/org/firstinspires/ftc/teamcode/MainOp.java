@@ -13,10 +13,10 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Utils.Alliance;
 import org.firstinspires.ftc.teamcode.modules.ABPS.ABPSController;
 import org.firstinspires.ftc.teamcode.modules.Arm.ArmController;
+import org.firstinspires.ftc.teamcode.modules.BaseModule;
 import org.firstinspires.ftc.teamcode.modules.Camera.AutonomousCameraManager;
-import org.firstinspires.ftc.teamcode.modules.Camera.CameraManager;
+import org.firstinspires.ftc.teamcode.modules.Camera.BaseCameraManager;
 import org.firstinspires.ftc.teamcode.modules.Camera.ManualCameraManager;
-import org.firstinspires.ftc.teamcode.modules.Module;
 import org.firstinspires.ftc.teamcode.modules.MovementController;
 import org.firstinspires.ftc.teamcode.modules.Wheels.WheelController;
 
@@ -33,9 +33,9 @@ public abstract class MainOp extends BaseOp {
     
     public Gamepad gamepad;
     
-    public ArrayList<Module> modules = new ArrayList<Module>();
+    public ArrayList<BaseModule> modules = new ArrayList<BaseModule>();
     
-    public CameraManager camera;
+    public BaseCameraManager camera;
     
     public WheelController wheels;
     public MovementController movements;
@@ -67,19 +67,16 @@ public abstract class MainOp extends BaseOp {
         camera.init();
         
         // Wheels
-        wheels = new WheelController(hardwareMap.get(DcMotorEx.class, "back_left"), hardwareMap.get(DcMotorEx.class, "back_right"), hardwareMap.get(DcMotorEx.class, "front_left"), hardwareMap.get(DcMotorEx.class, "front_right"));
-        wheels.init();
+        wheels = new WheelController(this, hardwareMap.get(DcMotorEx.class, "back_left"), hardwareMap.get(DcMotorEx.class, "back_right"), hardwareMap.get(DcMotorEx.class, "front_left"), hardwareMap.get(DcMotorEx.class, "front_right"));
         
         // Movements
-        movements = new MovementController(hardwareMap.get(IMU.class, "imu"), gamepad, /*!isAutonomous*/ true);
-        movements.init();
+        movements = new MovementController(this, wheels, hardwareMap.get(IMU.class, "imu"), gamepad, !shouldUseABPS(), /*!isAutonomous*/ true);
         
         // Arm & Wrist & Hand
-        arm = new ArmController(isAutonomous, gamepad, hardwareMap.get(DcMotorEx.class, "arm"), hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(Servo.class, "hand"));
-        arm.init();
+        arm = new ArmController(this, isAutonomous, gamepad, hardwareMap.get(DcMotorEx.class, "arm"), hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(Servo.class, "hand"));
         
         // ABPS
-        abps = new ABPSController(this);
+        abps = new ABPSController(this, shouldUseABPS());
         
         // Telemetry
         telemetry.addLine("--- Bot ---");
@@ -103,6 +100,9 @@ public abstract class MainOp extends BaseOp {
         modules.add(arm);
         modules.add(abps);
         
+        // Init Modules
+        for (BaseModule module : modules) module.init();
+        
         // Bulk Encoder Caching
         hubs = hardwareMap.getAll(LynxModule.class);
         for (LynxModule hub : hubs) {
@@ -117,22 +117,23 @@ public abstract class MainOp extends BaseOp {
         
         // Update Encoder Caches
         updateBulkCache();
+        
+        // Loop Modules
+        for (BaseModule module : modules) module.init_loop();
     }
     
     // Run once PLAY is pressed
     public void start() {
         frames = 0;
         
-        movements.prep();
-        
-        arm.prep();
+        // Start Modules
+        for (BaseModule module : modules) module.start();
     }
     
     // Run in a loop after PLAY is pressed until STOP is pressed
     public void loop() {
         // FPS Logging
         frames += 1;
-        movements.updatePowers(wheels);
         
         // Update Encoder Caches
         updateBulkCache();
@@ -140,17 +141,13 @@ public abstract class MainOp extends BaseOp {
         // Commented due to major performance boost
         // camera.loop();
         
-        wheels.update();
-        
-        arm.update();
-        
-        abps.loop();
-        
-        for (Module module : modules) {
-            module.getDashboardTelemetry(dashboardTelemetry);
+        // Loop Modules + Update Dashboard Telemetry
+        for (BaseModule module : modules) {
+            module.loop();
             
-            dashboardTelemetry.update();
+            module.getDashboardTelemetry(dashboardTelemetry);
         }
+        dashboardTelemetry.update();
     }
     
     public void updateBulkCache() {
@@ -163,4 +160,6 @@ public abstract class MainOp extends BaseOp {
     // Run once STOP is pressed
     public void stop() {
     }
+    
+    public abstract boolean shouldUseABPS();
 }

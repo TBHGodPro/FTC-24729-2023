@@ -7,11 +7,12 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.Utils.Utils;
-import org.firstinspires.ftc.teamcode.modules.Module;
+import org.firstinspires.ftc.teamcode.modules.BaseModule;
 
 @Config
-public class WheelController extends Module {
+public class WheelController extends BaseModule {
     // --- Constants ---
     
     public static int setPositionClearance = 5;
@@ -35,8 +36,10 @@ public class WheelController extends Module {
     
     public WheelTarget target = null;
     
-    public WheelController(DcMotorEx backLeft, DcMotorEx backRight, DcMotorEx frontLeft,
+    public WheelController(MainOp op, DcMotorEx backLeft, DcMotorEx backRight, DcMotorEx frontLeft,
                            DcMotorEx frontRight) {
+        super(op);
+        
         this.backLeft = backLeft;
         this.backRight = backRight;
         this.frontLeft = frontLeft;
@@ -45,6 +48,7 @@ public class WheelController extends Module {
         powers = new WheelPowers(0, 0, 0, 0);
     }
     
+    @Override
     public void init() {
         backLeft.setDirection(leftDirection);
         frontLeft.setDirection(leftDirection);
@@ -60,7 +64,8 @@ public class WheelController extends Module {
         resetZeroPositions();
     }
     
-    public void update() {
+    @Override
+    public void loop() {
         if (target == null) {
             setRunMode(RunMode.RUN_WITHOUT_ENCODER);
             
