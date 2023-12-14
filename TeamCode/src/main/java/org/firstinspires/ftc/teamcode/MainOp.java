@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -20,12 +21,15 @@ import org.firstinspires.ftc.teamcode.modules.MovementController;
 import org.firstinspires.ftc.teamcode.modules.Wheels.WheelController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class MainOp extends BaseOp {
     public Boolean isAutonomous;
     
     public FtcDashboard dashboard;
     public Telemetry dashboardTelemetry;
+    
+    public List<LynxModule> hubs;
     
     public Gamepad gamepad;
     
@@ -63,11 +67,7 @@ public abstract class MainOp extends BaseOp {
         camera.init();
         
         // Wheels
-        wheels = new WheelController(
-                hardwareMap.get(DcMotorEx.class, "back_left"),
-                hardwareMap.get(DcMotorEx.class, "back_right"),
-                hardwareMap.get(DcMotorEx.class, "front_left"),
-                hardwareMap.get(DcMotorEx.class, "front_right"));
+        wheels = new WheelController(hardwareMap.get(DcMotorEx.class, "back_left"), hardwareMap.get(DcMotorEx.class, "back_right"), hardwareMap.get(DcMotorEx.class, "front_left"), hardwareMap.get(DcMotorEx.class, "front_right"));
         wheels.init();
         
         // Movements
@@ -75,12 +75,7 @@ public abstract class MainOp extends BaseOp {
         movements.init();
         
         // Arm & Wrist & Hand
-        arm = new ArmController(
-                isAutonomous,
-                gamepad,
-                hardwareMap.get(DcMotorEx.class, "arm"),
-                hardwareMap.get(Servo.class, "wrist"),
-                hardwareMap.get(Servo.class, "hand"));
+        arm = new ArmController(isAutonomous, gamepad, hardwareMap.get(DcMotorEx.class, "arm"), hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(Servo.class, "hand"));
         arm.init();
         
         // ABPS
@@ -107,11 +102,21 @@ public abstract class MainOp extends BaseOp {
         modules.add(wheels);
         modules.add(arm);
         modules.add(abps);
+        
+        // Bulk Encoder Caching
+        hubs = hardwareMap.getAll(LynxModule.class);
+        for (LynxModule hub : hubs) {
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        }
     }
     
     // Run in a loop after INIT is pressed until PLAY is pressed
     public void init_loop() {
+        // FPS Logging
         frames += 1;
+        
+        // Update Encoder Caches
+        updateBulkCache();
     }
     
     // Run once PLAY is pressed
@@ -125,8 +130,12 @@ public abstract class MainOp extends BaseOp {
     
     // Run in a loop after PLAY is pressed until STOP is pressed
     public void loop() {
+        // FPS Logging
         frames += 1;
         movements.updatePowers(wheels);
+        
+        // Update Encoder Caches
+        updateBulkCache();
         
         // Commented due to major performance boost
         // camera.loop();
@@ -141,6 +150,13 @@ public abstract class MainOp extends BaseOp {
             module.getDashboardTelemetry(dashboardTelemetry);
             
             dashboardTelemetry.update();
+        }
+    }
+    
+    public void updateBulkCache() {
+        // Update Encoder Caches
+        for (LynxModule module : hubs) {
+            module.clearBulkCache();
         }
     }
     
