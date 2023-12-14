@@ -74,7 +74,7 @@ class RedBackstagePaths {
             new MoveAction(Direction.FORWARD, 150, 100),
             new GamepadButtonAction(GamepadButton.y),
             new WaitAction(350),
-            new MultiMoveAction(-250, 1000, 650),
+            new MultiMoveAction(-300, 700, 650),
             new TurnAction(-90)
     };
     
@@ -83,7 +83,7 @@ class RedBackstagePaths {
             new MoveAction(Direction.BACKWARD, 250, 125),
             new MultiMoveAction(200, 800, 500),
             new ABPSPushAction(SidewaysDirection.RIGHT),
-            new MultiMoveAction(-250, 925, 650),
+            new MultiMoveAction(-250, 675, 650),
             new TurnAction(-90)
     };
     
@@ -92,7 +92,7 @@ class RedBackstagePaths {
             new MultiMoveAction(-250, 550, 450),
             new MoveAction(Direction.FORWARD, 200, 150),
             new ABPSPushAction(SidewaysDirection.RIGHT),
-            new MultiMoveAction(-250, 600, 650),
+            new MultiMoveAction(-250, 450, 650),
             new TurnAction(-90)
     };
 }

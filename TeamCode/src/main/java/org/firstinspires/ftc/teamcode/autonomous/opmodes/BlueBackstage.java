@@ -75,7 +75,7 @@ class BlueBackstagePaths {
             new MoveAction(Direction.FORWARD, 150, 100),
             new GamepadButtonAction(GamepadButton.y),
             new WaitAction(350),
-            new MultiMoveAction(-250, -600, 650),
+            new MultiMoveAction(-250, -450, 650),
             new TurnAction(90)
     };
     
@@ -84,7 +84,7 @@ class BlueBackstagePaths {
             new MoveAction(Direction.BACKWARD, 250, 125),
             new MultiMoveAction(200, -800, 500),
             new ABPSPushAction(SidewaysDirection.LEFT),
-            new MultiMoveAction(-250, -1050, 650),
+            new MultiMoveAction(-250, -850, 650),
             new TurnAction(90)
     };
     
@@ -92,7 +92,7 @@ class BlueBackstagePaths {
             new PushToRight(PushPresetPath.AROUND),
             new MultiMoveAction(-400, -100, 350),
             new ABPSPushAction(SidewaysDirection.LEFT),
-            new MultiMoveAction(-250, -1350, 650),
+            new MultiMoveAction(-350, -1050, 650),
             new TurnAction(90)
     };
 }

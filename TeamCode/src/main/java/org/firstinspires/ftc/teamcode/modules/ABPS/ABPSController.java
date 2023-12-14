@@ -57,6 +57,7 @@ public class ABPSController extends BaseModule {
         return state == ABPSState.STOPPED;
     }
     
+    @Override
     public void loop() {
         if (!this.active) return;
         
