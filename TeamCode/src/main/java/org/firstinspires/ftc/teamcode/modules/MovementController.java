@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -26,6 +27,10 @@ public class MovementController extends BaseModule {
     
     public static double dpad_power = 0.3;
     
+    public static double yawKP = 0;
+    public static double yawKI = 0;
+    public static double yawKD = 0;
+    
     // -----------------
     
     public final WheelController wheelController;
@@ -33,6 +38,8 @@ public class MovementController extends BaseModule {
     public final IMU imu;
     
     public final Gamepad gamepad;
+    
+    public final PIDController yawPID;
     
     public final boolean useDPadMovements;
     public final boolean doYawCorrections;
@@ -49,6 +56,8 @@ public class MovementController extends BaseModule {
         this.imu = imu;
         
         this.gamepad = gamepad;
+        
+        this.yawPID = new PIDController(yawKP, yawKI, yawKD);
         
         this.useDPadMovements = useDPadMovements;
         this.doYawCorrections = doYawCorrections;
@@ -165,15 +174,20 @@ public class MovementController extends BaseModule {
     }
     
     public double getYawCorrections(double angle) {
-        if (angle != desiredAngle) {
-            if (angle > desiredAngle) {
-                return (((angle - desiredAngle) + 180) % 360 - 180) / steeringCounterCoeff;
-            } else {
-                return -(((desiredAngle - angle) + 180) % 360 - 180) / steeringCounterCoeff;
-            }
-        }
+        yawPID.setPID(yawKP, yawKI, yawKD);
         
-        return 0;
+        double diff = getAngularError(angle, desiredAngle);
+        
+        return yawPID.calculate(diff, 0);
+    }
+    
+    public double getAngularError(double current, double target) {
+        double diff = current - target;
+        
+        while (diff > 180) diff -= 360;
+        while (diff < -180) diff += 360;
+        
+        return diff;
     }
     
     public void activate() {
