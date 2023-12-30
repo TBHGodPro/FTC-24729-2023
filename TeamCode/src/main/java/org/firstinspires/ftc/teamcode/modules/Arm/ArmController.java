@@ -18,7 +18,7 @@ public class ArmController extends BaseModule {
     
     public static double armNonLinearity = 2; // 1 = linear
     
-    public static int armManualInterval = 60;
+    public static double armManualPower = 0.5;
     
     public static int armMaxPos = 2600;
     
@@ -121,14 +121,18 @@ public class ArmController extends BaseModule {
         armPower += Math.pow(gamepad.right_trigger, armNonLinearity);
         armPower -= Math.pow(gamepad.left_trigger, armNonLinearity);
         
-        // - Avoid Over-Going Limit
-        int nextPos = (int) (armPos + armPower * armManualInterval);
-        if (nextPos <= armMaxPos) {
-            armPos = nextPos;
+        // - Manual Override
+        if (armPower != 0) {
+            if (armPower > 0 && armPos >= armMaxPos) armPower = 0;
+            else armPower *= armManualPower;
+            
+            armPos = arm.getCurrentPosition();
+        } else {
+            armPower = this.armPower.calc(arm.getCurrentPosition(), armPos);
         }
         
         // - Set Power
-        arm.setPower(this.armPower.calc(arm.getCurrentPosition(), armPos));
+        arm.setPower(armPower);
         
         // Wrist Control
         if (gamepad.right_bumper) {
