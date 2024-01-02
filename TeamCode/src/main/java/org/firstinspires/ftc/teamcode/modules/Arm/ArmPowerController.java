@@ -2,30 +2,83 @@ package org.firstinspires.ftc.teamcode.modules.Arm;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Utils.AngleUtils;
+import org.firstinspires.ftc.teamcode.Utils.Profile.AsymmetricMotionProfile;
+import org.firstinspires.ftc.teamcode.Utils.Profile.ProfileConstraints;
+import org.firstinspires.ftc.teamcode.Utils.Profile.ProfileState;
 
 @Config
 public class ArmPowerController {
     // --- Constants ---
     
-    public static double kP = 0.002;
+    public static double kP = 0.006;
     public static double kI = 0.002;
     public static double kD = 0.0002;
+    public static double kF = 0.032;
+    
+    public static double velo = 2000;
+    public static double accel = 6000;
+    public static double decel = 1500;
     
     // -----------------
     
     public final PIDController pid;
     
-    public ArmPowerController() {
+    public AsymmetricMotionProfile profile;
+    public ElapsedTime timer;
+    
+    public Integer overallTarget;
+    public Double target;
+    
+    public int current;
+    
+    public ArmPowerController(int position) {
         pid = new PIDController(kP, kI, kD);
+        
+        current = position;
+        
+        timer = new ElapsedTime();
+        
+        clearTarget();
     }
     
-    public double calc(int current, int target) {
+    public void setTarget(int current, int target) {
+        this.current = current;
+        if (this.target != null && this.overallTarget == target) return;
+        
+        this.target = (double) target;
+        this.overallTarget = target;
+        
+        profile = new AsymmetricMotionProfile(current, target, new ProfileConstraints(velo, accel, decel));
+        timer.reset();
+    }
+    
+    public void clearTarget() {
+        this.target = null;
+        this.overallTarget = null;
+    }
+    
+    public double calc(int current) {
+        this.current = current;
+        if (this.target == null || this.overallTarget == null) return 0;
+        
         pid.setPID(kP, kI, kD);
+        
+        ProfileState state = profile.calculate(timer.time());
+        target = state.x;
         
         double power = 0;
         
         power += pid.calculate(current, target);
         
+        power += Math.sin(convertPosToRadians(target)) * kF;
+        
         return power;
+    }
+    
+    public double convertPosToRadians(double pos) {
+        return AngleUtils.toRadians((pos + 500d) / (100d / 9d));
     }
 }

@@ -27,9 +27,9 @@ public class MovementController extends BaseModule {
     
     public static double dpad_power = 0.3;
     
-    public static double yawKP = 0.004;
+    public static double yawKP = 0.04;
     public static double yawKI = 0.0;
-    public static double yawKD = 0.04;
+    public static double yawKD = 0.004;
     
     // -----------------
     

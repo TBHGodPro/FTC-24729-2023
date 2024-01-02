@@ -84,7 +84,8 @@ public class ArmController extends BaseModule {
         this.gamepad = gamepad;
         
         this.arm = arm;
-        this.armPower = new ArmPowerController();
+        this.armPower = new ArmPowerController(0);
+        this.armPower.setTarget(0, armPos);
         
         this.wrist = wrist;
         this.hand = hand;
@@ -123,12 +124,16 @@ public class ArmController extends BaseModule {
         
         // - Manual Override
         if (armPower != 0) {
+            this.armPower.clearTarget();
+            
             if (armPower > 0 && armPos >= armMaxPos) armPower = 0;
             else armPower *= armManualPower;
             
             armPos = arm.getCurrentPosition();
         } else {
-            armPower = this.armPower.calc(arm.getCurrentPosition(), armPos);
+            this.armPower.setTarget(arm.getCurrentPosition(), armPos);
+            
+            armPower = this.armPower.calc(arm.getCurrentPosition());
         }
         
         // - Set Power
@@ -271,5 +276,7 @@ public class ArmController extends BaseModule {
         telemetry.addData("Arm Current Pos", arm.getCurrentPosition());
         telemetry.addData("Arm Power", arm.getPower() * 100);
         telemetry.addData("At Position", isAtPosition());
+        telemetry.addData("Arm Profile Pos", armPower.target != null ? armPower.target : -500);
+        telemetry.addData("Arm Profile Timer", armPower.timer.time());
     }
 }
