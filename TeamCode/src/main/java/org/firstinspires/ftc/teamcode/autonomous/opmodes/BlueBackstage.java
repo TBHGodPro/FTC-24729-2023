@@ -32,9 +32,17 @@ public class BlueBackstage extends AutoOp {
     @Override
     public void runOP() {
         sleep(1000);
+
+        arm.armPos = 850;
+
+        awaitFrame();
+
+        activeSleep(2000);
         
         PossiblePropPosition position = getCamera().prop.position;
         getCamera().disablePropDetection();
+
+        arm.armPos = 300;
         
         Action[] actions;
         
