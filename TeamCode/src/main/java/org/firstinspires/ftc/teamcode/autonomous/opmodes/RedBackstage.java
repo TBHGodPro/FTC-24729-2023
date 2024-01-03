@@ -90,11 +90,13 @@ class RedBackstagePaths {
     
     public static final Action[] CENTER = {
             new PushToCenter(SidewaysDirection.RIGHT),
-            new MoveAction(Direction.BACKWARD, 250, 125),
-            new MultiMoveAction(200, 800, 500),
-            //new ABPSPushAction(SidewaysDirection.RIGHT),
-            //new MultiMoveAction(-250, 675, 650),
-            //new TurnAction(-90)
+            new MoveAction(Direction.BACKWARD, 250, 250),
+            new MultiMoveAction(100, 300, 500),
+            new TurnAction(90),
+            new MoveAction(Direction.FORWARD, 550, 550),
+            new ABPSPushAction(SidewaysDirection.RIGHT),
+            new MultiMoveAction(-250, 675, 650),
+            new TurnAction(-90)
     };
     
     public static final Action[] RIGHT = {
