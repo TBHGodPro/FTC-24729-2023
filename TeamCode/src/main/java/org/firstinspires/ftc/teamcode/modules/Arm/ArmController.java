@@ -36,11 +36,11 @@ public class ArmController extends BaseModule {
     public static double handBackClosedPos = 0.825;
     
     // - Intake Position
-    public static int armIntakePosManual = 220;
-    public static int armIntakePosAutonomous = 220;
+    public static int armIntakePosManual = 190;
+    public static int armIntakePosAutonomous = 190;
     public int armIntakePos;
     public final boolean shouldOpenHandAtIntake;
-    public double wristIntakePos = 0.55;
+    public double wristIntakePos = 0.52;
     
     // - Backboard Position
     
