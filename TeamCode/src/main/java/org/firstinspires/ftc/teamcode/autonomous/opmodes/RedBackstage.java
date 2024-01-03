@@ -78,14 +78,12 @@ public class RedBackstage extends AutoOp {
 class RedBackstagePaths {
     public static final Action[] LEFT = {
             new PushToLeft(PushPresetPath.AROUND),
-            new MultiMoveAction(-400, 0, 350),
-            //new ABPSAction(SidewaysDirection.RIGHT, true),
-//            new MultiMoveAction(-100, -250, 500),
-//            new MoveAction(Direction.FORWARD, 150, 100),
-//            new GamepadButtonAction(GamepadButton.y),
-//            new WaitAction(350),
-//            new MultiMoveAction(-300, 700, 650),
-//            new TurnAction(-90)
+            new MoveAction(Direction.BACKWARD, 400, 500),
+            new TurnAction(180),
+            new MultiMoveAction(750, -200, 1100),
+            new ABPSPushAction(SidewaysDirection.RIGHT),
+            new MultiMoveAction(-250, 975, 950),
+            new TurnAction(-90)
     };
     
     public static final Action[] CENTER = {
