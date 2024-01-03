@@ -13,11 +13,13 @@ import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.TurnAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WaitAction;
+import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WheelPositionAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.ABPSPushAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushPresetPath;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToCenter;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToLeft;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToRight;
+import org.firstinspires.ftc.teamcode.modules.Wheels.WheelTarget;
 
 @Autonomous(name = "Red Wing", group = "Wing")
 public class RedWing extends AutoOp {
@@ -76,7 +78,7 @@ class RedWingPaths {
             new MultiMoveAction(-200, 500, 800),
             new MoveAction(Direction.FORWARD, 1100, 1200),
             new TurnAction(90),
-            new WaitAction(12_000),
+            new WaitAction(8_500),
             new MoveAction(Direction.FORWARD, 1500, 1500),
             new MultiMoveAction(150, 625, 1000),
             new ABPSPushAction(SidewaysDirection.RIGHT),
@@ -86,9 +88,28 @@ class RedWingPaths {
     
     public static final Action[] CENTER = {
             new PushToCenter(SidewaysDirection.LEFT),
+            new MultiMoveAction(-100, -700, 900),
+            new MoveAction(Direction.FORWARD,800, 1000),
+            new TurnAction(90),
+            new WaitAction(7_000),
+            new MoveAction(Direction.FORWARD, 2150, 2000),
+            new MultiMoveAction(150, 830, 1000),
+            new ABPSPushAction(SidewaysDirection.RIGHT),
+            new MultiMoveAction(-200, -800, 850),
+            new TurnAction(-90)
     };
     
     public static final Action[] RIGHT = {
             new PushToRight(PushPresetPath.AROUND),
+            new MoveAction(Direction.BACKWARD, 75, 120),
+            new TurnAction(-90),
+            new MultiMoveAction(850, 50, 1400),
+            new TurnAction(90),
+            new WaitAction(9_000),
+            new MoveAction(Direction.FORWARD, 1500, 1500),
+            new MultiMoveAction(150, 1075, 1400),
+            new ABPSPushAction(SidewaysDirection.RIGHT),
+            new MultiMoveAction(-200, -1000, 1000),
+            new TurnAction(-90)
     };
 }
