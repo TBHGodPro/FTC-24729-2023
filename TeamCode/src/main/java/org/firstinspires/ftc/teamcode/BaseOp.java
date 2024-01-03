@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public abstract class BaseOp extends OpMode {
     public long frames = 0;
@@ -30,5 +31,11 @@ public abstract class BaseOp extends OpMode {
         while (frames <= currentFrames + 1) {
             sleep(5);
         }
+    }
+
+    public void activeSleep(long milliseconds) {
+        ElapsedTime time = new ElapsedTime();
+
+        while(time.milliseconds() < milliseconds) sleep(5);
     }
 }

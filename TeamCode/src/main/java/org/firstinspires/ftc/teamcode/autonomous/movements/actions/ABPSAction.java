@@ -32,7 +32,7 @@ public class ABPSAction extends Action {
     @Override
     public void execute(AutoOp op) {
         if (keepWristClosed) op.abps.shouldOpenWristWhenDone = false;
-        op.abps.activate(state, 0);
+        op.abps.activate(state, 0.5);
         
         while (!op.abps.isDone()) op.awaitFrame();
         

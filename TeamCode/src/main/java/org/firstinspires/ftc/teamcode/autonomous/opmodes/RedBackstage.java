@@ -15,12 +15,14 @@ import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.TurnAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WaitAction;
+import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WheelPositionAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.ABPSPushAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushPresetPath;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToCenter;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToLeft;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToRight;
 import org.firstinspires.ftc.teamcode.autonomous.movements.utils.GamepadButton;
+import org.firstinspires.ftc.teamcode.modules.Wheels.WheelTarget;
 
 @Autonomous(name = "Red Backstage", group = "Backstage")
 public class RedBackstage extends AutoOp {
@@ -32,9 +34,17 @@ public class RedBackstage extends AutoOp {
     @Override
     public void runOP() {
         sleep(1000);
+
+        arm.armPos = 850;
+
+        awaitFrame();
+
+        activeSleep(2000);
         
         PossiblePropPosition position = getCamera().prop.position;
         getCamera().disablePropDetection();
+
+        arm.armPos = 300;
         
         Action[] actions;
         
@@ -69,30 +79,31 @@ class RedBackstagePaths {
     public static final Action[] LEFT = {
             new PushToLeft(PushPresetPath.AROUND),
             new MultiMoveAction(-400, 0, 350),
-            new ABPSAction(SidewaysDirection.RIGHT, true),
-            new MultiMoveAction(-100, -250, 500),
-            new MoveAction(Direction.FORWARD, 150, 100),
-            new GamepadButtonAction(GamepadButton.y),
-            new WaitAction(350),
-            new MultiMoveAction(-300, 700, 650),
-            new TurnAction(-90)
+            //new ABPSAction(SidewaysDirection.RIGHT, true),
+//            new MultiMoveAction(-100, -250, 500),
+//            new MoveAction(Direction.FORWARD, 150, 100),
+//            new GamepadButtonAction(GamepadButton.y),
+//            new WaitAction(350),
+//            new MultiMoveAction(-300, 700, 650),
+//            new TurnAction(-90)
     };
     
     public static final Action[] CENTER = {
             new PushToCenter(SidewaysDirection.RIGHT),
             new MoveAction(Direction.BACKWARD, 250, 125),
             new MultiMoveAction(200, 800, 500),
-            new ABPSPushAction(SidewaysDirection.RIGHT),
-            new MultiMoveAction(-250, 675, 650),
-            new TurnAction(-90)
+            //new ABPSPushAction(SidewaysDirection.RIGHT),
+            //new MultiMoveAction(-250, 675, 650),
+            //new TurnAction(-90)
     };
     
     public static final Action[] RIGHT = {
             new PushToRight(PushPresetPath.STRAIGHT),
-            new MultiMoveAction(-250, 550, 450),
-            new MoveAction(Direction.FORWARD, 200, 150),
+            new MultiMoveAction(-250, 550, 500),
+            new TurnAction(90),
+            new MultiMoveAction(300, -250, 500),
             new ABPSPushAction(SidewaysDirection.RIGHT),
-            new MultiMoveAction(-250, 450, 650),
+            new MultiMoveAction(-200, 450, 600),
             new TurnAction(-90)
     };
 }

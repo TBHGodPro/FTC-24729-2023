@@ -7,11 +7,11 @@ import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveActi
 
 public class PushToCenter extends ActionGroup {
     public static final Action[] actionsStrafeLeft = {
-            new MultiMoveAction(910, -200, 800),
+            new MultiMoveAction(910, -200, 1200),
     };
     
     public static final Action[] actionsStrafeRight = {
-            new MultiMoveAction(910, 200, 800),
+            new MultiMoveAction(910, 200, 1200),
     };
     
     public PushToCenter(SidewaysDirection sidewaysDirection) {

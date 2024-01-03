@@ -9,11 +9,11 @@ import org.firstinspires.ftc.teamcode.modules.Wheels.WheelTarget;
 
 public class PushToRight extends ActionGroup {
     public static final Action[] actionsStraight = {
-            new MultiMoveAction(650, 450, 700),
+            new MultiMoveAction(650, 450, 1200),
     };
     
     public static final Action[] actionsAround = {
-            new MultiMoveAction(575, -200, 450),
+            new MultiMoveAction(575, -200, 750),
             new WheelPositionAction(new WheelTarget(1050, -350, 1050, -350, 550)),
             new TurnAction(90)
     };

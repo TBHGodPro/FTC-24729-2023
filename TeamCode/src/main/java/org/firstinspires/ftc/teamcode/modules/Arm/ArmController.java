@@ -28,7 +28,7 @@ public class ArmController extends BaseModule {
     
     public static double wristPosInterval = 0.01;
     
-    public static double wristAngleCorrectionCoeff = 2500;
+    public static double wristAngleCorrectionCoeff = 3100;
     
     public static double handFrontOpenPos = 0.85;
     public static double handFrontClosedPos = 0.6;
@@ -45,7 +45,7 @@ public class ArmController extends BaseModule {
     // - Backboard Position
     
     public static int armBackboardPosManual = 510;
-    public static int armBackboardPosAutonomous = 510;
+    public static int armBackboardPosAutonomous = 380;
     public int armBackboardPos;
     public double wristBackboardPos = 0.77;
     
@@ -174,7 +174,7 @@ public class ArmController extends BaseModule {
         
         // Backboard Position
         if (gamepad.a) {
-            gotToBackboardPosition();
+            goToBackboardPosition();
         }
         
         // Overhead Position
@@ -214,7 +214,7 @@ public class ArmController extends BaseModule {
         }
     }
     
-    public void gotToBackboardPosition() {
+    public void goToBackboardPosition() {
         armPos = armBackboardPos;
         wristPos = wristBackboardPos;
     }
@@ -230,7 +230,7 @@ public class ArmController extends BaseModule {
                 goToIntakePosition();
                 break;
             case BACKBOARD:
-                gotToBackboardPosition();
+                goToBackboardPosition();
                 break;
             case OVERHEAD:
                 goToOverheadPosition();

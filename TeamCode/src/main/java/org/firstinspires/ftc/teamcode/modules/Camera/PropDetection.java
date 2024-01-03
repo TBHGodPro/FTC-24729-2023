@@ -28,9 +28,9 @@ public class PropDetection implements VisionProcessor {
     public static int blueSatBrightMin = 0;
     public static int blueSatBrightMax = 255;
     
-    public static int redHueMin = 1;
-    public static int redHueMax = 10;
-    public static int redSatBrightMin = 50;
+    public static int redHueMin = 160;
+    public static int redHueMax = 180;
+    public static int redSatBrightMin = 60;
     public static int redSatBrightMax = 255;
     
     // -----------------
@@ -50,9 +50,9 @@ public class PropDetection implements VisionProcessor {
     public static final int REGION_WIDTH = SCREEN_WIDTH / 3;
     public static final int REGION_HEIGHT = SCREEN_HEIGHT - 275;
     
-    public static final Point REGION1_TOPLEFT_ANCHOR = new Point(0, 275);
-    public static final Point REGION2_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 3, 275);
-    public static final Point REGION3_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 1.5, 275);
+    public static final Point REGION1_TOPLEFT_ANCHOR = new Point(0, 0);
+    public static final Point REGION2_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 3, 0);
+    public static final Point REGION3_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 1.5, 0);
     
     public static final Point region1_A = new Point(
             REGION1_TOPLEFT_ANCHOR.x,
@@ -121,7 +121,7 @@ public class PropDetection implements VisionProcessor {
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         // Update Color Ranges (for Dashboard)
-        // updateColorRange();
+        updateColorRange();
         
         // Rotate Frame
         Core.rotate(frame, frame, Core.ROTATE_180);

@@ -16,7 +16,7 @@ import java.util.List;
 public class ABPSThread extends Thread {
     // --- Constants ---
     
-    public static double desiredDistance = 12;
+    public static double desiredDistance = 15.5;
     public static double desiredDistancePDOffset = -11;
     public static double strafeGain = 0.0025;
     public static double turnGain = 0.008;
@@ -42,7 +42,8 @@ public class ABPSThread extends Thread {
         
         op.camera.enableAprilTag();
         
-        op.arm.gotToBackboardPosition();
+        op.arm.goToBackboardPosition();
+        op.arm.armPos = 700;
         
         op.movements.desiredAngle = op.abps.state == ABPSState.LEFT ? 90d : -90d;
         
@@ -58,7 +59,7 @@ public class ABPSThread extends Thread {
         while (op.abps.state != ABPSState.STOPPED) {
             List<AprilTagDetection> detections = op.camera.processor.getDetections();
             
-            if (detections.size() == 0) op.movements.setPowers(op.wheels, 0, 0, 0);
+            if (detections.size() == 0) {op.movements.setPowers(op.wheels, 0, 0, 0);continue;}
             
             AprilTagDetection bestDetection = null;
             
@@ -82,7 +83,7 @@ public class ABPSThread extends Thread {
                 }
             }
             
-            if (bestDetection == null) op.movements.setPowers(op.wheels, 0, 0, 0);
+            if (bestDetection == null) {op.movements.setPowers(op.wheels, 0, 0, 0);continue;}
             
             AprilTagPoseFtc pose = bestDetection.ftcPose;
             
@@ -107,6 +108,8 @@ public class ABPSThread extends Thread {
             
             op.movements.setPowers(op.wheels, forwardPower, strafePower, turnPower);
         }
+
+        op.arm.goToBackboardPosition();
         
         op.movements.setPowers(op.wheels, 0, 0, 0);
         
