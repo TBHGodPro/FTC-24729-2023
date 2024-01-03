@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.modules.Wheels.WheelTarget;
 
 public class PushToLeft extends ActionGroup {
     public static final Action[] actionsStraight = {
-            new MultiMoveAction(650, -600, 1200),
+            new MultiMoveAction(650, -450, 1200),
     };
     
     public static final Action[] actionsAround = {
