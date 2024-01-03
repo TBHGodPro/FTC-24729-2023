@@ -23,9 +23,17 @@ public class BlueWing extends AutoOp {
     @Override
     public void runOP() {
         sleep(1000);
-        
+
+        arm.armPos = 850;
+
+        awaitFrame();
+
+        activeSleep(2000);
+
         PossiblePropPosition position = getCamera().prop.position;
         getCamera().disablePropDetection();
+
+        arm.armPos = 150;
         
         Action[] actions;
         
