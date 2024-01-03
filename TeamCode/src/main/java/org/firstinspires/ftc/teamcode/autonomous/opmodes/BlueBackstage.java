@@ -86,10 +86,12 @@ class BlueBackstagePaths {
     
     public static final Action[] CENTER = {
             new PushToCenter(SidewaysDirection.LEFT),
-            new MoveAction(Direction.BACKWARD, 250, 125),
-            new MultiMoveAction(200, -800, 500),
+            new MoveAction(Direction.BACKWARD, 250, 250),
+            new MultiMoveAction(100, -300, 500),
+            new TurnAction(-90),
+            new MoveAction(Direction.FORWARD, 650, 550),
             new ABPSPushAction(SidewaysDirection.LEFT),
-            new MultiMoveAction(-250, -850, 650),
+            new MultiMoveAction(-250, -675, 650),
             new TurnAction(90)
     };
     
