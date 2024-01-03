@@ -97,9 +97,11 @@ class BlueBackstagePaths {
     
     public static final Action[] RIGHT = {
             new PushToRight(PushPresetPath.AROUND),
-            new MultiMoveAction(-400, -100, 350),
+            new MoveAction(Direction.BACKWARD, 400, 500),
+            new TurnAction(-180),
+            new MultiMoveAction(750, 200, 1100),
             new ABPSPushAction(SidewaysDirection.LEFT),
-            new MultiMoveAction(-350, -1050, 650),
+            new MultiMoveAction(-250, -900, 950),
             new TurnAction(90)
     };
 }

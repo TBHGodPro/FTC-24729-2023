@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.autonomous.movements.presets;
 
+import org.firstinspires.ftc.teamcode.Utils.Direction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.Action;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.ActionGroup;
+import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.TurnAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WheelPositionAction;
@@ -14,8 +16,9 @@ public class PushToRight extends ActionGroup {
     
     public static final Action[] actionsAround = {
             new MultiMoveAction(575, -200, 750),
-            new WheelPositionAction(new WheelTarget(1050, -350, 1050, -350, 550)),
-            new TurnAction(90)
+            new WheelPositionAction(new WheelTarget(950, -450, 950, -450, 950)),
+            new TurnAction(90),
+            //new MoveAction(Direction.FORWARD, 150, 300)
     };
     
     public PushToRight(PushPresetPath path) {
