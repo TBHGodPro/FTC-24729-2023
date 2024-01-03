@@ -28,20 +28,19 @@ public class ArmController extends BaseModule {
     
     public static double wristPosInterval = 0.01;
     
-    public static double wristMinRange = 0.25;
-    public static double wristMaxRange = 1;
-    
     public static double wristAngleCorrectionCoeff = 2500;
     
-    public static double handOpenPos = 0.65;
-    public static double handClosedPos = 1;
+    public static double handFrontOpenPos = 0.85;
+    public static double handFrontClosedPos = 0.6;
+    public static double handBackOpenPos = 0.65;
+    public static double handBackClosedPos = 0.825;
     
     // - Intake Position
-    public static int armIntakePosManual = 175;
-    public static int armIntakePosAutonomous = 175;
+    public static int armIntakePosManual = 220;
+    public static int armIntakePosAutonomous = 220;
     public int armIntakePos;
     public final boolean shouldOpenHandAtIntake;
-    public double wristIntakePos = 0.4;
+    public double wristIntakePos = 0.55;
     
     // - Backboard Position
     
@@ -57,10 +56,6 @@ public class ArmController extends BaseModule {
     public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
     public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;
     
-    public static final Servo.Direction wristDirection = Servo.Direction.REVERSE;
-    
-    public static final Servo.Direction handDirection = Servo.Direction.FORWARD;
-    
     // -----------------
     
     public final boolean isAutonomous;
@@ -69,14 +64,17 @@ public class ArmController extends BaseModule {
     public final DcMotorEx arm;
     public final ArmPowerController armPower;
     
-    public final Servo wrist;
-    public final Servo hand;
+    public final Servo wristLeft;
+    public final Servo wristRight;
+    
+    public final Servo handFront;
+    public final Servo handBack;
     
     public int armPos = 0;
     public double wristPos = 1;
     public boolean isHandClosed = false;
     
-    public ArmController(MainOp op, boolean isAutonomous, Gamepad gamepad, DcMotorEx arm, Servo wrist, Servo hand) {
+    public ArmController(MainOp op, boolean isAutonomous, Gamepad gamepad, DcMotorEx arm, Servo wristLeft, Servo wristRight, Servo handFront, Servo handBack) {
         super(op);
         
         this.isAutonomous = isAutonomous;
@@ -87,8 +85,11 @@ public class ArmController extends BaseModule {
         this.armPower = new ArmPowerController(0);
         this.armPower.setTarget(0, armPos);
         
-        this.wrist = wrist;
-        this.hand = hand;
+        this.wristLeft = wristLeft;
+        this.wristRight = wristRight;
+        
+        this.handFront = handFront;
+        this.handBack = handBack;
         
         this.shouldOpenHandAtIntake = !isAutonomous;
         this.armIntakePos = isAutonomous ? armIntakePosAutonomous : armIntakePosManual;
@@ -101,10 +102,11 @@ public class ArmController extends BaseModule {
         arm.setZeroPowerBehavior(armZeroPowerBehavior);
         arm.setMode(RunMode.STOP_AND_RESET_ENCODER);
         
-        wrist.setDirection(wristDirection);
-        wrist.scaleRange(wristMinRange, wristMaxRange);
+        wristLeft.setDirection(Servo.Direction.FORWARD);
+        wristRight.setDirection(Servo.Direction.REVERSE);
         
-        hand.setDirection(handDirection);
+        handFront.setDirection(Servo.Direction.REVERSE);
+        handBack.setDirection(Servo.Direction.FORWARD);
     }
     
     @Override
@@ -148,8 +150,10 @@ public class ArmController extends BaseModule {
         }
         
         wristPos = Math.max(Math.min(wristPos, 2), -1);
+        double parsedWristPos = Math.max(Math.min(wristPos - (armPos / wristAngleCorrectionCoeff), 1), 0);
         
-        wrist.setPosition(Math.max(Math.min(wristPos - (armPos / wristAngleCorrectionCoeff), 1), 0));
+        wristLeft.setPosition(parsedWristPos);
+        wristRight.setPosition(parsedWristPos);
         
         // Hand Control
         if (gamepad.x) {
@@ -159,7 +163,8 @@ public class ArmController extends BaseModule {
             isHandClosed = false;
         }
         
-        hand.setPosition(isHandClosed ? handClosedPos : handOpenPos);
+        handFront.setPosition(isHandClosed ? handFrontClosedPos : handFrontOpenPos);
+        handBack.setPosition(isHandClosed ? handBackClosedPos : handBackOpenPos);
         
         // Intake Position
         if (gamepad.b) {
