@@ -73,9 +73,13 @@ public class ArmPowerController {
         
         power += pid.calculate(current, target);
         
-        power += Math.sin(convertPosToRadians(target)) * kF;
+        power += getFeedForward(target);
         
         return power;
+    }
+    
+    public double getFeedForward(double pos) {
+        return Math.sin(convertPosToRadians(pos)) * kF;
     }
     
     public double convertPosToRadians(double pos) {

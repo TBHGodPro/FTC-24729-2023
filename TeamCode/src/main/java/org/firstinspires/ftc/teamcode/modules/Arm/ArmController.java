@@ -132,6 +132,7 @@ public class ArmController extends BaseModule {
             else armPower *= armManualPower;
             
             armPos = arm.getCurrentPosition();
+            armPower += this.armPower.getFeedForward(armPos);
         } else {
             this.armPower.setTarget(arm.getCurrentPosition(), armPos);
             
@@ -281,7 +282,7 @@ public class ArmController extends BaseModule {
         telemetry.addData("Arm Current Pos", arm.getCurrentPosition());
         telemetry.addData("Arm Power", arm.getPower() * 100);
         telemetry.addData("At Position", isAtPosition());
-        telemetry.addData("Arm Profile Pos", armPower.target != null ? armPower.target : -500);
+        telemetry.addData("Arm Profile Pos", armPower.target != null ? armPower.target : -1);
         telemetry.addData("Arm Profile Timer", armPower.timer.time());
     }
 }

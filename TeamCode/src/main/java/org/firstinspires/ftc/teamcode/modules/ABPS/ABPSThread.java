@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.controller.PDController;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MainOp;
+import org.firstinspires.ftc.teamcode.Utils.Alliance;
 import org.firstinspires.ftc.teamcode.modules.ABPS.ABPSController.ABPSState;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
@@ -57,7 +58,7 @@ public class ABPSThread extends Thread {
         while (op.abps.state != ABPSState.STOPPED) {
             List<AprilTagDetection> detections = op.camera.processor.getDetections();
             
-            if (detections.size() == 0) continue;
+            if (detections.size() == 0) op.movements.setPowers(op.wheels, 0, 0, 0);
             
             AprilTagDetection bestDetection = null;
             
@@ -66,24 +67,33 @@ public class ABPSThread extends Thread {
                 
                 if (bestDetection == null) bestDetection = detection;
                 
-                if (detection.id == 1) bestDetection = detection;
-                else if (detection.id == 2 && bestDetection.id != 1) bestDetection = detection;
-                else if (detection.id == 3 && bestDetection.id != 1 && bestDetection.id != 2)
-                    bestDetection = detection;
+                //  Blue
+                if (op.getAlliance() == Alliance.BLUE) {
+                    if (detection.id == 2) bestDetection = detection;
+                    else if (detection.id == 3 && bestDetection.id != 2) bestDetection = detection;
+                    else if (detection.id == 1 && bestDetection.id != 3 && bestDetection.id != 2)
+                        bestDetection = detection;
+                } else {
+                    // Red
+                    if (detection.id == 5) bestDetection = detection;
+                    else if (detection.id == 6 && bestDetection.id != 5) bestDetection = detection;
+                    else if (detection.id == 4 && bestDetection.id != 6 && bestDetection.id != 5)
+                        bestDetection = detection;
+                }
             }
             
-            if (bestDetection == null) continue;
+            if (bestDetection == null) op.movements.setPowers(op.wheels, 0, 0, 0);
             
             AprilTagPoseFtc pose = bestDetection.ftcPose;
             
             double trueYaw = 0;
             
-            if (bestDetection.id == 1) {
+            if (bestDetection.id == 1 || bestDetection.id == 4) {
+                trueYaw = pose.yaw - 2.5;
+            } else if (bestDetection.id == 2 || bestDetection.id == 5) {
                 trueYaw = pose.yaw;
-            } else if (bestDetection.id == 2) {
+            } else if (bestDetection.id == 3 || bestDetection.id == 6) {
                 trueYaw = pose.yaw + 2.5;
-            } else if (bestDetection.id == 3) {
-                trueYaw = pose.yaw + 5;
             }
             
             double strafePower = (-trueYaw) * dynamicStrafeGain;
@@ -97,6 +107,8 @@ public class ABPSThread extends Thread {
             
             op.movements.setPowers(op.wheels, forwardPower, strafePower, turnPower);
         }
+        
+        op.movements.setPowers(op.wheels, 0, 0, 0);
         
         op.camera.disableAprilTag();
         
