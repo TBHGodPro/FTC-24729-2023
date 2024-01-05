@@ -3,11 +3,17 @@ package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Utils.Alliance;
+import org.firstinspires.ftc.teamcode.Utils.Direction;
 import org.firstinspires.ftc.teamcode.Utils.PossiblePropPosition;
 import org.firstinspires.ftc.teamcode.Utils.SidewaysDirection;
 import org.firstinspires.ftc.teamcode.autonomous.AutoOp;
 import org.firstinspires.ftc.teamcode.autonomous.movements.MovementHandler;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.Action;
+import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MoveAction;
+import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveAction;
+import org.firstinspires.ftc.teamcode.autonomous.movements.actions.TurnAction;
+import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WaitAction;
+import org.firstinspires.ftc.teamcode.autonomous.movements.presets.ABPSPushAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushPresetPath;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToCenter;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToLeft;
@@ -67,13 +73,41 @@ public class BlueWing extends AutoOp {
 class BlueWingPaths {
     public static final Action[] LEFT = {
             new PushToLeft(PushPresetPath.AROUND),
+            new MoveAction(Direction.BACKWARD, 150, 320),
+            new TurnAction(90),
+            new MultiMoveAction(865, -100, 1500),
+            new TurnAction(-90),
+            new WaitAction(7_000),
+            new MoveAction(Direction.FORWARD, 2175, 2500),
+            new MultiMoveAction(50, -980, 1800),
+            new ABPSPushAction(SidewaysDirection.LEFT),
+            new MultiMoveAction(-200, 1000, 400),
+            new TurnAction(90)
     };
-    
+
     public static final Action[] CENTER = {
-            new PushToCenter(SidewaysDirection.RIGHT),
+            new PushToCenter(SidewaysDirection.LEFT),
+            new MultiMoveAction(-100, 700, 900),
+            new MoveAction(Direction.FORWARD,800, 1000),
+            new TurnAction(-90),
+            new WaitAction(6_000),
+            new MoveAction(Direction.FORWARD, 2800, 3000),
+            new MultiMoveAction(50, -830, 1000),
+            new ABPSPushAction(SidewaysDirection.LEFT),
+            new MultiMoveAction(-200, 800, 350),
+            new TurnAction(90)
     };
-    
+
     public static final Action[] RIGHT = {
             new PushToRight(PushPresetPath.STRAIGHT),
+            new MultiMoveAction(-200, -500, 800),
+            new MoveAction(Direction.FORWARD, 1100, 1200),
+            new TurnAction(-90),
+            new WaitAction(7_500),
+            new MoveAction(Direction.FORWARD, 2250, 2500),
+            new MultiMoveAction(150, -625, 1000),
+            new ABPSPushAction(SidewaysDirection.LEFT),
+            new MultiMoveAction(-200, 550, 300),
+            new TurnAction(90)
     };
 }

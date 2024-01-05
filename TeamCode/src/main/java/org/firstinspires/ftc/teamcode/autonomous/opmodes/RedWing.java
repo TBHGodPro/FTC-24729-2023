@@ -75,14 +75,14 @@ public class RedWing extends AutoOp {
 class RedWingPaths {
     public static final Action[] LEFT = {
             new PushToLeft(PushPresetPath.STRAIGHT),
-            new MultiMoveAction(-200, 500, 800),
+            new MultiMoveAction(-200, -500, 800),
             new MoveAction(Direction.FORWARD, 1100, 1200),
             new TurnAction(90),
             new WaitAction(7_500),
-            new MoveAction(Direction.FORWARD, 2250, 2500),
-            new MultiMoveAction(150, 625, 1000),
+            new MoveAction(Direction.FORWARD, 2950, 3500),
+            new MultiMoveAction(150, 600, 1000),
             new ABPSPushAction(SidewaysDirection.RIGHT),
-            new MultiMoveAction(-200, -550, 300),
+            new MultiMoveAction(-200, -450, 300),
             new TurnAction(-90)
     };
     
