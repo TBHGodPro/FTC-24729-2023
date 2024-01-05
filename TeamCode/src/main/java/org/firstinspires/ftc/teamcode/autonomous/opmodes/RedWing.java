@@ -78,8 +78,8 @@ class RedWingPaths {
             new MultiMoveAction(-200, 500, 800),
             new MoveAction(Direction.FORWARD, 1100, 1200),
             new TurnAction(90),
-            new WaitAction(8_500),
-            new MoveAction(Direction.FORWARD, 1500, 1500),
+            new WaitAction(7_500),
+            new MoveAction(Direction.FORWARD, 2250, 2500),
             new MultiMoveAction(150, 625, 1000),
             new ABPSPushAction(SidewaysDirection.RIGHT),
             new MultiMoveAction(-200, -550, 600),
@@ -91,8 +91,8 @@ class RedWingPaths {
             new MultiMoveAction(-100, -700, 900),
             new MoveAction(Direction.FORWARD,800, 1000),
             new TurnAction(90),
-            new WaitAction(7_000),
-            new MoveAction(Direction.FORWARD, 2150, 2000),
+            new WaitAction(6_000),
+            new MoveAction(Direction.FORWARD, 2900, 3000),
             new MultiMoveAction(150, 830, 1000),
             new ABPSPushAction(SidewaysDirection.RIGHT),
             new MultiMoveAction(-200, -800, 850),
@@ -101,15 +101,15 @@ class RedWingPaths {
     
     public static final Action[] RIGHT = {
             new PushToRight(PushPresetPath.AROUND),
-            new MoveAction(Direction.BACKWARD, 75, 120),
+            new MoveAction(Direction.BACKWARD, 150, 320),
             new TurnAction(-90),
-            new MultiMoveAction(850, 50, 1400),
+            new MultiMoveAction(865, 100, 1500),
             new TurnAction(90),
-            new WaitAction(9_000),
-            new MoveAction(Direction.FORWARD, 1500, 1500),
-            new MultiMoveAction(150, 1075, 1400),
+            new WaitAction(7_000),
+            new MoveAction(Direction.FORWARD, 2250, 2500),
+            new MultiMoveAction(150, 980, 1800),
             new ABPSPushAction(SidewaysDirection.RIGHT),
-            new MultiMoveAction(-200, -1000, 1000),
+            new MultiMoveAction(-200, -1000, 400),
             new TurnAction(-90)
     };
 }

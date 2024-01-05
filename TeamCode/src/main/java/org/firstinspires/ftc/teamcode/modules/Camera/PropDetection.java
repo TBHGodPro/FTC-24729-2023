@@ -27,9 +27,11 @@ public class PropDetection implements VisionProcessor {
     public static int blueHueMax = 120;
     public static int blueSatBrightMin = 0;
     public static int blueSatBrightMax = 255;
-    
-    public static int redHueMin = 160;
-    public static int redHueMax = 180;
+
+    public static int redHueLowMin = 0;
+    public static int redHueLowMax = 15;
+    public static int redHueHighMin = 165;
+    public static int redHueHighMax = 180;
     public static int redSatBrightMin = 60;
     public static int redSatBrightMax = 255;
     
@@ -79,11 +81,15 @@ public class PropDetection implements VisionProcessor {
     public Mat binaryMat = new Mat();
     
     public Mat region1_mat, region2_mat, region3_mat;
-    
+
     // Colors
-    
-    public Scalar lower;
-    public Scalar upper;
+    public Scalar blueLow;
+    public Scalar blueHigh;
+
+    public Scalar redLowLow;
+    public Scalar redLowHigh;
+    public Scalar redHighLow;
+    public Scalar redHighHigh;
     
     // Store Position
     
@@ -91,23 +97,26 @@ public class PropDetection implements VisionProcessor {
     
     public PropDetection(Alliance alliance) {
         this.alliance = alliance;
-        
-        updateColorRange();
+
+        updateColors();
     }
-    
-    public void updateColorRange() {
+
+    public void updateColors() {
         switch (alliance) {
             case RED: {
-                lower = new Scalar(redHueMin, redSatBrightMin, redSatBrightMin);
-                upper = new Scalar(redHueMax, redSatBrightMax, redSatBrightMax);
-                
+                redLowLow = new Scalar(redHueLowMin, redSatBrightMin, redSatBrightMin);
+                redLowHigh = new Scalar(redHueLowMax, redSatBrightMax, redSatBrightMax);
+
+                redHighLow = new Scalar(redHueHighMin, redSatBrightMin, redSatBrightMin);
+                redHighHigh = new Scalar(redHueHighMax, redSatBrightMax, redSatBrightMax);
+
                 break;
             }
-            
+
             case BLUE: {
-                lower = new Scalar(blueHueMin, blueSatBrightMin, blueSatBrightMin);
-                upper = new Scalar(blueHueMax, blueSatBrightMax, blueSatBrightMax);
-                
+                blueLow = new Scalar(blueHueMin, blueSatBrightMin, blueSatBrightMin);
+                blueHigh = new Scalar(blueHueMax, blueSatBrightMax, blueSatBrightMax);
+
                 break;
             }
         }
@@ -116,21 +125,41 @@ public class PropDetection implements VisionProcessor {
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
         // Code executed on the first frame dispatched into this VisionProcessor
+
+        updateColors();
     }
     
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
-        // Update Color Ranges (for Dashboard)
-        updateColorRange();
-        
+        // Update Colors
+        updateColors();
+
         // Rotate Frame
         Core.rotate(frame, frame, Core.ROTATE_180);
         
         // Image Conversion
         
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
-        
-        Core.inRange(hsvMat, lower, upper, binaryMat);
+
+        switch (alliance) {
+            case RED: {
+                Mat lowMat = new Mat();
+                Core.inRange(hsvMat, redLowLow, redLowHigh, lowMat);
+
+                Mat highMat = new Mat();
+                Core.inRange(hsvMat, redHighLow, redHighHigh, highMat);
+
+                Core.bitwise_or(lowMat, highMat, binaryMat);
+
+                break;
+            }
+
+            case BLUE: {
+                Core.inRange(hsvMat, blueLow, blueHigh, binaryMat);
+
+                break;
+            }
+        }
         
         if (shouldDisplayBinaryImage) {
             binaryMat.copyTo(frame);
@@ -179,17 +208,10 @@ public class PropDetection implements VisionProcessor {
         // - Find Best Average
         
         int found;
-        
-        if (alliance == Alliance.RED) {
-            // - Code run on Red Prop
-            int avgOneTwo = Math.max(avg1, avg2);
-            found = Math.max(avgOneTwo, avg3);
-        } else {
-            // - Code run on Blue Prop
-            int avgOneTwo = Math.max(avg1, avg2);
-            found = Math.max(avgOneTwo, avg3);
-        }
-        
+
+        int avgOneTwo = Math.max(avg1, avg2);
+        found = Math.max(avgOneTwo, avg3);
+
         // Display and Record Findings
         
         if (found == avg1) {

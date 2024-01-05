@@ -16,11 +16,11 @@ public class ArmPowerController {
     public static double kP = 0.006;
     public static double kI = 0.002;
     public static double kD = 0.0002;
-    public static double kF = 0.032;
+    public static double kF = 0.08;
     
-    public static double velo = 2000;
-    public static double accel = 6000;
-    public static double decel = 1500;
+    public static double velo = 1000;
+    public static double accel = 2500;
+    public static double decel = 1000;
     
     // -----------------
     
