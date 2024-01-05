@@ -82,7 +82,7 @@ class RedWingPaths {
             new MoveAction(Direction.FORWARD, 2250, 2500),
             new MultiMoveAction(150, 625, 1000),
             new ABPSPushAction(SidewaysDirection.RIGHT),
-            new MultiMoveAction(-200, -550, 600),
+            new MultiMoveAction(-200, -550, 300),
             new TurnAction(-90)
     };
     

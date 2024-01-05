@@ -45,7 +45,7 @@ public class ArmController extends BaseModule {
     // - Backboard Position
     
     public static int armBackboardPosManual = 510;
-    public static int armBackboardPosAutonomous = 380;
+    public static int armBackboardPosAutonomous = 300;
     public int armBackboardPos;
     public double wristBackboardPos = 0.77;
     
