@@ -92,10 +92,10 @@ class RedWingPaths {
             new MoveAction(Direction.FORWARD,800, 1000),
             new TurnAction(90),
             new WaitAction(6_000),
-            new MoveAction(Direction.FORWARD, 2900, 3000),
-            new MultiMoveAction(150, 830, 1000),
+            new MoveAction(Direction.FORWARD, 2800, 3000),
+            new MultiMoveAction(50, 830, 1000),
             new ABPSPushAction(SidewaysDirection.RIGHT),
-            new MultiMoveAction(-200, -800, 850),
+            new MultiMoveAction(-200, -800, 350),
             new TurnAction(-90)
     };
     
@@ -106,8 +106,8 @@ class RedWingPaths {
             new MultiMoveAction(865, 100, 1500),
             new TurnAction(90),
             new WaitAction(7_000),
-            new MoveAction(Direction.FORWARD, 2250, 2500),
-            new MultiMoveAction(150, 980, 1800),
+            new MoveAction(Direction.FORWARD, 2175, 2500),
+            new MultiMoveAction(50, 980, 1800),
             new ABPSPushAction(SidewaysDirection.RIGHT),
             new MultiMoveAction(-200, -1000, 400),
             new TurnAction(-90)

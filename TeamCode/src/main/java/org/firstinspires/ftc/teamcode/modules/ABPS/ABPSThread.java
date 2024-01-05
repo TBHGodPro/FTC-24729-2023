@@ -114,6 +114,8 @@ public class ABPSThread extends Thread {
         op.movements.setPowers(op.wheels, 0, 0, 0);
         
         op.camera.disableAprilTag();
+
+        pause(500);
         
         if (op.abps.state != ABPSState.STOPPED && op.abps.shouldOpenWristWhenDone) {
             op.arm.isHandClosed = false;
@@ -128,6 +130,14 @@ public class ABPSThread extends Thread {
         if (Thread.currentThread().isInterrupted()) return;
         try {
             Thread.sleep(5);
+        } catch (InterruptedException exc) {
+            Thread.currentThread().interrupt();
+        }
+    }
+    private void pause(int milliseconds) {
+        if (Thread.currentThread().isInterrupted()) return;
+        try {
+            Thread.sleep(milliseconds);
         } catch (InterruptedException exc) {
             Thread.currentThread().interrupt();
         }
