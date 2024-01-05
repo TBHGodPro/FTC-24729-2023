@@ -115,7 +115,7 @@ public class ABPSThread extends Thread {
         
         op.camera.disableAprilTag();
 
-        pause(500);
+        pause(800);
         
         if (op.abps.state != ABPSState.STOPPED && op.abps.shouldOpenWristWhenDone) {
             op.arm.isHandClosed = false;
