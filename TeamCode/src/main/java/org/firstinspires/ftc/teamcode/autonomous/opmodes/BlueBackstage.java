@@ -76,11 +76,11 @@ public class BlueBackstage extends AutoOp {
 class BlueBackstagePaths {
     public static final Action[] LEFT = {
             new PushToLeft(PushPresetPath.STRAIGHT),
-            new MultiMoveAction(-250, -550, 500),
+            new MultiMoveAction(-250, -550, 1200),
             new TurnAction(-90),
-            new MultiMoveAction(450, 300, 600),
+            new MultiMoveAction(450, 300, 1000),
             new ABPSPushAction(SidewaysDirection.LEFT),
-            new MultiMoveAction(-200, -550, 600),
+            new MultiMoveAction(-200, -550, 900),
             new TurnAction(90)
     };
     
@@ -99,9 +99,9 @@ class BlueBackstagePaths {
             new PushToRight(PushPresetPath.AROUND),
             new MoveAction(Direction.BACKWARD, 400, 500),
             new TurnAction(-180),
-            new MultiMoveAction(750, 200, 1100),
+            new MultiMoveAction(750, 250, 1400),
             new ABPSPushAction(SidewaysDirection.LEFT),
-            new MultiMoveAction(-250, -900, 950),
+            new MultiMoveAction(-250, -800, 950),
             new TurnAction(90)
     };
 }

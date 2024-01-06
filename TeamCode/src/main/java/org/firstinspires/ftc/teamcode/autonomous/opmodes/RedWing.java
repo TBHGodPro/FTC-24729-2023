@@ -76,7 +76,7 @@ class RedWingPaths {
     public static final Action[] LEFT = {
             new PushToLeft(PushPresetPath.STRAIGHT),
             new MultiMoveAction(-200, -500, 800),
-            new MoveAction(Direction.FORWARD, 1100, 1200),
+            new MoveAction(Direction.FORWARD, 1050, 1200),
             new TurnAction(90),
             new WaitAction(7_500),
             new MoveAction(Direction.FORWARD, 2950, 3500),
@@ -89,7 +89,7 @@ class RedWingPaths {
     public static final Action[] CENTER = {
             new PushToCenter(SidewaysDirection.LEFT),
             new MultiMoveAction(-100, -700, 900),
-            new MoveAction(Direction.FORWARD,800, 1000),
+            new MoveAction(Direction.FORWARD,750, 1000),
             new TurnAction(90),
             new WaitAction(6_000),
             new MoveAction(Direction.FORWARD, 2800, 3000),
@@ -103,7 +103,7 @@ class RedWingPaths {
             new PushToRight(PushPresetPath.AROUND),
             new MoveAction(Direction.BACKWARD, 150, 320),
             new TurnAction(-90),
-            new MultiMoveAction(865, 100, 1500),
+            new MultiMoveAction(815, 100, 1500),
             new TurnAction(90),
             new WaitAction(7_000),
             new MoveAction(Direction.FORWARD, 2175, 2500),

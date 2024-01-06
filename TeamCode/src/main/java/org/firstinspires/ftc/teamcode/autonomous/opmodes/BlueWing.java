@@ -75,7 +75,7 @@ class BlueWingPaths {
             new PushToLeft(PushPresetPath.AROUND),
             new MoveAction(Direction.BACKWARD, 150, 320),
             new TurnAction(90),
-            new MultiMoveAction(865, -100, 1500),
+            new MultiMoveAction(775, -100, 1500),
             new TurnAction(-90),
             new WaitAction(7_000),
             new MoveAction(Direction.FORWARD, 2175, 2500),
@@ -86,9 +86,9 @@ class BlueWingPaths {
     };
 
     public static final Action[] CENTER = {
-            new PushToCenter(SidewaysDirection.LEFT),
+            new PushToCenter(SidewaysDirection.RIGHT),
             new MultiMoveAction(-100, 700, 900),
-            new MoveAction(Direction.FORWARD,800, 1000),
+            new MoveAction(Direction.FORWARD,700, 1000),
             new TurnAction(-90),
             new WaitAction(6_000),
             new MoveAction(Direction.FORWARD, 2800, 3000),
@@ -100,11 +100,11 @@ class BlueWingPaths {
 
     public static final Action[] RIGHT = {
             new PushToRight(PushPresetPath.STRAIGHT),
-            new MultiMoveAction(-200, -500, 800),
-            new MoveAction(Direction.FORWARD, 1100, 1200),
+            new MultiMoveAction(-200, 400, 800),
+            new MoveAction(Direction.FORWARD, 1000, 1200),
             new TurnAction(-90),
             new WaitAction(7_500),
-            new MoveAction(Direction.FORWARD, 2250, 2500),
+            new MoveAction(Direction.FORWARD, 2950, 3500),
             new MultiMoveAction(150, -625, 1000),
             new ABPSPushAction(SidewaysDirection.LEFT),
             new MultiMoveAction(-200, 550, 300),

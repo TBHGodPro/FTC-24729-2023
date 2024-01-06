@@ -80,9 +80,9 @@ class RedBackstagePaths {
             new PushToLeft(PushPresetPath.AROUND),
             new MoveAction(Direction.BACKWARD, 400, 500),
             new TurnAction(180),
-            new MultiMoveAction(750, -200, 1100),
+            new MultiMoveAction(750, -250, 1100),
             new ABPSPushAction(SidewaysDirection.RIGHT),
-            new MultiMoveAction(-250, 975, 950),
+            new MultiMoveAction(-250, 875, 950),
             new TurnAction(-90)
     };
     

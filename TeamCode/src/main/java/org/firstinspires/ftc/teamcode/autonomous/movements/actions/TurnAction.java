@@ -14,7 +14,7 @@ public class TurnAction extends Action {
     public void execute(AutoOp op) {
         op.movements.desiredAngle -= degrees;
         
-        while (Math.round(op.movements.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) / 10) != Math.round(op.movements.desiredAngle / 10))
+        while (Math.round(op.movements.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) / 5) != Math.round(op.movements.desiredAngle / 5))
             op.awaitFrame();
     }
 }

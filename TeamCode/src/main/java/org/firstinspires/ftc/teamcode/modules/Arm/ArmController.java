@@ -31,23 +31,23 @@ public class ArmController extends BaseModule {
     public static double wristAngleCorrectionCoeff = 3100;
     
     public static double handFrontOpenPos = 0.85;
-    public static double handFrontClosedPos = 0.63;
+    public static double handFrontClosedPos = 0.61;
     public static double handBackOpenPos = 0.65;
-    public static double handBackClosedPos = 0.87;
+    public static double handBackClosedPos = 0.89;
     
     // - Intake Position
-    public static int armIntakePosManual = 190;
-    public static int armIntakePosAutonomous = 190;
+    public static int armIntakePosManual = 170;
+    public static int armIntakePosAutonomous = 170;
     public int armIntakePos;
     public final boolean shouldOpenHandAtIntake;
-    public double wristIntakePos = 0.48;
+    public double wristIntakePos = 0.5;
     
     // - Backboard Position
     
     public static int armBackboardPosManual = 510;
     public static int armBackboardPosAutonomous = 270;
     public int armBackboardPos;
-    public double wristBackboardPos = 0.73;
+    public double wristBackboardPos = 0.75;
     
     // - Overhead Position
     public int armOverheadPos = 1950;

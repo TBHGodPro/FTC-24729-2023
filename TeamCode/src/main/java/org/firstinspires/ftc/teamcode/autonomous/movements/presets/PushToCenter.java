@@ -11,7 +11,7 @@ public class PushToCenter extends ActionGroup {
     };
     
     public static final Action[] actionsStrafeRight = {
-            new MultiMoveAction(910, 200, 1200),
+            new MultiMoveAction(910, 100, 1200),
     };
     
     public PushToCenter(SidewaysDirection sidewaysDirection) {

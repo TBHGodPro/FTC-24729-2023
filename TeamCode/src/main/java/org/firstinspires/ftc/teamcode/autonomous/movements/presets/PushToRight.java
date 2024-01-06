@@ -15,7 +15,7 @@ public class PushToRight extends ActionGroup {
     };
     
     public static final Action[] actionsAround = {
-            new MultiMoveAction(575, -200, 750),
+            new MultiMoveAction(615, -200, 750),
             new WheelPositionAction(new WheelTarget(950, -450, 950, -450, 950)),
             new TurnAction(90),
             //new MoveAction(Direction.FORWARD, 150, 300)

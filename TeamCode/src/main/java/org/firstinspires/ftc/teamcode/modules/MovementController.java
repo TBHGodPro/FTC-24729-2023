@@ -23,13 +23,11 @@ public class MovementController extends BaseModule {
     
     public static double turningNonLinearity = 1.75; // 1 = linear
     
-    public static double steeringCounterCoeff = 30; // Lower = more power
-    
     public static double dpad_power = 0.3;
     
     public static double yawKP = 0.04;
-    public static double yawKI = 0.0;
-    public static double yawKD = 0.004;
+    public static double yawKI = 0.1;
+    public static double yawKD = 0.0038;
     
     // -----------------
     
