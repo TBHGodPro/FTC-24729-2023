@@ -1,3 +1,8 @@
+public class MovementHandler {
+  public static void main(String[] args) {
+  }
+}
+
 package org.firstinspires.ftc.teamcode.autonomous.movements;
 
 import org.firstinspires.ftc.teamcode.autonomous.AutoOp;
