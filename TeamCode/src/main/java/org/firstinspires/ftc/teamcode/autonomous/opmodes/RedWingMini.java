@@ -77,5 +77,3 @@ class RedWingMiniPaths {
             new PushToRight(PushPresetPath.AROUND),
     };
 }
-
-init.overview/waitaction
