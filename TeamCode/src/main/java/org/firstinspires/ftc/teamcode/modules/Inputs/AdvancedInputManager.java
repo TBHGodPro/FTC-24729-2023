@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 public class AdvancedInputManager extends InputManager {
     public boolean lastLeftBumper = false;
     public boolean lastRightBumper = false;
+    public boolean lastX = false;
     
     @Override
     public void update(Gamepad gamepad) {
@@ -13,24 +14,41 @@ public class AdvancedInputManager extends InputManager {
         armOverheadPosition = gamepad.y;
         
         boolean leftHandState;
-        if (gamepad.left_bumper || gamepad.x) {
+        if (gamepad.left_bumper) {
             leftHandState = lastLeftBumper == false ? leftHandOpen : leftHandClosed;
             lastLeftBumper = true;
         } else {
             leftHandState = leftHandClosed;
             lastLeftBumper = false;
         }
-        leftHandClosed = leftHandState;
-        leftHandOpen = !leftHandState;
         
         boolean rightHandState;
-        if (gamepad.right_bumper || gamepad.x) {
+        if (gamepad.right_bumper) {
             rightHandState = lastRightBumper == false ? rightHandOpen : rightHandClosed;
             lastRightBumper = true;
         } else {
             rightHandState = rightHandClosed;
             lastRightBumper = false;
         }
+        
+        if (gamepad.x) {
+            if (lastX == false) {
+                if (rightHandState == leftHandState) {
+                    rightHandState = !rightHandState;
+                    leftHandState = !leftHandState;
+                } else {
+                    rightHandState = true;
+                    leftHandState = true;
+                }
+            }
+            
+            lastX = true;
+        } else {
+            lastX = false;
+        }
+        
+        leftHandClosed = leftHandState;
+        leftHandOpen = !leftHandState;
         rightHandClosed = rightHandState;
         rightHandOpen = !rightHandState;
         

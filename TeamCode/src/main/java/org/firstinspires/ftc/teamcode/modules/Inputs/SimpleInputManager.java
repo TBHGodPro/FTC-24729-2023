@@ -25,7 +25,6 @@ public class SimpleInputManager extends InputManager {
             rightHandOpen = true;
         }
         
-        
         forward = -gamepad.left_stick_y;
         strafe = gamepad.left_stick_x;
         turn = gamepad.right_stick_x;
