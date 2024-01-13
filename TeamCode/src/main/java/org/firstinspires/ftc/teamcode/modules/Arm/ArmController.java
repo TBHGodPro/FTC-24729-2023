@@ -30,28 +30,28 @@ public class ArmController extends BaseModule {
     
     public static double wristAngleCorrectionCoeff = 3100;
     
-    public static double handFrontOpenPos = 0.85;
-    public static double handFrontClosedPos = 0.62;
-    public static double handBackOpenPos = 0.65;
-    public static double handBackClosedPos = 0.84;
+    public static double handLeftOpenPos = 0.77;
+    public static double handLeftClosedPos = 0.55;
+    public static double handRightOpenPos = 0.26;
+    public static double handRightClosedPos = 0.45;
     
     // - Intake Position
-    public static int armIntakePosManual = 170;
-    public static int armIntakePosAutonomous = 170;
+    public static int armIntakePosManual = 200;
+    public static int armIntakePosAutonomous = 200;
     public int armIntakePos;
     public final boolean shouldOpenHandAtIntake;
-    public double wristIntakePos = 0.5;
+    public double wristIntakePos = 0.34;
     
     // - Backboard Position
     
     public static int armBackboardPosManual = 510;
     public static int armBackboardPosAutonomous = 270;
     public int armBackboardPos;
-    public double wristBackboardPos = 0.75;
+    public double wristBackboardPos = 0.7;
     
     // - Overhead Position
-    public int armOverheadPos = 1950;
-    public double wristOverheadPos = 1.81;
+    public int armOverheadPos = 1650;
+    public double wristOverheadPos = 1.3;
     
     public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
     public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;
@@ -67,14 +67,14 @@ public class ArmController extends BaseModule {
     public final Servo wristLeft;
     public final Servo wristRight;
     
-    public final Servo handFront;
-    public final Servo handBack;
+    public final Servo handLeft;
+    public final Servo handRight;
     
     public int armPos = 0;
     public double wristPos = 1;
     public boolean isHandClosed = false;
     
-    public ArmController(MainOp op, boolean isAutonomous, Gamepad gamepad, DcMotorEx arm, Servo wristLeft, Servo wristRight, Servo handFront, Servo handBack) {
+    public ArmController(MainOp op, boolean isAutonomous, Gamepad gamepad, DcMotorEx arm, Servo wristLeft, Servo wristRight, Servo handLeft, Servo handRight) {
         super(op);
         
         this.isAutonomous = isAutonomous;
@@ -88,8 +88,8 @@ public class ArmController extends BaseModule {
         this.wristLeft = wristLeft;
         this.wristRight = wristRight;
         
-        this.handFront = handFront;
-        this.handBack = handBack;
+        this.handLeft = handLeft;
+        this.handRight = handRight;
         
         this.shouldOpenHandAtIntake = !isAutonomous;
         this.armIntakePos = isAutonomous ? armIntakePosAutonomous : armIntakePosManual;
@@ -105,8 +105,8 @@ public class ArmController extends BaseModule {
         wristLeft.setDirection(Servo.Direction.FORWARD);
         wristRight.setDirection(Servo.Direction.REVERSE);
         
-        handFront.setDirection(Servo.Direction.REVERSE);
-        handBack.setDirection(Servo.Direction.FORWARD);
+        handLeft.setDirection(Servo.Direction.FORWARD);
+        handRight.setDirection(Servo.Direction.FORWARD);
     }
     
     @Override
@@ -164,8 +164,8 @@ public class ArmController extends BaseModule {
             isHandClosed = false;
         }
         
-        handFront.setPosition(isHandClosed ? handFrontClosedPos : handFrontOpenPos);
-        handBack.setPosition(isHandClosed ? handBackClosedPos : handBackOpenPos);
+        handLeft.setPosition(isHandClosed ? handLeftClosedPos : handLeftOpenPos);
+        handRight.setPosition(isHandClosed ? handRightClosedPos : handRightOpenPos);
         
         // Intake Position
         if (gamepad.b) {

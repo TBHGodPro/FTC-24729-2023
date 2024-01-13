@@ -73,7 +73,7 @@ public abstract class MainOp extends BaseOp {
         movements = new MovementController(this, wheels, hardwareMap.get(IMU.class, "imu"), gamepad, !shouldUseABPS(), /*!isAutonomous*/ true);
         
         // Arm & Wrist & Hand
-        arm = new ArmController(this, isAutonomous, gamepad, hardwareMap.get(DcMotorEx.class, "arm"), hardwareMap.get(Servo.class, "wrist_left"), hardwareMap.get(Servo.class, "wrist_right"), hardwareMap.get(Servo.class, "claw_front"), hardwareMap.get(Servo.class, "claw_back"));
+        arm = new ArmController(this, isAutonomous, gamepad, hardwareMap.get(DcMotorEx.class, "arm"), hardwareMap.get(Servo.class, "wrist_left"), hardwareMap.get(Servo.class, "wrist_right"), hardwareMap.get(Servo.class, "claw_left"), hardwareMap.get(Servo.class, "claw_right"));
         
         // ABPS
         abps = new ABPSController(this, shouldUseABPS());
