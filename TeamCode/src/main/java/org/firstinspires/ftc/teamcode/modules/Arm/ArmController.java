@@ -28,7 +28,7 @@ public class ArmController extends BaseModule {
     
     public static double wristPosInterval = 0.01;
     
-    public static double wristAngleCorrectionCoeff = 3100;
+    public static double wristAngleCorrectionCoeff = 2300;
     
     public static double handLeftOpenPos = 0.77;
     public static double handLeftClosedPos = 0.55;
@@ -46,11 +46,11 @@ public class ArmController extends BaseModule {
     public static int armBackboardPosManual = 510;
     public static int armBackboardPosAutonomous = 270;
     public int armBackboardPos;
-    public double wristBackboardPos = 0.63;
+    public double wristBackboardPos = 0.7;
     
     // - Overhead Position
     public int armOverheadPos = 1350;
-    public double wristOverheadPos = 1.3;
+    public double wristOverheadPos = 1.5;
     
     public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
     public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;
