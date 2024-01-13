@@ -32,10 +32,10 @@ public abstract class BaseOp extends OpMode {
             sleep(5);
         }
     }
-
+    
     public void activeSleep(long milliseconds) {
         ElapsedTime time = new ElapsedTime();
-
-        while(time.milliseconds() < milliseconds) sleep(5);
+        
+        while (time.milliseconds() < milliseconds) sleep(5);
     }
 }

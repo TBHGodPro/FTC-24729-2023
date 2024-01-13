@@ -29,16 +29,16 @@ public class BlueWing extends AutoOp {
     @Override
     public void runOP() {
         sleep(1000);
-
+        
         arm.armPos = 850;
-
+        
         awaitFrame();
-
+        
         activeSleep(2000);
-
+        
         PossiblePropPosition position = getCamera().prop.position;
         getCamera().disablePropDetection();
-
+        
         arm.armPos = 150;
         
         Action[] actions;
@@ -84,11 +84,11 @@ class BlueWingPaths {
             new MultiMoveAction(-200, 1000, 400),
             new TurnAction(90)
     };
-
+    
     public static final Action[] CENTER = {
             new PushToCenter(SidewaysDirection.RIGHT),
             new MultiMoveAction(-100, 700, 900),
-            new MoveAction(Direction.FORWARD,700, 1000),
+            new MoveAction(Direction.FORWARD, 700, 1000),
             new TurnAction(-90),
             new WaitAction(6_000),
             new MoveAction(Direction.FORWARD, 2800, 3000),
@@ -97,7 +97,7 @@ class BlueWingPaths {
             new MultiMoveAction(-200, 800, 350),
             new TurnAction(90)
     };
-
+    
     public static final Action[] RIGHT = {
             new PushToRight(PushPresetPath.STRAIGHT),
             new MultiMoveAction(-200, 400, 800),

@@ -59,7 +59,10 @@ public class ABPSThread extends Thread {
         while (op.abps.state != ABPSState.STOPPED) {
             List<AprilTagDetection> detections = op.camera.processor.getDetections();
             
-            if (detections.size() == 0) {op.movements.setPowers(op.wheels, 0, 0, 0);continue;}
+            if (detections.size() == 0) {
+                op.movements.setPowers(op.wheels, 0, 0, 0);
+                continue;
+            }
             
             AprilTagDetection bestDetection = null;
             
@@ -83,7 +86,10 @@ public class ABPSThread extends Thread {
                 }
             }
             
-            if (bestDetection == null) {op.movements.setPowers(op.wheels, 0, 0, 0);continue;}
+            if (bestDetection == null) {
+                op.movements.setPowers(op.wheels, 0, 0, 0);
+                continue;
+            }
             
             AprilTagPoseFtc pose = bestDetection.ftcPose;
             
@@ -108,13 +114,13 @@ public class ABPSThread extends Thread {
             
             op.movements.setPowers(op.wheels, forwardPower, strafePower, turnPower);
         }
-
+        
         op.arm.goToBackboardPosition();
         
         op.movements.setPowers(op.wheels, 0, 0, 0);
         
         op.camera.disableAprilTag();
-
+        
         pause(800);
         
         if (op.abps.state != ABPSState.STOPPED && op.abps.shouldOpenWristWhenDone) {
@@ -134,6 +140,7 @@ public class ABPSThread extends Thread {
             Thread.currentThread().interrupt();
         }
     }
+    
     private void pause(int milliseconds) {
         if (Thread.currentThread().isInterrupted()) return;
         try {

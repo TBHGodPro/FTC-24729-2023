@@ -3,17 +3,11 @@ package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Utils.Alliance;
-import org.firstinspires.ftc.teamcode.Utils.Direction;
 import org.firstinspires.ftc.teamcode.Utils.PossiblePropPosition;
 import org.firstinspires.ftc.teamcode.Utils.SidewaysDirection;
 import org.firstinspires.ftc.teamcode.autonomous.AutoOp;
 import org.firstinspires.ftc.teamcode.autonomous.movements.MovementHandler;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.Action;
-import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MoveAction;
-import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveAction;
-import org.firstinspires.ftc.teamcode.autonomous.movements.actions.TurnAction;
-import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WaitAction;
-import org.firstinspires.ftc.teamcode.autonomous.movements.presets.ABPSPushAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushPresetPath;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToCenter;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToLeft;
@@ -29,16 +23,16 @@ public class BlueWingMini extends AutoOp {
     @Override
     public void runOP() {
         sleep(1000);
-
+        
         arm.armPos = 850;
-
+        
         awaitFrame();
-
+        
         activeSleep(2000);
-
+        
         PossiblePropPosition position = getCamera().prop.position;
         getCamera().disablePropDetection();
-
+        
         arm.armPos = 150;
         
         Action[] actions;
@@ -74,11 +68,11 @@ class BlueWingMiniPaths {
     public static final Action[] LEFT = {
             new PushToLeft(PushPresetPath.AROUND),
     };
-
+    
     public static final Action[] CENTER = {
             new PushToCenter(SidewaysDirection.RIGHT),
     };
-
+    
     public static final Action[] RIGHT = {
             new PushToRight(PushPresetPath.STRAIGHT),
     };

@@ -27,7 +27,7 @@ public class PropDetection implements VisionProcessor {
     public static int blueHueMax = 120;
     public static int blueSatBrightMin = 0;
     public static int blueSatBrightMax = 255;
-
+    
     public static int redHueLowMin = 0;
     public static int redHueLowMax = 15;
     public static int redHueHighMin = 165;
@@ -81,11 +81,11 @@ public class PropDetection implements VisionProcessor {
     public Mat binaryMat = new Mat();
     
     public Mat region1_mat, region2_mat, region3_mat;
-
+    
     // Colors
     public Scalar blueLow;
     public Scalar blueHigh;
-
+    
     public Scalar redLowLow;
     public Scalar redLowHigh;
     public Scalar redHighLow;
@@ -97,26 +97,26 @@ public class PropDetection implements VisionProcessor {
     
     public PropDetection(Alliance alliance) {
         this.alliance = alliance;
-
+        
         updateColors();
     }
-
+    
     public void updateColors() {
         switch (alliance) {
             case RED: {
                 redLowLow = new Scalar(redHueLowMin, redSatBrightMin, redSatBrightMin);
                 redLowHigh = new Scalar(redHueLowMax, redSatBrightMax, redSatBrightMax);
-
+                
                 redHighLow = new Scalar(redHueHighMin, redSatBrightMin, redSatBrightMin);
                 redHighHigh = new Scalar(redHueHighMax, redSatBrightMax, redSatBrightMax);
-
+                
                 break;
             }
-
+            
             case BLUE: {
                 blueLow = new Scalar(blueHueMin, blueSatBrightMin, blueSatBrightMin);
                 blueHigh = new Scalar(blueHueMax, blueSatBrightMax, blueSatBrightMax);
-
+                
                 break;
             }
         }
@@ -125,7 +125,7 @@ public class PropDetection implements VisionProcessor {
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
         // Code executed on the first frame dispatched into this VisionProcessor
-
+        
         updateColors();
     }
     
@@ -133,30 +133,30 @@ public class PropDetection implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         // Update Colors
         updateColors();
-
+        
         // Rotate Frame
         Core.rotate(frame, frame, Core.ROTATE_180);
         
         // Image Conversion
         
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
-
+        
         switch (alliance) {
             case RED: {
                 Mat lowMat = new Mat();
                 Core.inRange(hsvMat, redLowLow, redLowHigh, lowMat);
-
+                
                 Mat highMat = new Mat();
                 Core.inRange(hsvMat, redHighLow, redHighHigh, highMat);
-
+                
                 Core.bitwise_or(lowMat, highMat, binaryMat);
-
+                
                 break;
             }
-
+            
             case BLUE: {
                 Core.inRange(hsvMat, blueLow, blueHigh, binaryMat);
-
+                
                 break;
             }
         }
@@ -208,23 +208,23 @@ public class PropDetection implements VisionProcessor {
         // - Find Best Average
         
         int found = 0;
-
+        
         switch (alliance) {
             case RED: {
                 int avgOneTwo = Math.min(avg1, avg2);
                 found = Math.min(avgOneTwo, avg3);
-
+                
                 break;
             }
-
+            
             case BLUE: {
                 int avgOneTwo = Math.max(avg1, avg2);
                 found = Math.max(avgOneTwo, avg3);
-
+                
                 break;
             }
         }
-
+        
         // Display and Record Findings
         
         if (found == avg1) {

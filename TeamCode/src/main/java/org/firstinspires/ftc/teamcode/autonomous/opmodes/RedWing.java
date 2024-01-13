@@ -13,13 +13,11 @@ import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.MultiMoveAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.TurnAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WaitAction;
-import org.firstinspires.ftc.teamcode.autonomous.movements.actions.WheelPositionAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.ABPSPushAction;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushPresetPath;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToCenter;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToLeft;
 import org.firstinspires.ftc.teamcode.autonomous.movements.presets.PushToRight;
-import org.firstinspires.ftc.teamcode.modules.Wheels.WheelTarget;
 
 @Autonomous(name = "Red Wing", group = "Wing")
 public class RedWing extends AutoOp {
@@ -31,16 +29,16 @@ public class RedWing extends AutoOp {
     @Override
     public void runOP() {
         sleep(1000);
-
+        
         arm.armPos = 850;
-
+        
         awaitFrame();
-
+        
         activeSleep(2000);
-
+        
         PossiblePropPosition position = getCamera().prop.position;
         getCamera().disablePropDetection();
-
+        
         arm.armPos = 150;
         
         Action[] actions;
@@ -89,7 +87,7 @@ class RedWingPaths {
     public static final Action[] CENTER = {
             new PushToCenter(SidewaysDirection.LEFT),
             new MultiMoveAction(-100, -700, 900),
-            new MoveAction(Direction.FORWARD,750, 1000),
+            new MoveAction(Direction.FORWARD, 750, 1000),
             new TurnAction(90),
             new WaitAction(6_000),
             new MoveAction(Direction.FORWARD, 2800, 3000),
