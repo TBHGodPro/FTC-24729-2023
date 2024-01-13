@@ -73,7 +73,7 @@ public class ArmPowerController {
         
         power += pid.calculate(current, target);
         
-        power += getFeedForward(target);
+        power += getFeedForward(current);
         
         return power;
     }
