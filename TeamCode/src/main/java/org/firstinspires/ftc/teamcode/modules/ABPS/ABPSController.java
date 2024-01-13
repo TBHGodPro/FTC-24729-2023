@@ -14,7 +14,6 @@ import java.util.concurrent.Executors;
 // Automatic Backboard Positioning System
 
 public class ABPSController extends BaseModule {
-    public final boolean active;
     
     public final InputManager inputs;
     
@@ -25,10 +24,8 @@ public class ABPSController extends BaseModule {
     
     public boolean shouldOpenWristWhenDone = true;
     
-    public ABPSController(MainOp op, boolean active) {
+    public ABPSController(MainOp op) {
         super(op);
-        
-        this.active = active;
         
         this.inputs = op.inputs;
         
@@ -41,8 +38,6 @@ public class ABPSController extends BaseModule {
     }
     
     public void activate(ABPSState state, double strafeGainMult) {
-        if (!this.active) return;
-        
         this.state = state;
         
         thread.dynamicStrafeGain = ABPSThread.strafeGain * strafeGainMult;
@@ -58,8 +53,6 @@ public class ABPSController extends BaseModule {
     
     @Override
     public void loop() {
-        if (!this.active) return;
-        
         if (executor.isTerminated() && !isDone()) {
             state = ABPSState.STOPPED;
             
@@ -87,44 +80,40 @@ public class ABPSController extends BaseModule {
     
     @Override
     public void addTelemetry(Telemetry telemetry) {
-        if (this.active) {
-            telemetry.addData("Active", "True")
-                    .addData("State", new Func<String>() {
-                        @Override
-                        public String value() {
-                            return state == ABPSState.STOPPED ? "Stopped" : ("Active (" + state.name() + ")");
-                        }
-                    })
-                    .addData("Detections", new Func<String>() {
-                        @Override
-                        public String value() {
-                            return op.camera.processor.getDetections().size() + "";
-                        }
-                    })
-                    .addData("Info", new Func<String>() {
-                        @Override
-                        public String value() {
-                            List<AprilTagDetection> detections = op.camera.processor.getDetections();
-                            
-                            StringBuilder msg = new StringBuilder();
-                            
-                            for (AprilTagDetection detection : detections) {
-                                if (detection.ftcPose == null) msg.append("\n\nNULL");
-                                else {
-                                    msg.append("\n");
-                                    msg.append("\nFound" + " = " + "ID " + detection.id + " (" + detection.metadata.name + ")");
-                                    msg.append("\nRange" + " = " + detection.ftcPose.range + " inches");
-                                    msg.append("\nBearing" + " = " + detection.ftcPose.bearing + " degrees");
-                                    msg.append("\nYaw" + " = " + detection.ftcPose.yaw + " degrees");
-                                }
+        telemetry.addData("Active", "True")
+                .addData("State", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return state == ABPSState.STOPPED ? "Stopped" : ("Active (" + state.name() + ")");
+                    }
+                })
+                .addData("Detections", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return op.camera.processor.getDetections().size() + "";
+                    }
+                })
+                .addData("Info", new Func<String>() {
+                    @Override
+                    public String value() {
+                        List<AprilTagDetection> detections = op.camera.processor.getDetections();
+                        
+                        StringBuilder msg = new StringBuilder();
+                        
+                        for (AprilTagDetection detection : detections) {
+                            if (detection.ftcPose == null) msg.append("\n\nNULL");
+                            else {
+                                msg.append("\n");
+                                msg.append("\nFound" + " = " + "ID " + detection.id + " (" + detection.metadata.name + ")");
+                                msg.append("\nRange" + " = " + detection.ftcPose.range + " inches");
+                                msg.append("\nBearing" + " = " + detection.ftcPose.bearing + " degrees");
+                                msg.append("\nYaw" + " = " + detection.ftcPose.yaw + " degrees");
                             }
-                            
-                            return msg.toString();
                         }
-                    });
-        } else {
-            telemetry.addData("Active", "False");
-        }
+                        
+                        return msg.toString();
+                    }
+                });
     }
     
     public enum ABPSState {

@@ -72,7 +72,8 @@ public class ArmController extends BaseModule {
     
     public int armPos = 0;
     public double wristPos = 1;
-    public boolean isHandClosed = false;
+    public boolean isHandLeftClosed = false;
+    public boolean isHandRightClosed = false;
     
     public ArmController(MainOp op, boolean isAutonomous, InputManager inputs, DcMotorEx arm, Servo wristLeft, Servo wristRight, Servo handLeft, Servo handRight) {
         super(op);
@@ -157,15 +158,22 @@ public class ArmController extends BaseModule {
         wristRight.setPosition(parsedWristPos);
         
         // Hand Control
-        if (inputs.leftHandClosed || inputs.rightHandClosed) {
-            isHandClosed = true;
+        if (inputs.leftHandClosed) {
+            isHandLeftClosed = true;
         }
-        if (inputs.leftHandOpen || inputs.rightHandOpen) {
-            isHandClosed = false;
+        if (inputs.leftHandOpen) {
+            isHandLeftClosed = false;
         }
         
-        handLeft.setPosition(isHandClosed ? handLeftClosedPos : handLeftOpenPos);
-        handRight.setPosition(isHandClosed ? handRightClosedPos : handRightOpenPos);
+        if (inputs.rightHandClosed) {
+            isHandRightClosed = true;
+        }
+        if (inputs.rightHandOpen) {
+            isHandRightClosed = false;
+        }
+        
+        handLeft.setPosition(isHandLeftClosed ? handLeftClosedPos : handLeftOpenPos);
+        handRight.setPosition(isHandRightClosed ? handRightClosedPos : handRightOpenPos);
         
         // Intake Position
         if (inputs.armIntakePosition) {
@@ -210,7 +218,8 @@ public class ArmController extends BaseModule {
         armPos = armIntakePos;
         wristPos = wristIntakePos;
         if (shouldOpenHandAtIntake) {
-            isHandClosed = false;
+            isHandLeftClosed = false;
+            isHandRightClosed = false;
         }
     }
     
@@ -271,7 +280,7 @@ public class ArmController extends BaseModule {
                 .addData("Hand State", new Func<String>() {
                     @Override
                     public String value() {
-                        return isHandClosed ? "Closed" : "Open";
+                        return "Left: " + (isHandLeftClosed ? "Closed" : "Open") + ", Right: " + (isHandRightClosed ? "Closed" : "Open");
                     }
                 });
     }

@@ -45,8 +45,6 @@ public abstract class MainOp extends BaseOp {
     public ArmController arm;
     public ABPSController abps;
     
-    public abstract Alliance getAlliance();
-    
     // Run once INIT is pressed
     public void init() {
         // Get Dashboard
@@ -83,7 +81,7 @@ public abstract class MainOp extends BaseOp {
         arm = new ArmController(this, isAutonomous, inputs, hardwareMap.get(DcMotorEx.class, "arm"), hardwareMap.get(Servo.class, "wrist_left"), hardwareMap.get(Servo.class, "wrist_right"), hardwareMap.get(Servo.class, "claw_left"), hardwareMap.get(Servo.class, "claw_right"));
         
         // ABPS
-        abps = new ABPSController(this, shouldUseABPS());
+        abps = new ABPSController(this);
         
         // Telemetry
         telemetry.addLine("--- Bot ---");
@@ -171,7 +169,7 @@ public abstract class MainOp extends BaseOp {
     public void stop() {
     }
     
-    public abstract boolean shouldUseABPS();
+    public abstract Alliance getAlliance();
     
     public abstract InputManager getInputManager();
 }

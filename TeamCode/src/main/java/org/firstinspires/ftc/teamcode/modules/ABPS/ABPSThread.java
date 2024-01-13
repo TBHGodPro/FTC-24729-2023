@@ -124,7 +124,8 @@ public class ABPSThread extends Thread {
         pause(800);
         
         if (op.abps.state != ABPSState.STOPPED && op.abps.shouldOpenWristWhenDone) {
-            op.arm.isHandClosed = false;
+            op.arm.isHandLeftClosed = false;
+            op.arm.isHandRightClosed = false;
         }
         
         op.abps.state = ABPSState.STOPPED;
