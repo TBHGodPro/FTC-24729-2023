@@ -131,6 +131,9 @@ public abstract class MainOp extends BaseOp {
     public void start() {
         frames = 0;
         
+        // Update Encoder Caches
+        updateBulkCache();
+        
         // Start Modules
         for (BaseModule module : modules) module.start();
     }

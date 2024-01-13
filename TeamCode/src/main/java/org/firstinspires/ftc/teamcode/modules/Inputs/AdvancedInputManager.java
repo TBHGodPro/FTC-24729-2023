@@ -15,7 +15,7 @@ public class AdvancedInputManager extends InputManager {
         
         boolean leftHandState;
         if (gamepad.left_bumper) {
-            leftHandState = lastLeftBumper == false ? leftHandOpen : leftHandClosed;
+            leftHandState = lastLeftBumper ? leftHandClosed : leftHandOpen;
             lastLeftBumper = true;
         } else {
             leftHandState = leftHandClosed;
@@ -24,7 +24,7 @@ public class AdvancedInputManager extends InputManager {
         
         boolean rightHandState;
         if (gamepad.right_bumper) {
-            rightHandState = lastRightBumper == false ? rightHandOpen : rightHandClosed;
+            rightHandState = lastRightBumper ? rightHandClosed : rightHandOpen;
             lastRightBumper = true;
         } else {
             rightHandState = rightHandClosed;
@@ -32,7 +32,7 @@ public class AdvancedInputManager extends InputManager {
         }
         
         if (gamepad.x) {
-            if (lastX == false) {
+            if (!lastX) {
                 if (rightHandState == leftHandState) {
                     rightHandState = !rightHandState;
                     leftHandState = !leftHandState;
@@ -56,6 +56,7 @@ public class AdvancedInputManager extends InputManager {
         strafe = gamepad.left_stick_x;
         turn = gamepad.right_stick_x;
         
+        // Overridden by wrist up/down
         // slowMoveUp = gamepad.dpad_up;
         // slowMoveDown = gamepad.dpad_down;
         slowMoveLeft = gamepad.dpad_left;

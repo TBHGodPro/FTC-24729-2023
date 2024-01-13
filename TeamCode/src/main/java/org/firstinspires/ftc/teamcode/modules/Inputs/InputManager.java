@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.modules.Inputs;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public abstract class InputManager {
+    // Inputs
     public boolean armIntakePosition = false;
     public boolean armBackboardPosition = false;
     public boolean armOverheadPosition = false;
@@ -34,5 +35,6 @@ public abstract class InputManager {
     public boolean ABPSLeft = false;
     public boolean ABPSRight = false;
     
+    // Update Inputs
     public abstract void update(Gamepad gamepad);
 }

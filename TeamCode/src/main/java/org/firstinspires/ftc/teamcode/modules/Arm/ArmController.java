@@ -39,17 +39,17 @@ public class ArmController extends BaseModule {
     public static int armIntakePosManual = 200;
     public static int armIntakePosAutonomous = 200;
     public int armIntakePos;
-    public double wristIntakePos = 0.34;
+    public double wristIntakePos = 0.38;
     
     // - Backboard Position
     
     public static int armBackboardPosManual = 510;
     public static int armBackboardPosAutonomous = 270;
     public int armBackboardPos;
-    public double wristBackboardPos = 0.7;
+    public double wristBackboardPos = 0.63;
     
     // - Overhead Position
-    public int armOverheadPos = 1650;
+    public int armOverheadPos = 1350;
     public double wristOverheadPos = 1.3;
     
     public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
