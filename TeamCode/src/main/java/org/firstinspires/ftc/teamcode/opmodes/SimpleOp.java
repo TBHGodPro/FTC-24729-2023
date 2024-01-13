@@ -16,6 +16,6 @@ public class SimpleOp extends MainOp {
     
     @Override
     public InputManager getInputManager() {
-        return new SimpleInputManager();
+        return new SimpleInputManager(true);
     }
 }

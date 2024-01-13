@@ -3,6 +3,12 @@ package org.firstinspires.ftc.teamcode.modules.Inputs;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class SimpleInputManager extends InputManager {
+    public final boolean shouldOpenHandAtIntake;
+    
+    public SimpleInputManager(boolean shouldOpenHandAtIntake) {
+        this.shouldOpenHandAtIntake = shouldOpenHandAtIntake;
+    }
+    
     @Override
     public void update(Gamepad gamepad) {
         armIntakePosition = gamepad.b;
@@ -14,6 +20,11 @@ public class SimpleInputManager extends InputManager {
         
         leftHandOpen = gamepad.y;
         rightHandOpen = gamepad.y;
+        if (shouldOpenHandAtIntake && armIntakePosition) {
+            leftHandOpen = true;
+            rightHandOpen = true;
+        }
+        
         
         forward = -gamepad.left_stick_y;
         strafe = gamepad.left_stick_x;

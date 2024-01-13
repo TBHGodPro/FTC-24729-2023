@@ -39,7 +39,6 @@ public class ArmController extends BaseModule {
     public static int armIntakePosManual = 200;
     public static int armIntakePosAutonomous = 200;
     public int armIntakePos;
-    public final boolean shouldOpenHandAtIntake;
     public double wristIntakePos = 0.34;
     
     // - Backboard Position
@@ -92,7 +91,6 @@ public class ArmController extends BaseModule {
         this.handLeft = handLeft;
         this.handRight = handRight;
         
-        this.shouldOpenHandAtIntake = !isAutonomous;
         this.armIntakePos = isAutonomous ? armIntakePosAutonomous : armIntakePosManual;
         this.armBackboardPos = isAutonomous ? armBackboardPosAutonomous : armBackboardPosManual;
     }
@@ -217,10 +215,6 @@ public class ArmController extends BaseModule {
     public void goToIntakePosition() {
         armPos = armIntakePos;
         wristPos = wristIntakePos;
-        if (shouldOpenHandAtIntake) {
-            isHandLeftClosed = false;
-            isHandRightClosed = false;
-        }
     }
     
     public void goToBackboardPosition() {
