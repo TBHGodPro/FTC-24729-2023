@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.modules.BaseModule;
 import org.firstinspires.ftc.teamcode.modules.Camera.AutonomousCameraManager;
 import org.firstinspires.ftc.teamcode.modules.Camera.BaseCameraManager;
 import org.firstinspires.ftc.teamcode.modules.Camera.ManualCameraManager;
+import org.firstinspires.ftc.teamcode.modules.Inputs.InputManager;
 import org.firstinspires.ftc.teamcode.modules.MovementController;
 import org.firstinspires.ftc.teamcode.modules.Wheels.WheelController;
 
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MainOp extends BaseOp {
+    public InputManager inputs;
+    
     public Boolean isAutonomous;
     
     public FtcDashboard dashboard;
@@ -61,6 +64,10 @@ public abstract class MainOp extends BaseOp {
             gamepad = gamepad1;
         }
         
+        // Setup and Update Input Manager
+        inputs = getInputManager();
+        inputs.update(gamepad);
+        
         // Camera
         WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
         camera = isAutonomous ? new AutonomousCameraManager(webcam, getAlliance()) : new ManualCameraManager(webcam);
@@ -70,10 +77,10 @@ public abstract class MainOp extends BaseOp {
         wheels = new WheelController(this, hardwareMap.get(DcMotorEx.class, "back_left"), hardwareMap.get(DcMotorEx.class, "back_right"), hardwareMap.get(DcMotorEx.class, "front_left"), hardwareMap.get(DcMotorEx.class, "front_right"));
         
         // Movements
-        movements = new MovementController(this, wheels, hardwareMap.get(IMU.class, "imu"), gamepad, !shouldUseABPS(), /*!isAutonomous*/ true);
+        movements = new MovementController(this, wheels, hardwareMap.get(IMU.class, "imu"), inputs, /*!isAutonomous*/ true);
         
         // Arm & Wrist & Hand
-        arm = new ArmController(this, isAutonomous, gamepad, hardwareMap.get(DcMotorEx.class, "arm"), hardwareMap.get(Servo.class, "wrist_left"), hardwareMap.get(Servo.class, "wrist_right"), hardwareMap.get(Servo.class, "claw_left"), hardwareMap.get(Servo.class, "claw_right"));
+        arm = new ArmController(this, isAutonomous, inputs, hardwareMap.get(DcMotorEx.class, "arm"), hardwareMap.get(Servo.class, "wrist_left"), hardwareMap.get(Servo.class, "wrist_right"), hardwareMap.get(Servo.class, "claw_left"), hardwareMap.get(Servo.class, "claw_right"));
         
         // ABPS
         abps = new ABPSController(this, shouldUseABPS());
@@ -138,6 +145,9 @@ public abstract class MainOp extends BaseOp {
         // Update Encoder Caches
         updateBulkCache();
         
+        // Update Inputs
+        inputs.update(gamepad);
+        
         // Commented due to major performance boost
         // camera.loop();
         
@@ -162,4 +172,6 @@ public abstract class MainOp extends BaseOp {
     }
     
     public abstract boolean shouldUseABPS();
+    
+    public abstract InputManager getInputManager();
 }

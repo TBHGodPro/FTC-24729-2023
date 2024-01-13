@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.modules.ABPS;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
-
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.modules.BaseModule;
+import org.firstinspires.ftc.teamcode.modules.Inputs.InputManager;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.concurrent.Executors;
 public class ABPSController extends BaseModule {
     public final boolean active;
     
-    public final Gamepad gamepad;
+    public final InputManager inputs;
     
     public final ABPSThread thread;
     public final Runnable emptyRunnable;
@@ -31,7 +30,7 @@ public class ABPSController extends BaseModule {
         
         this.active = active;
         
-        this.gamepad = op.gamepad;
+        this.inputs = op.inputs;
         
         thread = new ABPSThread(op);
         emptyRunnable = new Runnable() {
@@ -67,16 +66,15 @@ public class ABPSController extends BaseModule {
             op.movements.activate();
         }
         
-        if (gamepad.dpad_left) {
+        if (inputs.ABPSLeft) {
             activate(ABPSState.LEFT, 1);
         }
-        if (gamepad.dpad_right) {
+        if (inputs.ABPSRight) {
             activate(ABPSState.RIGHT, 1);
         }
         
         if (!isDone()
-                && (gamepad.left_stick_x != 0 || gamepad.left_stick_y != 0 || gamepad.right_stick_x != 0
-                || gamepad.right_stick_y != 0)) {
+                && (inputs.forward != 0 || inputs.strafe != 0 || inputs.turn != 0)) {
             state = ABPSState.STOPPED;
             
             executor.submit(emptyRunnable);

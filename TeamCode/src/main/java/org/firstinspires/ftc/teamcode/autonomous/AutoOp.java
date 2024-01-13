@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.autonomous.utils.AutonController;
 import org.firstinspires.ftc.teamcode.modules.Camera.AutonomousCameraManager;
+import org.firstinspires.ftc.teamcode.modules.Inputs.InputManager;
+import org.firstinspires.ftc.teamcode.modules.Inputs.SimpleInputManager;
 
 public abstract class AutoOp extends MainOp {
     public final AutonController controller;
@@ -42,5 +44,10 @@ public abstract class AutoOp extends MainOp {
     @Override
     public boolean shouldUseABPS() {
         return true;
+    }
+    
+    @Override
+    public InputManager getInputManager() {
+        return new SimpleInputManager();
     }
 }

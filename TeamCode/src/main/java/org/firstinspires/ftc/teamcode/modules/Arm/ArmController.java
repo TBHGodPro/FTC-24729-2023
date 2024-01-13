@@ -4,13 +4,13 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.modules.BaseModule;
+import org.firstinspires.ftc.teamcode.modules.Inputs.InputManager;
 
 @Config
 public class ArmController extends BaseModule {
@@ -59,7 +59,7 @@ public class ArmController extends BaseModule {
     // -----------------
     
     public final boolean isAutonomous;
-    public final Gamepad gamepad;
+    public final InputManager inputs;
     
     public final DcMotorEx arm;
     public final ArmPowerController armPower;
@@ -74,12 +74,12 @@ public class ArmController extends BaseModule {
     public double wristPos = 1;
     public boolean isHandClosed = false;
     
-    public ArmController(MainOp op, boolean isAutonomous, Gamepad gamepad, DcMotorEx arm, Servo wristLeft, Servo wristRight, Servo handLeft, Servo handRight) {
+    public ArmController(MainOp op, boolean isAutonomous, InputManager inputs, DcMotorEx arm, Servo wristLeft, Servo wristRight, Servo handLeft, Servo handRight) {
         super(op);
         
         this.isAutonomous = isAutonomous;
         
-        this.gamepad = gamepad;
+        this.inputs = inputs;
         
         this.arm = arm;
         this.armPower = new ArmPowerController(0);
@@ -121,8 +121,8 @@ public class ArmController extends BaseModule {
         // - Manual Power
         double armPower = 0;
         
-        armPower += Math.pow(gamepad.right_trigger, armNonLinearity);
-        armPower -= Math.pow(gamepad.left_trigger, armNonLinearity);
+        armPower += Math.pow(inputs.armUp, armNonLinearity);
+        armPower -= Math.pow(inputs.armDown, armNonLinearity);
         
         // - Manual Override
         if (armPower != 0) {
@@ -143,10 +143,10 @@ public class ArmController extends BaseModule {
         arm.setPower(armPower);
         
         // Wrist Control
-        if (gamepad.right_bumper) {
+        if (inputs.wristUp) {
             wristPos += wristPosInterval;
         }
-        if (gamepad.left_bumper) {
+        if (inputs.wristDown) {
             wristPos -= wristPosInterval;
         }
         
@@ -157,10 +157,10 @@ public class ArmController extends BaseModule {
         wristRight.setPosition(parsedWristPos);
         
         // Hand Control
-        if (gamepad.x) {
+        if (inputs.leftHandClosed || inputs.rightHandClosed) {
             isHandClosed = true;
         }
-        if (gamepad.y) {
+        if (inputs.leftHandOpen || inputs.rightHandOpen) {
             isHandClosed = false;
         }
         
@@ -168,22 +168,22 @@ public class ArmController extends BaseModule {
         handRight.setPosition(isHandClosed ? handRightClosedPos : handRightOpenPos);
         
         // Intake Position
-        if (gamepad.b) {
+        if (inputs.armIntakePosition) {
             goToIntakePosition();
         }
         
         // Backboard Position
-        if (gamepad.a) {
+        if (inputs.armBackboardPosition) {
             goToBackboardPosition();
         }
         
         // Overhead Position
-        if (gamepad.guide) {
+        if (inputs.armOverheadPosition) {
             goToOverheadPosition();
         }
         
         // Reset Intake Position
-        if (gamepad.back) {
+        if (inputs.realignIntake) {
             int offset = armIntakePos - arm.getCurrentPosition();
             double wristOffset = wristIntakePos - wristPos;
             
