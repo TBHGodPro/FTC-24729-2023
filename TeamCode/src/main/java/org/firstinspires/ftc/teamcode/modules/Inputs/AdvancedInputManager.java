@@ -13,6 +13,10 @@ public class AdvancedInputManager extends InputManager {
     public boolean lastRightBumper = false;
     public boolean lastX = false;
     
+    public boolean lastSlowModeCheck = false;
+    
+    public boolean isInSlowMode = false;
+    
     @Override
     public void update() {
         Gamepad gamepad = op.gamepad;
@@ -63,12 +67,28 @@ public class AdvancedInputManager extends InputManager {
         forward = -gamepad.left_stick_y;
         strafe = gamepad.left_stick_x;
         turn = gamepad.right_stick_x;
+        if (isInSlowMode) {
+            forward *= 0.5;
+            strafe *= 0.3;
+            turn *= 0.75;
+        }
         
         // Overridden by wrist up/down
+        // Role taken by DPad Left and Right
         // slowMoveUp = gamepad.dpad_up;
         // slowMoveDown = gamepad.dpad_down;
-        slowMoveLeft = gamepad.dpad_left;
-        slowMoveRight = gamepad.dpad_right;
+        // slowMoveLeft = gamepad.dpad_left;
+        // slowMoveRight = gamepad.dpad_right;
+        
+        if (gamepad.dpad_left || gamepad.dpad_right) {
+            if (!lastSlowModeCheck) {
+                isInSlowMode = !isInSlowMode;
+            }
+            
+            lastSlowModeCheck = true;
+        } else {
+            lastSlowModeCheck = false;
+        }
         
         realignIMU = gamepad.start;
         realignIntake = gamepad.back;
