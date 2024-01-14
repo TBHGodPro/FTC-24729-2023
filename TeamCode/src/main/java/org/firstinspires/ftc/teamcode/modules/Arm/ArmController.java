@@ -35,6 +35,8 @@ public class ArmController extends BaseModule {
     public static double handRightOpenPos = 0.26;
     public static double handRightClosedPos = 0.45;
     
+    public static int armOffset = 0;
+    
     // - Intake Position
     public static int armIntakePosManual = 200;
     public static int armIntakePosAutonomous = 200;
@@ -130,12 +132,12 @@ public class ArmController extends BaseModule {
             if (armPower > 0 && armPos >= armMaxPos) armPower = 0;
             else armPower *= armManualPower;
             
-            armPos = arm.getCurrentPosition();
+            armPos = getPosition();
             armPower += this.armPower.getFeedForward(armPos);
         } else {
-            this.armPower.setTarget(arm.getCurrentPosition(), armPos);
+            this.armPower.setTarget(getPosition(), armPos);
             
-            armPower = this.armPower.calc(arm.getCurrentPosition());
+            armPower = this.armPower.calc(getPosition());
         }
         
         // - Set Power
@@ -190,7 +192,7 @@ public class ArmController extends BaseModule {
         
         // Reset Intake Position
         if (inputs.realignIntake) {
-            int offset = armIntakePos - arm.getCurrentPosition();
+            int offset = armIntakePos - getPosition();
             double wristOffset = wristIntakePos - wristPos;
             
             armIntakePos -= offset;
@@ -202,6 +204,10 @@ public class ArmController extends BaseModule {
             armOverheadPos -= offset;
             wristOverheadPos -= wristOffset;
         }
+    }
+    
+    public int getPosition() {
+        return arm.getCurrentPosition() + armOffset;
     }
     
     public void resetZeroPosition() {
@@ -242,7 +248,7 @@ public class ArmController extends BaseModule {
     }
     
     public boolean isAtPosition() {
-        return Math.round(armPos / armPositionClearance) == Math.round((arm.getCurrentPosition() + armPositionOffset) / armPositionClearance);
+        return Math.round(armPos / armPositionClearance) == Math.round((getPosition() + armPositionOffset) / armPositionClearance);
     }
     
     @Override
@@ -250,7 +256,7 @@ public class ArmController extends BaseModule {
         telemetry.addData("Arm Position", new Func<String>() {
                     @Override
                     public String value() {
-                        return arm.getCurrentPosition() + "";
+                        return getPosition() + "";
                     }
                 })
                 .addData("Target Arm Position", new Func<String>() {
@@ -282,7 +288,7 @@ public class ArmController extends BaseModule {
     @Override
     public void updateDashboardTelemetry() {
         telemetry.addData("Arm Target Pos", armPos);
-        telemetry.addData("Arm Current Pos", arm.getCurrentPosition());
+        telemetry.addData("Arm Current Pos", getPosition());
         telemetry.addData("Arm Power", arm.getPower() * 100);
         telemetry.addData("At Position", isAtPosition());
         telemetry.addData("Arm Profile Pos", armPower.target != null ? armPower.target : -1);
