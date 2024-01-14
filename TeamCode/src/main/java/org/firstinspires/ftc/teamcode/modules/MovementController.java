@@ -65,7 +65,7 @@ public class MovementController extends BaseModule {
     }
     
     @Override
-    public void start() {
+    public void op_start() {
         imu.resetYaw();
     }
     

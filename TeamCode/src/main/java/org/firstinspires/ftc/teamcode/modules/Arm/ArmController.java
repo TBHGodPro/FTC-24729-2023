@@ -50,7 +50,7 @@ public class ArmController extends BaseModule {
     
     // - Overhead Position
     public int armOverheadPos = 1350;
-    public double wristOverheadPos = 1.5;
+    public double wristOverheadPos = 1.44;
     
     public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
     public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;
@@ -109,7 +109,7 @@ public class ArmController extends BaseModule {
     }
     
     @Override
-    public void start() {
+    public void op_start() {
         resetZeroPosition();
     }
     
@@ -280,7 +280,7 @@ public class ArmController extends BaseModule {
     }
     
     @Override
-    public void getDashboardTelemetry(Telemetry telemetry) {
+    public void updateDashboardTelemetry() {
         telemetry.addData("Arm Target Pos", armPos);
         telemetry.addData("Arm Current Pos", arm.getCurrentPosition());
         telemetry.addData("Arm Power", arm.getPower() * 100);

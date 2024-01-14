@@ -135,7 +135,19 @@ public abstract class MainOp extends BaseOp {
         updateBulkCache();
         
         // Start Modules
-        for (BaseModule module : modules) module.start();
+        for (BaseModule module : modules) module.op_start();
+        
+        // Loop Modules + Update Dashboard Telemetry
+        for (BaseModule module : modules) {
+            module.setDashboardTelemetry(dashboardTelemetry);
+            
+            module.loop();
+        }
+        
+        // Start Module Threads
+        for (BaseModule module : modules) {
+            module.start();
+        }
     }
     
     // Run in a loop after PLAY is pressed until STOP is pressed
@@ -152,12 +164,7 @@ public abstract class MainOp extends BaseOp {
         // Commented due to major performance boost
         // camera.loop();
         
-        // Loop Modules + Update Dashboard Telemetry
-        for (BaseModule module : modules) {
-            module.loop();
-            
-            module.getDashboardTelemetry(dashboardTelemetry);
-        }
+        // Dashboard Telemetry
         dashboardTelemetry.update();
     }
     
@@ -170,6 +177,13 @@ public abstract class MainOp extends BaseOp {
     
     // Run once STOP is pressed
     public void stop() {
+        for (BaseModule module : modules) {
+            module.interrupt();
+        }
+        
+        for (BaseModule module : modules) {
+            module.destroy();
+        }
     }
     
     public abstract Alliance getAlliance();
