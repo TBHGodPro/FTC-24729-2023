@@ -18,8 +18,6 @@ public class WheelController extends BaseModule {
     public static int setPositionClearance = 5;
     public static int setPositionTimeLeewayMS = 200;
     
-    public static double wheelMaxPower = 0.75;
-    
     // -----------------
     
     public final DcMotorEx backLeft;
@@ -69,10 +67,10 @@ public class WheelController extends BaseModule {
         if (target == null) {
             setRunMode(RunMode.RUN_WITHOUT_ENCODER);
             
-            backLeft.setPower(powers.backLeft * wheelMaxPower);
-            backRight.setPower(powers.backRight * wheelMaxPower);
-            frontLeft.setPower(powers.frontLeft * wheelMaxPower);
-            frontRight.setPower(powers.frontRight * wheelMaxPower);
+            backLeft.setPower(powers.backLeft);
+            backRight.setPower(powers.backRight);
+            frontLeft.setPower(powers.frontLeft);
+            frontRight.setPower(powers.frontRight);
         } else {
             if ((isAtTarget(backLeft.getCurrentPosition(), target.backLeft)
                     && isAtTarget(backRight.getCurrentPosition(), target.backRight)

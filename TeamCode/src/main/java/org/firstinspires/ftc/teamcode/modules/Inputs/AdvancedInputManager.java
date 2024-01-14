@@ -66,11 +66,11 @@ public class AdvancedInputManager extends InputManager {
         
         forward = -gamepad.left_stick_y;
         strafe = gamepad.left_stick_x;
-        turn = gamepad.right_stick_x;
+        turn = gamepad.right_stick_x * 0.75f;
         if (isInSlowMode) {
-            forward *= 0.5;
-            strafe *= 0.3;
-            turn *= 0.75;
+            forward *= 0.375f;
+            strafe *= 0.225f;
+            turn *= 0.75f;
         }
         
         // Overridden by wrist up/down

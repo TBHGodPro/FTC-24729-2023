@@ -172,7 +172,7 @@ public class MovementController extends BaseModule {
         
         double diff = getAngularError(angle, desiredAngle);
         
-        return yawPID.calculate(diff, 0);
+        return yawPID.calculate(diff, 0) * 0.75;
     }
     
     public double getAngularError(double current, double target) {
