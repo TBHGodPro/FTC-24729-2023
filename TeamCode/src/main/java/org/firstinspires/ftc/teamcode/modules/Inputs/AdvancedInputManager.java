@@ -2,13 +2,21 @@ package org.firstinspires.ftc.teamcode.modules.Inputs;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.MainOp;
+
 public class AdvancedInputManager extends InputManager {
+    public AdvancedInputManager(MainOp op) {
+        super(op);
+    }
+    
     public boolean lastLeftBumper = false;
     public boolean lastRightBumper = false;
     public boolean lastX = false;
     
     @Override
-    public void update(Gamepad gamepad) {
+    public void update() {
+        Gamepad gamepad = op.gamepad;
+        
         armIntakePosition = gamepad.b;
         armBackboardPosition = gamepad.a;
         armOverheadPosition = gamepad.y;

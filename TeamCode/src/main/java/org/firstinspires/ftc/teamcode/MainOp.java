@@ -64,7 +64,7 @@ public abstract class MainOp extends BaseOp {
         
         // Setup and Update Input Manager
         inputs = getInputManager();
-        inputs.update(gamepad);
+        inputs.update();
         
         // Camera
         WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
@@ -94,12 +94,14 @@ public abstract class MainOp extends BaseOp {
         });
         telemetry.addLine();
         
+        inputs.setupTelemetry(telemetry);
         movements.setupTelemetry(telemetry);
         wheels.setupTelemetry(telemetry);
         arm.setupTelemetry(telemetry);
         abps.setupTelemetry(telemetry);
         
         // Store Modules
+        modules.add(inputs);
         modules.add(movements);
         modules.add(wheels);
         modules.add(arm);
@@ -157,9 +159,6 @@ public abstract class MainOp extends BaseOp {
         
         // Update Encoder Caches
         updateBulkCache();
-        
-        // Update Inputs
-        inputs.update(gamepad);
         
         // Commented due to major performance boost
         // camera.loop();

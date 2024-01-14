@@ -1,8 +1,13 @@
 package org.firstinspires.ftc.teamcode.modules.Inputs;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
+import org.firstinspires.ftc.teamcode.MainOp;
+import org.firstinspires.ftc.teamcode.modules.BaseModule;
 
-public abstract class InputManager {
+public abstract class InputManager extends BaseModule {
+    public InputManager(MainOp op) {
+        super(op);
+    }
+    
     // Inputs
     public boolean armIntakePosition = false;
     public boolean armBackboardPosition = false;
@@ -36,5 +41,11 @@ public abstract class InputManager {
     public boolean ABPSRight = false;
     
     // Update Inputs
-    public abstract void update(Gamepad gamepad);
+    public abstract void update();
+    
+    // Thread
+    @Override
+    public void loop() {
+        update();
+    }
 }

@@ -16,6 +16,6 @@ public class AdvancedOp extends MainOp {
     
     @Override
     public InputManager getInputManager() {
-        return new AdvancedInputManager();
+        return new AdvancedInputManager(this);
     }
 }

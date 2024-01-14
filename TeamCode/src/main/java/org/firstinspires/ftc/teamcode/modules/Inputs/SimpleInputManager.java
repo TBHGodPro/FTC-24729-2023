@@ -2,15 +2,21 @@ package org.firstinspires.ftc.teamcode.modules.Inputs;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.MainOp;
+
 public class SimpleInputManager extends InputManager {
     public final boolean shouldOpenHandAtIntake;
     
-    public SimpleInputManager(boolean shouldOpenHandAtIntake) {
+    public SimpleInputManager(MainOp op, boolean shouldOpenHandAtIntake) {
+        super(op);
+        
         this.shouldOpenHandAtIntake = shouldOpenHandAtIntake;
     }
     
     @Override
-    public void update(Gamepad gamepad) {
+    public void update() {
+        Gamepad gamepad = op.gamepad;
+        
         armIntakePosition = gamepad.b;
         armBackboardPosition = gamepad.a;
         armOverheadPosition = gamepad.guide;

@@ -43,6 +43,6 @@ public abstract class AutoOp extends MainOp {
     
     @Override
     public InputManager getInputManager() {
-        return new SimpleInputManager(false);
+        return new SimpleInputManager(this, false);
     }
 }
