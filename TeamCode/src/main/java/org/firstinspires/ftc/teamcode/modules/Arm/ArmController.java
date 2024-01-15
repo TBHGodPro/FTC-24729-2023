@@ -37,11 +37,13 @@ public class ArmController extends BaseModule {
     
     public static int armOffset = 0;
     
+    public static double armInputDeadzone = 0.1;
+    
     // - Intake Position
     public static int armIntakePosManual = 200;
     public static int armIntakePosAutonomous = 200;
     public int armIntakePos;
-    public double wristIntakePos = 0.38;
+    public double wristIntakePos = 0.44;
     
     // - Backboard Position
     
@@ -126,7 +128,7 @@ public class ArmController extends BaseModule {
         armPower -= Math.pow(inputs.armDown, armNonLinearity);
         
         // - Manual Override
-        if (armPower != 0) {
+        if (Math.abs(armPower) > armInputDeadzone) {
             this.armPower.clearTarget();
             
             if (armPower > 0 && armPos >= armMaxPos) armPower = 0;

@@ -58,6 +58,7 @@ public class ArmPowerController {
     public void clearTarget() {
         this.target = null;
         this.overallTarget = null;
+        timer.reset();
     }
     
     public double calc(int current) {

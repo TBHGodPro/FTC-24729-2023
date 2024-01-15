@@ -67,10 +67,27 @@ public class WheelController extends BaseModule {
         if (target == null) {
             setRunMode(RunMode.RUN_WITHOUT_ENCODER);
             
-            backLeft.setPower(powers.backLeft);
-            backRight.setPower(powers.backRight);
-            frontLeft.setPower(powers.frontLeft);
-            frontRight.setPower(powers.frontRight);
+            // Normalize Powers
+            double maxOneTwo = Math.max(powers.backLeft, powers.backRight);
+            double maxOneTwoThree = Math.max(maxOneTwo, powers.frontLeft);
+            double maxAll = Math.max(maxOneTwoThree, powers.frontRight);
+            
+            double activeBackLeft = powers.backLeft;
+            double activeBackRight = powers.backRight;
+            double activeFrontLeft = powers.frontLeft;
+            double activeFrontRight = powers.frontRight;
+            
+            if (maxAll > 1) {
+                activeBackLeft /= maxAll;
+                activeBackRight /= maxAll;
+                activeFrontLeft /= maxAll;
+                activeFrontRight /= maxAll;
+            }
+            
+            backLeft.setPower(activeBackLeft);
+            backRight.setPower(activeBackRight);
+            frontLeft.setPower(activeFrontLeft);
+            frontRight.setPower(activeFrontRight);
         } else {
             if ((isAtTarget(backLeft.getCurrentPosition(), target.backLeft)
                     && isAtTarget(backRight.getCurrentPosition(), target.backRight)
