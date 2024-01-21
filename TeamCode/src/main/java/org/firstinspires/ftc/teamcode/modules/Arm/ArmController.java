@@ -24,7 +24,7 @@ public class ArmController extends BaseModule {
     
     public static int armPositionClearance = 35;
     
-    public static int armPositionOffset = 75;
+    public static int armPositionOffset = 0;
     
     public static double wristPosInterval = 0.01;
     
@@ -35,36 +35,39 @@ public class ArmController extends BaseModule {
     public static double handRightOpenPos = 0.26;
     public static double handRightClosedPos = 0.45;
     
-    public static int armOffset = 0;
-    
     public static double armInputDeadzone = 0.1;
     
+    public static int armOffset = 75;
+    public static double wristOffset = 0;
+    
     // - Intake Position
-    public static int armIntakePosManual = 280;
-    public static int armIntakePosAutonomous = 280;
+    public static int armIntakePosManual = 250;
+    public static int armIntakePosAutonomous = 250;
     public int armIntakePos;
-    public double wristIntakePos = 0.45;
+    public double wristIntakePos = 0.14;
     
     // - Backboard Position
     
     public static int armBackboardPosManual = 510;
     public static int armBackboardPosAutonomous = 270;
     public int armBackboardPos;
-    public double wristBackboardPos = 0.74;
+    public double wristBackboardPos = 0.43;
     
     // - Overhead Position
-    public int armOverheadPos = 1350;
-    public double wristOverheadPos = 1.48;
+    public int armOverheadPos = 1470;
+    public double wristOverheadPos = 1.2;
     
-    public static final DcMotorEx.Direction armDirection = DcMotorEx.Direction.REVERSE;
-    public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.BRAKE;
+    public static final DcMotorEx.Direction armLeftDirection = DcMotorEx.Direction.REVERSE;
+    public static final DcMotorEx.Direction armRightDirection = DcMotorEx.Direction.REVERSE;
+    public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.FLOAT;
     
     // -----------------
     
     public final boolean isAutonomous;
     public final InputManager inputs;
     
-    public final DcMotorEx arm;
+    public final DcMotorEx armLeft;
+    public final DcMotorEx armRight;
     public final ArmPowerController armPower;
     
     public final Servo wristLeft;
@@ -73,19 +76,25 @@ public class ArmController extends BaseModule {
     public final Servo handLeft;
     public final Servo handRight;
     
-    public int armPos = 0;
+    public int armPos;
     public double wristPos = 1;
     public boolean isHandLeftClosed = false;
     public boolean isHandRightClosed = false;
     
-    public ArmController(MainOp op, boolean isAutonomous, InputManager inputs, DcMotorEx arm, Servo wristLeft, Servo wristRight, Servo handLeft, Servo handRight) {
+    public double armStaticPower = 0;
+    
+    public ArmController(MainOp op, boolean isAutonomous, InputManager inputs, DcMotorEx armLeft, DcMotorEx armRight, Servo wristLeft, Servo wristRight, Servo handLeft, Servo handRight) {
         super(op);
         
         this.isAutonomous = isAutonomous;
         
         this.inputs = inputs;
         
-        this.arm = arm;
+        this.armLeft = armLeft;
+        this.armRight = armRight;
+        
+        this.armPos = armOffset;
+        
         this.armPower = new ArmPowerController(0);
         this.armPower.setTarget(0, armPos);
         
@@ -99,11 +108,19 @@ public class ArmController extends BaseModule {
         this.armBackboardPos = isAutonomous ? armBackboardPosAutonomous : armBackboardPosManual;
     }
     
+    public void setArmStaticPower(double power) {
+        this.armStaticPower = power;
+    }
+    
     @Override
     public void init() {
-        arm.setDirection(armDirection);
-        arm.setZeroPowerBehavior(armZeroPowerBehavior);
-        arm.setMode(RunMode.STOP_AND_RESET_ENCODER);
+        armLeft.setDirection(armLeftDirection);
+        armLeft.setZeroPowerBehavior(armZeroPowerBehavior);
+        armLeft.setMode(RunMode.STOP_AND_RESET_ENCODER);
+        
+        armRight.setDirection(armRightDirection);
+        armRight.setZeroPowerBehavior(armZeroPowerBehavior);
+        armRight.setMode(RunMode.STOP_AND_RESET_ENCODER);
         
         wristLeft.setDirection(Servo.Direction.FORWARD);
         wristRight.setDirection(Servo.Direction.REVERSE);
@@ -122,7 +139,7 @@ public class ArmController extends BaseModule {
         // Arm Control
         
         // - Manual Power
-        double armPower = 0;
+        double armPower = armStaticPower;
         
         armPower += Math.pow(inputs.armUp, armNonLinearity);
         armPower -= Math.pow(inputs.armDown, armNonLinearity);
@@ -143,7 +160,8 @@ public class ArmController extends BaseModule {
         }
         
         // - Set Power
-        arm.setPower(armPower);
+        armLeft.setPower(armPower);
+        armRight.setPower(armPower);
         
         // Wrist Control
         if (inputs.wristUp) {
@@ -209,30 +227,36 @@ public class ArmController extends BaseModule {
     }
     
     public int getPosition() {
-        return arm.getCurrentPosition() + armOffset;
+        return armRight.getCurrentPosition() + armOffset;
+    }
+    
+    public int getOtherPosition() {
+        return armLeft.getCurrentPosition() + armOffset;
     }
     
     public void resetZeroPosition() {
-        arm.setMode(RunMode.STOP_AND_RESET_ENCODER);
+        armLeft.setMode(RunMode.STOP_AND_RESET_ENCODER);
+        armRight.setMode(RunMode.STOP_AND_RESET_ENCODER);
         
         armPos = 0;
         
-        arm.setMode(RunMode.RUN_WITHOUT_ENCODER);
+        armLeft.setMode(RunMode.RUN_WITHOUT_ENCODER);
+        armRight.setMode(RunMode.RUN_WITHOUT_ENCODER);
     }
     
     public void goToIntakePosition() {
         armPos = armIntakePos;
-        wristPos = wristIntakePos;
+        wristPos = wristIntakePos + wristOffset;
     }
     
     public void goToBackboardPosition() {
         armPos = armBackboardPos;
-        wristPos = wristBackboardPos;
+        wristPos = wristBackboardPos + wristOffset;
     }
     
     public void goToOverheadPosition() {
         armPos = armOverheadPos;
-        wristPos = wristOverheadPos;
+        wristPos = wristOverheadPos + wristOffset;
     }
     
     public void goToPosition(ArmPosition position) {
@@ -258,7 +282,7 @@ public class ArmController extends BaseModule {
         telemetry.addData("Arm Position", new Func<String>() {
                     @Override
                     public String value() {
-                        return getPosition() + "";
+                        return getPosition() + " (" + getOtherPosition() + ")";
                     }
                 })
                 .addData("Target Arm Position", new Func<String>() {
@@ -291,7 +315,8 @@ public class ArmController extends BaseModule {
     public void updateDashboardTelemetry() {
         telemetry.addData("Arm Target Pos", armPos);
         telemetry.addData("Arm Current Pos", getPosition());
-        telemetry.addData("Arm Power", arm.getPower() * 100);
+        telemetry.addData("Other Arm Current Pos", getOtherPosition());
+        telemetry.addData("Arm Power", armRight.getPower() * 100);
         telemetry.addData("At Position", isAtPosition());
         telemetry.addData("Arm Profile Pos", armPower.target != null ? armPower.target : -1);
         telemetry.addData("Arm Profile Timer", armPower.timer.time());

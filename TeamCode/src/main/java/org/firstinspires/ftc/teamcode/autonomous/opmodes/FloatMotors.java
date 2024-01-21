@@ -15,7 +15,8 @@ public class FloatMotors extends AutoOp {
     
     @Override
     public void runOP() {
-        arm.arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        arm.armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        arm.armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         
         wheels.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         wheels.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);

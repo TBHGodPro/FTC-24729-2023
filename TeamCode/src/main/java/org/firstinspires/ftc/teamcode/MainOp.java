@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.modules.BaseModule;
 import org.firstinspires.ftc.teamcode.modules.Camera.AutonomousCameraManager;
 import org.firstinspires.ftc.teamcode.modules.Camera.BaseCameraManager;
 import org.firstinspires.ftc.teamcode.modules.Camera.ManualCameraManager;
+import org.firstinspires.ftc.teamcode.modules.HangController;
 import org.firstinspires.ftc.teamcode.modules.Inputs.InputManager;
 import org.firstinspires.ftc.teamcode.modules.MovementController;
 import org.firstinspires.ftc.teamcode.modules.Wheels.WheelController;
@@ -43,6 +44,7 @@ public abstract class MainOp extends BaseOp {
     public WheelController wheels;
     public MovementController movements;
     public ArmController arm;
+    public HangController hang;
     public ABPSController abps;
     
     // Run once INIT is pressed
@@ -78,7 +80,10 @@ public abstract class MainOp extends BaseOp {
         movements = new MovementController(this, wheels, hardwareMap.get(IMU.class, "imu"), inputs, /*!isAutonomous*/ true);
         
         // Arm & Wrist & Hand
-        arm = new ArmController(this, isAutonomous, inputs, hardwareMap.get(DcMotorEx.class, "arm"), hardwareMap.get(Servo.class, "wrist_left"), hardwareMap.get(Servo.class, "wrist_right"), hardwareMap.get(Servo.class, "claw_left"), hardwareMap.get(Servo.class, "claw_right"));
+        arm = new ArmController(this, isAutonomous, inputs, hardwareMap.get(DcMotorEx.class, "arm_left"), hardwareMap.get(DcMotorEx.class, "arm_right"), hardwareMap.get(Servo.class, "wrist_left"), hardwareMap.get(Servo.class, "wrist_right"), hardwareMap.get(Servo.class, "claw_left"), hardwareMap.get(Servo.class, "claw_right"));
+        
+        // Hang
+        hang = new HangController(this, inputs);
         
         // ABPS
         abps = new ABPSController(this);
@@ -98,6 +103,7 @@ public abstract class MainOp extends BaseOp {
         movements.setupTelemetry(telemetry);
         wheels.setupTelemetry(telemetry);
         arm.setupTelemetry(telemetry);
+        hang.setupTelemetry(telemetry);
         abps.setupTelemetry(telemetry);
         
         // Store Modules
@@ -105,6 +111,7 @@ public abstract class MainOp extends BaseOp {
         modules.add(movements);
         modules.add(wheels);
         modules.add(arm);
+        modules.add(hang);
         modules.add(abps);
         
         // Init Modules

@@ -40,6 +40,8 @@ public abstract class InputManager extends BaseModule {
     public boolean ABPSLeft = false;
     public boolean ABPSRight = false;
     
+    public boolean hangToggle = false;
+    
     // Update Inputs
     public abstract void update();
     
