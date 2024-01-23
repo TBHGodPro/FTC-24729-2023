@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.modules.Inputs.InputManager;
 public class HangController extends BaseModule {
     // --- Constants ---
     
-    public static double holdPitch = 33;
+    public static double holdPitch = 43;
     public static double holdAccuracy = 6;
     
     public static double liftPower = 1.2;
