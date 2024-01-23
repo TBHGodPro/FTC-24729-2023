@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.modules;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.MainOp;
 import org.firstinspires.ftc.teamcode.modules.Arm.ArmController;
 import org.firstinspires.ftc.teamcode.modules.Inputs.InputManager;
@@ -32,8 +33,9 @@ public class HangController extends BaseModule {
             active = !active;
             
             if (active) {
-                arm.setArmStaticPower(-0.4);
+                arm.setArmStaticPower(-0.25);
                 movements.deactivate();
+                arm.wristPos = 100;
             } else {
                 arm.setArmStaticPower(0);
                 movements.activate();
@@ -51,5 +53,10 @@ public class HangController extends BaseModule {
                 return active + "";
             }
         });
+    }
+    
+    @Override
+    public void updateDashboardTelemetry() {
+        telemetry.addData("Pitch", movements.imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES));
     }
 }

@@ -99,6 +99,6 @@ public class AdvancedInputManager extends InputManager {
         wristUp = gamepad.dpad_up;
         wristDown = gamepad.dpad_down;
         
-        // hangToggle = gamepad.guide;
+        hangToggle = gamepad.guide;
     }
 }
