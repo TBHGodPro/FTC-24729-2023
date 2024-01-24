@@ -13,14 +13,14 @@ import org.firstinspires.ftc.teamcode.Utils.Profile.ProfileState;
 public class ArmPowerController {
     // --- Constants ---
     
-    public static double kP = 0.01;
+    public static double kP = 0.005;
     public static double kI = 0.05;
-    public static double kD = 0.00015;
+    public static double kD = 0.0005;
     public static double kF = 0.1;
     
-    public static double velo = 3500;
-    public static double accel = 1000;
-    public static double decel = 800;
+    public static double velo = 10_000;
+    public static double accel = 3_000;
+    public static double decel = 2_000;
     
     // -----------------
     
