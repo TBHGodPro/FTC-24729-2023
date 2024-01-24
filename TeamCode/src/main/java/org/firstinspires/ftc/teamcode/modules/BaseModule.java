@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.modules;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MainOp;
 
-public abstract class BaseModule extends Thread {
+public abstract class BaseModule {
     public final MainOp op;
     
     public Telemetry telemetry;
@@ -42,20 +42,5 @@ public abstract class BaseModule extends Thread {
     
     public void setDashboardTelemetry(Telemetry telemetry) {
         this.telemetry = telemetry;
-    }
-    
-    @Override
-    public void run() {
-        while (true) {
-            try {
-                sleep(12);
-            } catch (InterruptedException e) {
-                break;
-            }
-            
-            loop();
-            
-            updateDashboardTelemetry();
-        }
     }
 }
