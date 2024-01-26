@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.modules.Inputs;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MainOp;
 
 public class AdvancedInputManager extends InputManager {
@@ -16,6 +18,24 @@ public class AdvancedInputManager extends InputManager {
     public boolean lastSlowModeCheck = false;
     
     public boolean isInSlowMode = false;
+    
+    public boolean lastEndgame = false;
+    public EndgameStage endgameStage = EndgameStage.NONE;
+    
+    public enum EndgameStage {
+        NONE,
+        PREP,
+        DRONE_RELEASE,
+        DRONE_RETRACT,
+        HANG,
+        HANG_RESTART
+    }
+    
+    @Override
+    public void op_start() {
+        droneToggle = false;
+        hangToggle = false;
+    }
     
     @Override
     public void update() {
@@ -99,6 +119,63 @@ public class AdvancedInputManager extends InputManager {
         wristUp = gamepad.dpad_up;
         wristDown = gamepad.dpad_down;
         
-        hangToggle = gamepad.guide;
+        if (gamepad.guide) {
+            if (!lastEndgame) {
+                switch (endgameStage) {
+                    case NONE: {
+                        endgameStage = EndgameStage.PREP;
+                        
+                        break;
+                    }
+                    
+                    case PREP: {
+                        endgameStage = EndgameStage.DRONE_RELEASE;
+                        
+                        droneToggle = true;
+                        
+                        break;
+                    }
+                    
+                    case DRONE_RELEASE: {
+                        endgameStage = EndgameStage.DRONE_RETRACT;
+                        
+                        droneToggle = false;
+                        
+                        break;
+                    }
+                    
+                    case DRONE_RETRACT:
+                    case HANG_RESTART: {
+                        endgameStage = EndgameStage.HANG;
+                        
+                        hangToggle = true;
+                        
+                        break;
+                    }
+                    
+                    case HANG: {
+                        endgameStage = EndgameStage.HANG_RESTART;
+                        
+                        hangToggle = false;
+                        
+                        break;
+                    }
+                }
+            }
+            
+            lastEndgame = true;
+        } else {
+            lastEndgame = false;
+        }
+    }
+    
+    @Override
+    public void addTelemetry(Telemetry telemetry) {
+        telemetry.addData("Endgame Stage", new Func<String>() {
+            @Override
+            public String value() {
+                return endgameStage.name();
+            }
+        });
     }
 }

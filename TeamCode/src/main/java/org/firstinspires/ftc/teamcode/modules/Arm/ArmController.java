@@ -227,11 +227,11 @@ public class ArmController extends BaseModule {
     }
     
     public int getPosition() {
-        return armRight.getCurrentPosition() + armOffset;
+        return armLeft.getCurrentPosition() + armOffset;
     }
     
     public int getOtherPosition() {
-        return armLeft.getCurrentPosition() + armOffset;
+        return armRight.getCurrentPosition() + armOffset;
     }
     
     public void resetZeroPosition() {

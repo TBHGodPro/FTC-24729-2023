@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.modules.BaseModule;
 import org.firstinspires.ftc.teamcode.modules.Camera.AutonomousCameraManager;
 import org.firstinspires.ftc.teamcode.modules.Camera.BaseCameraManager;
 import org.firstinspires.ftc.teamcode.modules.Camera.ManualCameraManager;
+import org.firstinspires.ftc.teamcode.modules.DroneController;
 import org.firstinspires.ftc.teamcode.modules.HangController;
 import org.firstinspires.ftc.teamcode.modules.Inputs.InputManager;
 import org.firstinspires.ftc.teamcode.modules.MovementController;
@@ -45,6 +46,7 @@ public abstract class MainOp extends BaseOp {
     public MovementController movements;
     public ArmController arm;
     public HangController hang;
+    public DroneController drone;
     public ABPSController abps;
     
     // Run once INIT is pressed
@@ -85,6 +87,9 @@ public abstract class MainOp extends BaseOp {
         // Hang
         hang = new HangController(this, inputs);
         
+        // Drone
+        drone = new DroneController(this, inputs, hardwareMap.get(Servo.class, "drone"));
+        
         // ABPS
         abps = new ABPSController(this);
         
@@ -99,23 +104,21 @@ public abstract class MainOp extends BaseOp {
         });
         telemetry.addLine();
         
-        inputs.setupTelemetry(telemetry);
-        movements.setupTelemetry(telemetry);
-        wheels.setupTelemetry(telemetry);
-        arm.setupTelemetry(telemetry);
-        hang.setupTelemetry(telemetry);
-        abps.setupTelemetry(telemetry);
-        
         // Store Modules
         modules.add(inputs);
         modules.add(movements);
         modules.add(wheels);
         modules.add(arm);
         modules.add(hang);
+        modules.add(drone);
         modules.add(abps);
         
-        // Init Modules
-        for (BaseModule module : modules) module.init();
+        // Setup Telemetry and Init Modules
+        for (BaseModule module : modules) {
+            module.setupTelemetry(telemetry);
+            
+            module.init();
+        }
         
         // Bulk Encoder Caching
         hubs = hardwareMap.getAll(LynxModule.class);

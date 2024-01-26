@@ -26,7 +26,6 @@ public class HangController extends BaseModule {
     public final ArmController arm;
     public final InputManager inputs;
     
-    public boolean lastHangToggle = false;
     public boolean active = false;
     
     public double basePitch;
@@ -41,24 +40,17 @@ public class HangController extends BaseModule {
     
     @Override
     public void loop() {
-        if (inputs.hangToggle) {
-            lastHangToggle = true;
-        } else if (lastHangToggle) {
-            lastHangToggle = false;
-            
-            active = !active;
+        if (active != inputs.hangToggle) {
+            active = inputs.hangToggle;
             
             if (active) {
                 basePitch = movements.imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES);
                 
                 movements.deactivate();
-                //arm.wristPos = 100;
+                arm.wristPos = 100;
             } else {
                 arm.setArmStaticPower(0);
-                movements.activate();
             }
-        } else {
-            lastHangToggle = false;
         }
         
         if (active) {

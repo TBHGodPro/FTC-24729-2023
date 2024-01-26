@@ -41,6 +41,7 @@ public abstract class InputManager extends BaseModule {
     public boolean ABPSRight = false;
     
     public boolean hangToggle = false;
+    public boolean droneToggle = false;
     
     // Update Inputs
     public abstract void update();
