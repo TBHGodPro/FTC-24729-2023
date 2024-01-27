@@ -82,10 +82,10 @@ public abstract class MainOp extends BaseOp {
         movements = new MovementController(this, wheels, hardwareMap.get(IMU.class, "imu"), inputs, /*!isAutonomous*/ true);
         
         // Arm & Wrist & Hand
-        arm = new ArmController(this, isAutonomous, inputs, hardwareMap.get(DcMotorEx.class, "arm_left"), hardwareMap.get(DcMotorEx.class, "arm_right"), hardwareMap.get(Servo.class, "wrist_left"), hardwareMap.get(Servo.class, "wrist_right"), hardwareMap.get(Servo.class, "claw_left"), hardwareMap.get(Servo.class, "claw_right"));
+        arm = new ArmController(this, isAutonomous, inputs, hardwareMap.get(DcMotorEx.class, "arm_left"), hardwareMap.get(DcMotorEx.class, "arm_right"), hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(Servo.class, "claw_left"), hardwareMap.get(Servo.class, "claw_right"));
         
         // Hang
-        hang = new HangController(this, inputs);
+        hang = new HangController(this, inputs, hardwareMap.get(Servo.class, "hang"));
         
         // Drone
         drone = new DroneController(this, inputs, hardwareMap.get(Servo.class, "drone"));

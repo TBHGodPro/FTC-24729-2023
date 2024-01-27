@@ -28,13 +28,15 @@ public class AdvancedInputManager extends InputManager {
         DRONE_RELEASE,
         DRONE_RETRACT,
         HANG,
-        HANG_RESTART
+        HANG_SERVO_EXTEND,
+        HANG_SERVO_RETRACT
     }
     
     @Override
     public void op_start() {
         droneToggle = false;
         hangToggle = false;
+        hangServoToggle = false;
     }
     
     @Override
@@ -145,8 +147,7 @@ public class AdvancedInputManager extends InputManager {
                         break;
                     }
                     
-                    case DRONE_RETRACT:
-                    case HANG_RESTART: {
+                    case DRONE_RETRACT: {
                         endgameStage = EndgameStage.HANG;
                         
                         hangToggle = true;
@@ -154,9 +155,20 @@ public class AdvancedInputManager extends InputManager {
                         break;
                     }
                     
-                    case HANG: {
-                        endgameStage = EndgameStage.HANG_RESTART;
+                    case HANG:
+                    case HANG_SERVO_RETRACT: {
+                        endgameStage = EndgameStage.HANG_SERVO_EXTEND;
                         
+                        hangServoToggle = true;
+                        hangToggle = true;
+                        
+                        break;
+                    }
+                    
+                    case HANG_SERVO_EXTEND: {
+                        endgameStage = EndgameStage.HANG_SERVO_RETRACT;
+                        
+                        hangServoToggle = false;
                         hangToggle = false;
                         
                         break;

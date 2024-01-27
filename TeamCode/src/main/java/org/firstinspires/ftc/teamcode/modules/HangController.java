@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -20,22 +21,30 @@ public class HangController extends BaseModule {
     public static double lowerPower = 0.3;
     public static double holdPower = 0.5;
     
+    public static double servoHeld = 0.4;
+    public static double servoExtended = 1;
+    
     // -----------------
     
     public final MovementController movements;
     public final ArmController arm;
     public final InputManager inputs;
     
+    public Servo servo;
+    
     public boolean active = false;
+    public boolean isServoExtended = false;
     
     public double basePitch;
     
-    public HangController(MainOp op, InputManager inputs) {
+    public HangController(MainOp op, InputManager inputs, Servo hangServo) {
         super(op);
         
         movements = op.movements;
         arm = op.arm;
         this.inputs = inputs;
+        
+        this.servo = hangServo;
     }
     
     @Override
@@ -66,6 +75,12 @@ public class HangController extends BaseModule {
             else if (realPitch > holdPitch) arm.setArmStaticPower(-lowerPower);
             else arm.setArmStaticPower(-holdPower);
         }
+        
+        if (isServoExtended != inputs.hangServoToggle) {
+            isServoExtended = inputs.hangServoToggle;
+        }
+        
+        servo.setPosition(isServoExtended ? servoExtended : servoHeld);
     }
     
     @Override

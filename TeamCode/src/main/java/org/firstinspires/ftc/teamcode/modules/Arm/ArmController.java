@@ -74,8 +74,7 @@ public class ArmController extends BaseModule {
     public final DcMotorEx armRight;
     public final ArmPowerController armPower;
     
-    public final Servo wristLeft;
-    public final Servo wristRight;
+    public final Servo wrist;
     
     public final Servo handLeft;
     public final Servo handRight;
@@ -87,7 +86,7 @@ public class ArmController extends BaseModule {
     
     public double armStaticPower = 0;
     
-    public ArmController(MainOp op, boolean isAutonomous, InputManager inputs, DcMotorEx armLeft, DcMotorEx armRight, Servo wristLeft, Servo wristRight, Servo handLeft, Servo handRight) {
+    public ArmController(MainOp op, boolean isAutonomous, InputManager inputs, DcMotorEx armLeft, DcMotorEx armRight, Servo wrist, Servo handLeft, Servo handRight) {
         super(op);
         
         this.isAutonomous = isAutonomous;
@@ -102,8 +101,7 @@ public class ArmController extends BaseModule {
         this.armPower = new ArmPowerController(0);
         this.armPower.setTarget(0, armPos);
         
-        this.wristLeft = wristLeft;
-        this.wristRight = wristRight;
+        this.wrist = wrist;
         
         this.handLeft = handLeft;
         this.handRight = handRight;
@@ -126,8 +124,7 @@ public class ArmController extends BaseModule {
         armRight.setZeroPowerBehavior(armZeroPowerBehavior);
         armRight.setMode(RunMode.STOP_AND_RESET_ENCODER);
         
-        wristLeft.setDirection(Servo.Direction.FORWARD);
-        wristRight.setDirection(Servo.Direction.REVERSE);
+        wrist.setDirection(Servo.Direction.FORWARD);
         
         handLeft.setDirection(Servo.Direction.FORWARD);
         handRight.setDirection(Servo.Direction.FORWARD);
@@ -153,7 +150,7 @@ public class ArmController extends BaseModule {
             this.armPower.clearTarget();
             
             if (armPower > 0 && armPos >= armMaxPos) armPower = 0;
-            else armPower *= armManualPower;
+            else if (armStaticPower == 0) armPower *= armManualPower;
             
             armPos = getPosition();
             armPower += this.armPower.getFeedForward(armPos);
@@ -178,8 +175,7 @@ public class ArmController extends BaseModule {
         wristPos = Math.max(Math.min(wristPos, 2), -1);
         double parsedWristPos = Math.max(Math.min(wristPos - (armPos / wristAngleCorrectionCoeff), 1), 0);
         
-        wristLeft.setPosition(parsedWristPos);
-        wristRight.setPosition(parsedWristPos);
+        wrist.setPosition(parsedWristPos);
         
         // Hand Control
         if (inputs.leftHandClosed) {
