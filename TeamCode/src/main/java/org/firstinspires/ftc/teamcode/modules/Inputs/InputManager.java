@@ -12,6 +12,7 @@ public abstract class InputManager extends BaseModule {
     public boolean armIntakePosition = false;
     public boolean armBackboardPosition = false;
     public boolean armOverheadPosition = false;
+    public boolean armSafePosition = false;
     
     public boolean leftHandClosed = false;
     public boolean rightHandClosed = false;

@@ -57,6 +57,10 @@ public class ArmController extends BaseModule {
     public int armOverheadPos = 1470;
     public double wristOverheadPos = 1.37;
     
+    // - Safe Position
+    public int armSafePos = 185;
+    public double wristSafePos = 0.75;
+    
     public static final DcMotorEx.Direction armLeftDirection = DcMotorEx.Direction.REVERSE;
     public static final DcMotorEx.Direction armRightDirection = DcMotorEx.Direction.REVERSE;
     public static final ZeroPowerBehavior armZeroPowerBehavior = ZeroPowerBehavior.FLOAT;
@@ -210,6 +214,11 @@ public class ArmController extends BaseModule {
             goToOverheadPosition();
         }
         
+        // Safe Position
+        if (inputs.armSafePosition) {
+            goToSafePosition();
+        }
+        
         // Reset Intake Position
         if (inputs.realignIntake) {
             int offset = armIntakePos - getPosition();
@@ -223,6 +232,9 @@ public class ArmController extends BaseModule {
             
             armOverheadPos -= offset;
             wristOverheadPos -= wristOffset;
+            
+            armSafePos -= offset;
+            wristSafePos -= wristOffset;
         }
     }
     
@@ -257,6 +269,11 @@ public class ArmController extends BaseModule {
     public void goToOverheadPosition() {
         armPos = armOverheadPos;
         wristPos = wristOverheadPos + wristOffset;
+    }
+    
+    public void goToSafePosition() {
+        armPos = armSafePos;
+        wristPos = wristSafePos + wristOffset;
     }
     
     public void goToPosition(ArmPosition position) {

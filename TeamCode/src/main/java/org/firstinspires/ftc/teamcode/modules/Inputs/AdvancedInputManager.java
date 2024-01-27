@@ -43,7 +43,8 @@ public class AdvancedInputManager extends InputManager {
         
         armIntakePosition = gamepad.b;
         armBackboardPosition = gamepad.a;
-        armOverheadPosition = gamepad.y;
+        // armOverheadPosition = gamepad.y;
+        armSafePosition = gamepad.y;
         
         boolean leftHandState;
         if (gamepad.left_bumper) {
