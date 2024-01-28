@@ -124,6 +124,8 @@ public abstract class MainOp extends BaseOp {
         hubs = hardwareMap.getAll(LynxModule.class);
         for (LynxModule hub : hubs)
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        // - Update
+        updateBulkCache();
         
         // Setup Dashboard Telemetry
         for (BaseModule module : modules) {

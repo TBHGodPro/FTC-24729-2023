@@ -313,7 +313,7 @@ public class ArmController extends BaseModule {
                 .addData("True Wrist Position", new Func<String>() {
                     @Override
                     public String value() {
-                        return Math.max(Math.min(wristPos - (armPos / wristAngleCorrectionCoeff), 1), 0) + "";
+                        return wrist.getPosition() + "";
                     }
                 })
                 .addData("Hand State", new Func<String>() {

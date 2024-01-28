@@ -155,8 +155,7 @@ public class AdvancedInputManager extends InputManager {
                         break;
                     }
                     
-                    case HANG:
-                    case HANG_SERVO_RETRACT: {
+                    case HANG: {
                         endgameStage = EndgameStage.HANG_SERVO_EXTEND;
                         
                         hangServoToggle = true;
@@ -172,6 +171,12 @@ public class AdvancedInputManager extends InputManager {
                         hangToggle = false;
                         
                         break;
+                    }
+                    
+                    case HANG_SERVO_RETRACT: {
+                        endgameStage = EndgameStage.HANG_SERVO_EXTEND;
+                        
+                        hangServoToggle = true;
                     }
                 }
             }
