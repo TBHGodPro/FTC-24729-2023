@@ -46,7 +46,7 @@ public class AdvancedInputManager extends InputManager {
         armIntakePosition = gamepad.b;
         armBackboardPosition = gamepad.a;
         // armOverheadPosition = gamepad.y;
-        armSafePosition = gamepad.y;
+        armSafePosition = gamepad.y || gamepad.left_stick_button;
         
         boolean leftHandState;
         if (gamepad.left_bumper) {
@@ -103,7 +103,7 @@ public class AdvancedInputManager extends InputManager {
         // slowMoveLeft = gamepad.dpad_left;
         // slowMoveRight = gamepad.dpad_right;
         
-        if (gamepad.dpad_left || gamepad.dpad_right) {
+        if (gamepad.dpad_left || gamepad.dpad_right || gamepad.right_stick_button) {
             if (!lastSlowModeCheck) {
                 isInSlowMode = !isInSlowMode;
             }
