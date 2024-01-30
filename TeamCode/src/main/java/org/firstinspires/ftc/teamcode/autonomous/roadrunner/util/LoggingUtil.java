@@ -13,9 +13,9 @@ import java.util.List;
 public class LoggingUtil {
     public static final File ROAD_RUNNER_FOLDER =
             new File(AppUtil.ROOT_FOLDER + "/RoadRunner/");
-
+    
     private static final long LOG_QUOTA = 25 * 1024 * 1024; // 25MB log quota for now
-
+    
     private static void buildLogList(List<File> logFiles, File dir) {
         for (File file : dir.listFiles()) {
             if (file.isDirectory()) {
@@ -25,18 +25,18 @@ public class LoggingUtil {
             }
         }
     }
-
+    
     private static void pruneLogsIfNecessary() {
         List<File> logFiles = new ArrayList<>();
         buildLogList(logFiles, ROAD_RUNNER_FOLDER);
         Collections.sort(logFiles, (lhs, rhs) ->
                 Long.compare(lhs.lastModified(), rhs.lastModified()));
-
+        
         long dirSize = 0;
-        for (File file: logFiles) {
+        for (File file : logFiles) {
             dirSize += file.length();
         }
-
+        
         while (dirSize > LOG_QUOTA) {
             if (logFiles.size() == 0) break;
             File fileToRemove = logFiles.remove(0);
@@ -45,16 +45,16 @@ public class LoggingUtil {
             fileToRemove.delete();
         }
     }
-
+    
     /**
      * Obtain a log file with the provided name
      */
     public static File getLogFile(String name) {
         //noinspection ResultOfMethodCallIgnored
         ROAD_RUNNER_FOLDER.mkdirs();
-
+        
         pruneLogsIfNecessary();
-
+        
         return new File(ROAD_RUNNER_FOLDER, name);
     }
 }

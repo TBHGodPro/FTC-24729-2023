@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  */
 public class Encoder {
     private final static int CPS_STEP = 0x10000;
-
+    
     private static double inverseOverflow(double input, double estimate) {
         // convert to uint16
         int real = (int) input & 0xffff;
@@ -21,55 +21,55 @@ public class Encoder {
         real += Math.round((estimate - real) / (5 * CPS_STEP)) * 5 * CPS_STEP;
         return real;
     }
-
+    
     public enum Direction {
         FORWARD(1),
         REVERSE(-1);
-
+        
         private int multiplier;
-
+        
         Direction(int multiplier) {
             this.multiplier = multiplier;
         }
-
+        
         public int getMultiplier() {
             return multiplier;
         }
     }
-
+    
     private DcMotorEx motor;
     private NanoClock clock;
-
+    
     private Direction direction;
-
+    
     private int lastPosition;
     private int velocityEstimateIdx;
     private double[] velocityEstimates;
     private double lastUpdateTime;
-
+    
     public Encoder(DcMotorEx motor, NanoClock clock) {
         this.motor = motor;
         this.clock = clock;
-
+        
         this.direction = Direction.FORWARD;
-
+        
         this.lastPosition = 0;
         this.velocityEstimates = new double[3];
         this.lastUpdateTime = clock.seconds();
     }
-
+    
     public Encoder(DcMotorEx motor) {
         this(motor, NanoClock.system());
     }
-
+    
     public Direction getDirection() {
         return direction;
     }
-
+    
     private int getMultiplier() {
         return getDirection().getMultiplier() * (motor.getDirection() == DcMotorSimple.Direction.FORWARD ? 1 : -1);
     }
-
+    
     /**
      * Allows you to set the direction of the counts and velocity without modifying the motor's direction state
      * @param direction either reverse or forward depending on if encoder counts should be negated
@@ -77,7 +77,7 @@ public class Encoder {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-
+    
     /**
      * Gets the position from the underlying motor and adjusts for the set direction.
      * Additionally, this method updates the velocity estimates used for compensated velocity
@@ -97,7 +97,7 @@ public class Encoder {
         }
         return currentPosition;
     }
-
+    
     /**
      * Gets the velocity directly from the underlying motor and compensates for the direction
      * See {@link #getCorrectedVelocity} for high (>2^15) counts per second velocities (such as on REV Through Bore)
@@ -108,7 +108,7 @@ public class Encoder {
         int multiplier = getMultiplier();
         return motor.getVelocity() * multiplier;
     }
-
+    
     /**
      * Uses velocity estimates gathered in {@link #getCurrentPosition} to estimate the upper bits of velocity
      * that are lost in overflow due to velocity being transmitted as 16 bits.

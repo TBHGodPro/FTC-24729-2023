@@ -16,32 +16,32 @@ import java.util.List;
  * Various regression utilities.
  */
 public class RegressionUtil {
-
+    
     /**
      * Feedforward parameter estimates from the ramp regression and additional summary statistics
      */
     public static class RampResult {
         public final double kV, kStatic, rSquare;
-
+        
         public RampResult(double kV, double kStatic, double rSquare) {
             this.kV = kV;
             this.kStatic = kStatic;
             this.rSquare = rSquare;
         }
     }
-
+    
     /**
      * Feedforward parameter estimates from the ramp regression and additional summary statistics
      */
     public static class AccelResult {
         public final double kA, rSquare;
-
+        
         public AccelResult(double kA, double rSquare) {
             this.kA = kA;
             this.rSquare = rSquare;
         }
     }
-
+    
     /**
      * Numerically compute dy/dx from the given x and y values. The returned list is padded to match
      * the length of the original sequences.
@@ -55,7 +55,7 @@ public class RegressionUtil {
         for (int i = 1; i < x.size() - 1; i++) {
             deriv.add(
                     (y.get(i + 1) - y.get(i - 1)) /
-                    (x.get(i + 1) - x.get(i - 1))
+                            (x.get(i + 1) - x.get(i - 1))
             );
         }
         // copy endpoints to pad output
@@ -63,7 +63,7 @@ public class RegressionUtil {
         deriv.add(deriv.get(deriv.size() - 1));
         return deriv;
     }
-
+    
     /**
      * Run regression to compute velocity and static feedforward from ramp test data.
      *
@@ -94,21 +94,21 @@ public class RegressionUtil {
                 // ignore
             }
         }
-
+        
         List<Double> velSamples = numericalDerivative(timeSamples, positionSamples);
-
+        
         SimpleRegression rampReg = new SimpleRegression(fitStatic);
         for (int i = 0; i < timeSamples.size(); i++) {
             double vel = velSamples.get(i);
             double power = powerSamples.get(i);
-
+            
             rampReg.addData(vel, power);
         }
-
+        
         return new RampResult(Math.abs(rampReg.getSlope()), Math.abs(rampReg.getIntercept()),
-                              rampReg.getRSquare());
+                rampReg.getRSquare());
     }
-
+    
     /**
      * Run regression to compute acceleration feedforward.
      *
@@ -134,23 +134,23 @@ public class RegressionUtil {
                 // ignore
             }
         }
-
+        
         List<Double> velSamples = numericalDerivative(timeSamples, positionSamples);
         List<Double> accelSamples = numericalDerivative(timeSamples, velSamples);
-
+        
         SimpleRegression accelReg = new SimpleRegression(false);
         for (int i = 0; i < timeSamples.size(); i++) {
             double vel = velSamples.get(i);
             double accel = accelSamples.get(i);
             double power = powerSamples.get(i);
-
+            
             double powerFromVel = Kinematics.calculateMotorFeedforward(
                     vel, 0.0, rampResult.kV, 0.0, rampResult.kStatic);
             double powerFromAccel = power - powerFromVel;
-
+            
             accelReg.addData(accel, powerFromAccel);
         }
-
+        
         return new AccelResult(Math.abs(accelReg.getSlope()), accelReg.getRSquare());
     }
 }

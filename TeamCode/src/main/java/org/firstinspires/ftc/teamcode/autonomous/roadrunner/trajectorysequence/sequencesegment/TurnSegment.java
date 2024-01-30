@@ -10,7 +10,7 @@ import java.util.List;
 public final class TurnSegment extends SequenceSegment {
     private final double totalRotation;
     private final MotionProfile motionProfile;
-
+    
     public TurnSegment(Pose2d startPose, double totalRotation, MotionProfile motionProfile, List<TrajectoryMarker> markers) {
         super(
                 motionProfile.duration(),
@@ -21,15 +21,15 @@ public final class TurnSegment extends SequenceSegment {
                 ),
                 markers
         );
-
+        
         this.totalRotation = totalRotation;
         this.motionProfile = motionProfile;
     }
-
+    
     public final double getTotalRotation() {
         return this.totalRotation;
     }
-
+    
     public final MotionProfile getMotionProfile() {
         return this.motionProfile;
     }

@@ -13,8 +13,7 @@ import java.util.List;
 public class DashboardUtil {
     private static final double DEFAULT_RESOLUTION = 2.0; // distance units; presumed inches
     private static final double ROBOT_RADIUS = 9; // in
-
-
+    
     public static void drawPoseHistory(Canvas canvas, List<Pose2d> poseHistory) {
         double[] xPoints = new double[poseHistory.size()];
         double[] yPoints = new double[poseHistory.size()];
@@ -25,7 +24,7 @@ public class DashboardUtil {
         }
         canvas.strokePolyline(xPoints, yPoints);
     }
-
+    
     public static void drawSampledPath(Canvas canvas, Path path, double resolution) {
         int samples = (int) Math.ceil(path.length() / resolution);
         double[] xPoints = new double[samples];
@@ -39,11 +38,11 @@ public class DashboardUtil {
         }
         canvas.strokePolyline(xPoints, yPoints);
     }
-
+    
     public static void drawSampledPath(Canvas canvas, Path path) {
         drawSampledPath(canvas, path, DEFAULT_RESOLUTION);
     }
-
+    
     public static void drawRobot(Canvas canvas, Pose2d pose) {
         canvas.strokeCircle(pose.getX(), pose.getY(), ROBOT_RADIUS);
         Vector2d v = pose.headingVec().times(ROBOT_RADIUS);

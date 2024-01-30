@@ -12,13 +12,13 @@ public enum AxesSigns {
     NPN(0b101),
     NNP(0b110),
     NNN(0b111);
-
+    
     public final int bVal;
-
+    
     AxesSigns(int bVal) {
         this.bVal = bVal;
     }
-
+    
     public static AxesSigns fromBinaryValue(int bVal) {
         int maskedVal = bVal & 0x07;
         switch (maskedVal) {

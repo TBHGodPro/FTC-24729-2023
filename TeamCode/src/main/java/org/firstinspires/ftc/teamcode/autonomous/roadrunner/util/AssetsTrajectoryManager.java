@@ -17,7 +17,7 @@ import java.io.InputStream;
  * Set of utilities for loading trajectories from assets (the plugin save location).
  */
 public class AssetsTrajectoryManager {
-
+    
     /**
      * Loads the group config.
      */
@@ -31,7 +31,7 @@ public class AssetsTrajectoryManager {
             return null;
         }
     }
-
+    
     /**
      * Loads a trajectory config with the given name.
      */
@@ -44,7 +44,7 @@ public class AssetsTrajectoryManager {
             return null;
         }
     }
-
+    
     /**
      * Loads a trajectory builder with the given name.
      */
@@ -56,7 +56,7 @@ public class AssetsTrajectoryManager {
         }
         return config.toTrajectoryBuilder(groupConfig);
     }
-
+    
     /**
      * Loads a trajectory with the given name.
      */
