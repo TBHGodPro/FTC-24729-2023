@@ -47,23 +47,36 @@ public class RedBackstage extends BaseAutonOp {
             
             case CENTER: {
                 purple_pixel = drive.trajectoryBuilder(getStartPose())
-                        .forward(29)
+                        .strafeTo(new Vector2d(12, -43))
                         .build();
                 
                 yellow_pixel = drive.trajectoryBuilder(purple_pixel.end())
                         .strafeTo(new Vector2d(14, -48))
-                        .splineToSplineHeading(new Pose2d(42.5, -43, radian(0)), 0)
+                        .splineToSplineHeading(new Pose2d(42.5, -44, radian(0)), 0)
                         .forward(10, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 park = drive.trajectoryBuilder(yellow_pixel.end(), true)
                         .back(6, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                        .splineToSplineHeading(new Pose2d(53, -64, radian(90)), 0)
+                        .splineToSplineHeading(new Pose2d(53, -62, radian(90)), 0)
                         .build();
                 break;
             }
             
             case RIGHT: {
+                purple_pixel = drive.trajectoryBuilder(getStartPose())
+                        .strafeTo(new Vector2d(23, -48))
+                        .build();
+                
+                yellow_pixel = drive.trajectoryBuilder(purple_pixel.end())
+                        .strafeTo(new Vector2d(23, -53))
+                        .splineToSplineHeading(new Pose2d(42.5, -44, radian(0)), 0)
+                        .forward(11.5, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .build();
+                
+                park = drive.trajectoryBuilder(yellow_pixel.end(), true)
+                        .lineToLinearHeading(new Pose2d(53, -58, radian(90)), SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL / 1.5, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .build();
                 break;
             }
         }
