@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous_old.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Utils.Alliance;
 import org.firstinspires.ftc.teamcode.Utils.Direction;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.autonomous_old.movements.presets.PushToCen
 import org.firstinspires.ftc.teamcode.autonomous_old.movements.presets.PushToLeft;
 import org.firstinspires.ftc.teamcode.autonomous_old.movements.presets.PushToRight;
 
+@Disabled
 @Autonomous(name = "Blue Backstage", group = "Backstage")
 public class BlueBackstage extends AutoOp {
     @Override

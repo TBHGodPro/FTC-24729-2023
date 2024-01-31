@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous_old.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Utils.Alliance;
 import org.firstinspires.ftc.teamcode.Utils.PossiblePropPosition;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.autonomous_old.movements.presets.PushToCen
 import org.firstinspires.ftc.teamcode.autonomous_old.movements.presets.PushToLeft;
 import org.firstinspires.ftc.teamcode.autonomous_old.movements.presets.PushToRight;
 
+@Disabled
 @Autonomous(name = "Red Wing Mini", group = "Wing")
 public class RedWingMini extends AutoOp {
     @Override

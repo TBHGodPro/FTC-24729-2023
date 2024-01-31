@@ -47,9 +47,8 @@ public class ArmController extends BaseModule {
     public double wristIntakePos = 0.31;
     
     // - Backboard Position
-    
     public static int armBackboardPosManual = 510;
-    public static int armBackboardPosAutonomous = 270;
+    public static int armBackboardPosAutonomous = 320;
     public int armBackboardPos;
     public double wristBackboardPos = 0.6;
     
@@ -58,7 +57,9 @@ public class ArmController extends BaseModule {
     public double wristOverheadPos = 1.37;
     
     // - Safe Position
-    public int armSafePos = 185;
+    public static int armSafePosManual = 185;
+    public static int armSafePosAutonomous = 70;
+    public int armSafePos;
     public double wristSafePos = 0.75;
     
     public static final DcMotorEx.Direction armLeftDirection = DcMotorEx.Direction.REVERSE;
@@ -108,6 +109,7 @@ public class ArmController extends BaseModule {
         
         this.armIntakePos = isAutonomous ? armIntakePosAutonomous : armIntakePosManual;
         this.armBackboardPos = isAutonomous ? armBackboardPosAutonomous : armBackboardPosManual;
+        this.armSafePos = isAutonomous ? armSafePosAutonomous : armSafePosManual;
     }
     
     public void setArmStaticPower(double power) {

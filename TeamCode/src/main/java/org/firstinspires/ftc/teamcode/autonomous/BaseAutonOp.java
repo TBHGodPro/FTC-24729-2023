@@ -1,13 +1,19 @@
-package org.firstinspires.ftc.teamcode.autonomous.roadrunner;
+package org.firstinspires.ftc.teamcode.autonomous;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Utils.Alliance;
+import org.firstinspires.ftc.teamcode.autonomous.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.modules.Arm.ArmController;
+import org.firstinspires.ftc.teamcode.modules.Camera.AutonomousCameraManager;
 import org.firstinspires.ftc.teamcode.modules.DroneController;
 import org.firstinspires.ftc.teamcode.modules.HangController;
 
@@ -21,9 +27,18 @@ public abstract class BaseAutonOp extends LinearOpMode {
     
     public abstract Alliance getAlliance();
     
+    public abstract Pose2d getStartPose();
+    
     public abstract void runTrajectories();
     
+    public FtcDashboard dashboard;
+    public Telemetry dashboardTelemetry;
+    
+    public SampleMecanumDrive drive;
+    public AutonomousCameraManager camera;
+    
     public int targetArm;
+    public int safeArm;
     public double targetWrist;
     public double targetClaw;
     
@@ -33,7 +48,17 @@ public abstract class BaseAutonOp extends LinearOpMode {
     public Servo claw;
     
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
+        // http://192.168.43.1:8080/dash
+        dashboard = FtcDashboard.getInstance();
+        dashboardTelemetry = dashboard.getTelemetry();
+        
+        drive = new SampleMecanumDrive(hardwareMap);
+        camera = new AutonomousCameraManager(hardwareMap.get(WebcamName.class, "Webcam 1"), getAlliance());
+        
+        drive.setPoseEstimate(getStartPose());
+        camera.init();
+        
         waitForStart();
         
         hardwareMap.get(Servo.class, "hang").setPosition(HangController.servoHeld);
@@ -62,6 +87,7 @@ public abstract class BaseAutonOp extends LinearOpMode {
         
         ArmController emptyArmController = new ArmController(null, true, null, null, null, null, null, null);
         targetArm = emptyArmController.armBackboardPos;
+        safeArm = emptyArmController.armSafePos;
         
         targetWrist = emptyArmController.wristBackboardPos;
         targetWrist = Math.max(Math.min(targetWrist - (targetArm / ArmController.wristAngleCorrectionCoeff), 1), 0);
@@ -71,9 +97,9 @@ public abstract class BaseAutonOp extends LinearOpMode {
         
         runTrajectories();
         
-        sleep(800);
+        sleep(400);
         
-        wrist.setPosition(1);
+        safeArm();
         
         while (opModeIsActive()) sleep(5);
     }
@@ -93,7 +119,42 @@ public abstract class BaseAutonOp extends LinearOpMode {
         while (armLeft.isBusy() || armRight.isBusy()) sleep(10);
     }
     
+    public void hideArm() {
+        wrist.setPosition(1);
+        
+        armLeft.setTargetPosition(850);
+        armRight.setTargetPosition(850);
+        
+        armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        
+        armLeft.setPower(0.5);
+        armRight.setPower(0.5);
+        
+        while (armLeft.isBusy() || armRight.isBusy()) sleep(10);
+    }
+    
+    public void safeArm() {
+        wrist.setPosition(1);
+        
+        armLeft.setTargetPosition(safeArm);
+        armRight.setTargetPosition(safeArm);
+        
+        armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        
+        armLeft.setPower(0.5);
+        armRight.setPower(0.5);
+        
+        while (armLeft.isBusy() || armRight.isBusy()) sleep(10);
+    }
+    
     public void release() {
         claw.setPosition(targetClaw);
+        sleep(300);
+    }
+    
+    public double radian(double degrees) {
+        return Math.toRadians(degrees);
     }
 }

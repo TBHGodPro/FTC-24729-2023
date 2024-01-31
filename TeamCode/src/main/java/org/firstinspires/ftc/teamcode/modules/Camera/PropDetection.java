@@ -32,7 +32,7 @@ public class PropDetection implements VisionProcessor {
     public static int redHueLowMax = 15;
     public static int redHueHighMin = 165;
     public static int redHueHighMax = 180;
-    public static int redSatBrightMin = 0;
+    public static int redSatBrightMin = 50;
     public static int redSatBrightMax = 255;
     
     // -----------------
@@ -211,8 +211,8 @@ public class PropDetection implements VisionProcessor {
         
         switch (alliance) {
             case RED: {
-                int avgOneTwo = Math.min(avg1, avg2);
-                found = Math.min(avgOneTwo, avg3);
+                int avgOneTwo = Math.max(avg1, avg2);
+                found = Math.max(avgOneTwo, avg3);
                 
                 break;
             }
