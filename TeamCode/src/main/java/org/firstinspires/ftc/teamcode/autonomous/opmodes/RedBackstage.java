@@ -42,6 +42,21 @@ public class RedBackstage extends BaseAutonOp {
         
         switch (position) {
             case LEFT: {
+                purple_pixel = drive.trajectoryBuilder(getStartPose())
+                        .lineToConstantHeading(new Vector2d(23, -54))
+                        .splineToSplineHeading(new Pose2d(9, -44, radian(180)), radian(180), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL / 2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .build();
+                
+                yellow_pixel = drive.trajectoryBuilder(purple_pixel.end())
+                        .lineToConstantHeading(new Vector2d(23, -43))
+                        .splineToSplineHeading(new Pose2d(37, -42, radian(0)), 0)
+                        .forward(14, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .build();
+                
+                park = drive.trajectoryBuilder(yellow_pixel.end(), true)
+                        .back(6, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .splineToSplineHeading(new Pose2d(53, -69, radian(90)), radian(0))
+                        .build();
                 break;
             }
             
@@ -58,7 +73,7 @@ public class RedBackstage extends BaseAutonOp {
                 
                 park = drive.trajectoryBuilder(yellow_pixel.end(), true)
                         .back(6, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                        .splineToSplineHeading(new Pose2d(53, -62, radian(90)), 0)
+                        .splineToSplineHeading(new Pose2d(53, -62, radian(90)), radian(0))
                         .build();
                 break;
             }
@@ -70,12 +85,13 @@ public class RedBackstage extends BaseAutonOp {
                 
                 yellow_pixel = drive.trajectoryBuilder(purple_pixel.end())
                         .strafeTo(new Vector2d(23, -53))
-                        .splineToSplineHeading(new Pose2d(42.5, -44, radian(0)), 0)
-                        .forward(11.5, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .splineToSplineHeading(new Pose2d(42.5, -45.5, radian(0)), 0)
+                        .forward(12.5, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 park = drive.trajectoryBuilder(yellow_pixel.end(), true)
-                        .lineToLinearHeading(new Pose2d(53, -58, radian(90)), SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL / 1.5, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .back(6, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .splineToSplineHeading(new Pose2d(56, -58, radian(90)), 0)
                         .build();
                 break;
             }
