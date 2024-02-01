@@ -110,11 +110,11 @@ public abstract class BaseAutonOp extends LinearOpMode {
         while (opModeIsActive()) sleep(5);
     }
     
-    public void moveArm() {
+    public void moveArm(int offset) {
         wrist.setPosition(targetWrist);
         
-        armLeft.setTargetPosition(targetArm);
-        armRight.setTargetPosition(targetArm);
+        armLeft.setTargetPosition(targetArm + offset);
+        armRight.setTargetPosition(targetArm + offset);
         
         armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -123,6 +123,10 @@ public abstract class BaseAutonOp extends LinearOpMode {
         armRight.setPower(0.5);
         
         while (armLeft.isBusy() || armRight.isBusy()) sleep(10);
+    }
+    
+    public void moveArm() {
+        moveArm(0);
     }
     
     public void hideArm() {

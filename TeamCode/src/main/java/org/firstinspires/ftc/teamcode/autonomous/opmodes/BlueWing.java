@@ -92,7 +92,7 @@ public class BlueWing extends BaseAutonOp {
         drive.followTrajectory(yellow_prep);
         while ((getRuntime() * 1000) < waitUntilTimeMS) sleep(2);
         drive.followTrajectory(yellow_pixel1);
-        moveArm();
+        moveArm(150);
         drive.followTrajectory(yellow_pixel2);
         release();
         drive.followTrajectory(park);
