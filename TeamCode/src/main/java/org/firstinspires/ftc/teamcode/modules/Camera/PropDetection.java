@@ -23,9 +23,9 @@ public class PropDetection implements VisionProcessor {
     public static boolean shouldDisplayHSVImage = true;
     public static boolean shouldFillBox = false;
     
-    public static int blueHueMin = 60;
+    public static int blueHueMin = 80;
     public static int blueHueMax = 120;
-    public static int blueSatBrightMin = 0;
+    public static int blueSatBrightMin = 50;
     public static int blueSatBrightMax = 255;
     
     public static int redHueLowMin = 0;

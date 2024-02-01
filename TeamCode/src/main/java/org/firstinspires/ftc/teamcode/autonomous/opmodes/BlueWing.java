@@ -75,7 +75,28 @@ public class BlueWing extends BaseAutonOp {
             
             case CENTER: {
                 purple_pixel = drive.trajectoryBuilder(getStartPose())
-                        .strafeTo(new Vector2d(-36, 43))
+                        .lineToConstantHeading(new Vector2d(-40, 32))
+                        .splineToSplineHeading(new Pose2d(-40, 26.5, 90), 0, SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL / 2.2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .build();
+                
+                yellow_prep = drive.trajectoryBuilder(purple_pixel.end())
+                        .back(4)
+                        .splineToSplineHeading(new Pose2d(-36, 24, 0), 0)
+                        .build();
+                
+                waitUntilTimeMS = 19_000;
+                
+                yellow_pixel1 = drive.trajectoryBuilder(yellow_prep.end())
+                        .lineTo(new Vector2d(36, 24))
+                        .build();
+                
+                yellow_pixel2 = drive.trajectoryBuilder(yellow_pixel1.end())
+                        .splineToConstantHeading(new Vector2d(44, 48), 0)
+                        .forward(5, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .build();
+                
+                park = drive.trajectoryBuilder(yellow_pixel2.end())
+                        .back(4)
                         .build();
                 break;
             }
@@ -92,7 +113,7 @@ public class BlueWing extends BaseAutonOp {
         drive.followTrajectory(yellow_prep);
         while ((getRuntime() * 1000) < waitUntilTimeMS) sleep(2);
         drive.followTrajectory(yellow_pixel1);
-        moveArm(150);
+        moveArm(75);
         drive.followTrajectory(yellow_pixel2);
         release();
         drive.followTrajectory(park);
