@@ -17,7 +17,8 @@ public abstract class BaseCameraManager {
     
     public static float aprilTagDecimation = 2f;
     
-    public static int cameraExposureMS = 2;
+    //public static int cameraExposureMS = 2;
+    public static int cameraExposureMS = 8;
     public static int cameraGain = 100;
     
     // -----------------
