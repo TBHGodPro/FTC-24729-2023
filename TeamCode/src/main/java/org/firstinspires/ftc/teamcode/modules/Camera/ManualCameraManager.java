@@ -11,7 +11,6 @@ public class ManualCameraManager extends BaseCameraManager {
     public void init() {
         portal = new VisionPortal.Builder()
                 .setCamera(camera)
-                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .addProcessor(processor)
                 .addProcessor(stream)
                 .build();

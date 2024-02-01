@@ -37,6 +37,8 @@ public abstract class BaseAutonOp extends LinearOpMode {
     public SampleMecanumDrive drive;
     public AutonomousCameraManager camera;
     
+    public AprilTagLocalizer localizer;
+    
     public int targetArm;
     public int safeArm;
     public double targetWrist;
@@ -58,6 +60,10 @@ public abstract class BaseAutonOp extends LinearOpMode {
         
         drive.setPoseEstimate(getStartPose());
         camera.init();
+        camera.enableAprilTag();
+        
+        localizer = new AprilTagLocalizer(this, camera.processor);
+        //localizer.start();
         
         waitForStart();
         

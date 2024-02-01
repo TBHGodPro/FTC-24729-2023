@@ -33,6 +33,7 @@ public class RedBackstage extends BaseAutonOp {
         
         PossiblePropPosition position = camera.prop.position;
         camera.disablePropDetection();
+        //camera.setManualExposure(BaseCameraManager.cameraExposureMS + 8, BaseCameraManager.cameraGain);
         
         safeArm();
         
