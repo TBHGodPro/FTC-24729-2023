@@ -56,7 +56,7 @@ public class BlueWing extends BaseAutonOp {
                         .splineToConstantHeading(new Vector2d(-36, 17), 0)
                         .build();
                 
-                waitUntilTimeMS = 19_000;
+                waitUntilTimeMS = 18_000;
                 
                 yellow_pixel1 = drive.trajectoryBuilder(yellow_prep.end())
                         .lineTo(new Vector2d(36, 17))
@@ -84,7 +84,7 @@ public class BlueWing extends BaseAutonOp {
                         .splineToSplineHeading(new Pose2d(-36, 24, 0), 0)
                         .build();
                 
-                waitUntilTimeMS = 19_000;
+                waitUntilTimeMS = 18_000;
                 
                 yellow_pixel1 = drive.trajectoryBuilder(yellow_prep.end())
                         .lineTo(new Vector2d(36, 24))
@@ -112,7 +112,7 @@ public class BlueWing extends BaseAutonOp {
                         .splineToSplineHeading(new Pose2d(-36, 31.5, 0), 0)
                         .build();
                 
-                waitUntilTimeMS = 19_000;
+                waitUntilTimeMS = 18_000;
                 
                 yellow_pixel1 = drive.trajectoryBuilder(yellow_prep.end())
                         .lineTo(new Vector2d(36, 31.5))
@@ -132,7 +132,7 @@ public class BlueWing extends BaseAutonOp {
         
         drive.followTrajectory(purple_pixel);
         drive.followTrajectory(yellow_prep);
-        while ((getRuntime() * 1000) < waitUntilTimeMS) sleep(2);
+        while (runtime.milliseconds() < waitUntilTimeMS) sleep(2);
         drive.followTrajectory(yellow_pixel1);
         moveArm(75);
         drive.followTrajectory(yellow_pixel2);

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -39,6 +40,8 @@ public abstract class BaseAutonOp extends LinearOpMode {
     
     public AprilTagLocalizer localizer;
     
+    public ElapsedTime runtime;
+    
     public int targetArm;
     public int safeArm;
     public double targetWrist;
@@ -51,6 +54,8 @@ public abstract class BaseAutonOp extends LinearOpMode {
     
     @Override
     public void runOpMode() {
+        this.runtime = new ElapsedTime();
+        
         // http://192.168.43.1:8080/dash
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
@@ -66,6 +71,7 @@ public abstract class BaseAutonOp extends LinearOpMode {
         //localizer.start();
         
         waitForStart();
+        runtime.reset();
         
         hardwareMap.get(Servo.class, "hang").setPosition(HangController.servoHeld);
         hardwareMap.get(Servo.class, "drone").setPosition(DroneController.holdPosition);
