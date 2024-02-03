@@ -99,7 +99,7 @@ public class RedBackstage extends BaseAutonOp {
         }
         
         drive.followTrajectory(purple_pixel);
-        moveArm();
+        moveArm(40);
         drive.followTrajectory(yellow_pixel);
         release();
         drive.followTrajectory(park);
