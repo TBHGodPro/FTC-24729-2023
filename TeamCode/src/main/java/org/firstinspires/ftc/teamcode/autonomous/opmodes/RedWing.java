@@ -91,7 +91,7 @@ public class RedWing extends BaseAutonOp {
                 
                 yellow_pixel2 = drive.trajectoryBuilder(yellow_pixel1.end())
                         .splineToConstantHeading(new Vector2d(44, -49.25), 0)
-                        .forward(5, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .forward(9, SampleMecanumDrive.getVelocityConstraint(5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 park = drive.trajectoryBuilder(yellow_pixel2.end())
