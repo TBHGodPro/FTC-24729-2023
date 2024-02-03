@@ -109,7 +109,7 @@ public abstract class BaseAutonOp extends LinearOpMode {
         
         runTrajectories();
         
-        sleep(400);
+        sleep(150);
         
         safeArm();
         

@@ -63,12 +63,12 @@ public class BlueWing extends BaseAutonOp {
                         .build();
                 
                 yellow_pixel2 = drive.trajectoryBuilder(yellow_pixel1.end())
-                        .splineToConstantHeading(new Vector2d(48, 46), 0)
-                        .forward(6.75, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .splineToConstantHeading(new Vector2d(48, 45), 0)
+                        .forward(5, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 park = drive.trajectoryBuilder(yellow_pixel2.end())
-                        .back(4)
+                        .back(4, SampleMecanumDrive.getVelocityConstraint(5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 break;
             }
@@ -92,11 +92,11 @@ public class BlueWing extends BaseAutonOp {
                 
                 yellow_pixel2 = drive.trajectoryBuilder(yellow_pixel1.end())
                         .splineToConstantHeading(new Vector2d(44, 48), 0)
-                        .forward(5, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .forward(3.5, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 park = drive.trajectoryBuilder(yellow_pixel2.end())
-                        .back(4)
+                        .back(4, SampleMecanumDrive.getVelocityConstraint(5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 break;
             }
@@ -120,11 +120,11 @@ public class BlueWing extends BaseAutonOp {
                 
                 yellow_pixel2 = drive.trajectoryBuilder(yellow_pixel1.end())
                         .splineToConstantHeading(new Vector2d(47, 48), 0)
-                        .forward(5, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .forward(2.75, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 park = drive.trajectoryBuilder(yellow_pixel2.end())
-                        .back(4)
+                        .back(4, SampleMecanumDrive.getVelocityConstraint(5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 break;
             }
@@ -134,7 +134,7 @@ public class BlueWing extends BaseAutonOp {
         drive.followTrajectory(yellow_prep);
         while (runtime.milliseconds() < waitUntilTimeMS) sleep(2);
         drive.followTrajectory(yellow_pixel1);
-        moveArm(75);
+        moveArm(125);
         drive.followTrajectory(yellow_pixel2);
         release();
         drive.followTrajectory(park);
