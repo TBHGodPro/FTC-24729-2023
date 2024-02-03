@@ -52,9 +52,9 @@ public class PropDetection implements VisionProcessor {
     public static final int REGION_WIDTH = SCREEN_WIDTH / 3;
     public static final int REGION_HEIGHT = SCREEN_HEIGHT - 275;
     
-    public static final Point REGION1_TOPLEFT_ANCHOR = new Point(0, 40);
-    public static final Point REGION2_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 3, 40);
-    public static final Point REGION3_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 1.5, 40);
+    public static final Point REGION1_TOPLEFT_ANCHOR = new Point(0, 75);
+    public static final Point REGION2_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 3, 75);
+    public static final Point REGION3_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 1.5, 75);
     
     public static final Point region1_A = new Point(
             REGION1_TOPLEFT_ANCHOR.x,

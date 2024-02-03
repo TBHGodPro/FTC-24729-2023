@@ -47,24 +47,23 @@ public class RedWing extends BaseAutonOp {
         switch (position) {
             case LEFT: {
                 purple_pixel = drive.trajectoryBuilder(getStartPose())
-                        .lineToConstantHeading(new Vector2d(-47, -54))
-                        .splineToSplineHeading(new Pose2d(-33, -44, radian(0)), radian(0), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL / 2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .strafeTo(new Vector2d(-36, -48))
+                        .splineToSplineHeading(new Pose2d(-46, -38, radian(-92)), radian(180), SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL / 2.2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
-                
-                yellow_prep = drive.trajectoryBuilder(purple_pixel.end(), true)
+                yellow_prep = drive.trajectoryBuilder(purple_pixel.end())
                         .back(4)
-                        .splineToConstantHeading(new Vector2d(-36, -17), 0)
+                        .splineToSplineHeading(new Pose2d(-36, -31.5, 0), 0)
                         .build();
                 
                 waitUntilTimeMS = 18_000;
                 
                 yellow_pixel1 = drive.trajectoryBuilder(yellow_prep.end())
-                        .lineTo(new Vector2d(36, -17))
+                        .lineTo(new Vector2d(36, -31.5))
                         .build();
                 
                 yellow_pixel2 = drive.trajectoryBuilder(yellow_pixel1.end())
-                        .splineToConstantHeading(new Vector2d(48, -45), 0)
-                        .forward(5, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .splineToConstantHeading(new Vector2d(47, -51), 0)
+                        .forward(4.2, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 park = drive.trajectoryBuilder(yellow_pixel2.end())
@@ -103,24 +102,24 @@ public class RedWing extends BaseAutonOp {
             
             case RIGHT: {
                 purple_pixel = drive.trajectoryBuilder(getStartPose())
-                        .strafeTo(new Vector2d(-36, -48))
-                        .splineToSplineHeading(new Pose2d(-46, -38, radian(-92)), radian(180), SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL / 2.2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .lineToConstantHeading(new Vector2d(-47, -54))
+                        .splineToSplineHeading(new Pose2d(-33, -44, radian(0)), radian(0), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL / 2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
-                yellow_prep = drive.trajectoryBuilder(purple_pixel.end())
+                yellow_prep = drive.trajectoryBuilder(purple_pixel.end(), true)
                         .back(4)
-                        .splineToSplineHeading(new Pose2d(-36, -31.5, 0), 0)
+                        .splineToConstantHeading(new Vector2d(-36, -15.75), 0)
                         .build();
                 
                 waitUntilTimeMS = 18_000;
                 
                 yellow_pixel1 = drive.trajectoryBuilder(yellow_prep.end())
-                        .lineTo(new Vector2d(36, -31.5))
+                        .lineTo(new Vector2d(36, -15.75))
                         .build();
                 
                 yellow_pixel2 = drive.trajectoryBuilder(yellow_pixel1.end())
-                        .splineToConstantHeading(new Vector2d(47, -48), 0)
-                        .forward(2.75, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .splineToConstantHeading(new Vector2d(48, -46.5), 0)
+                        .forward(6.4, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 park = drive.trajectoryBuilder(yellow_pixel2.end())
