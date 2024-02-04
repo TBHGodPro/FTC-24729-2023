@@ -24,15 +24,15 @@ public class PropDetection implements VisionProcessor {
     public static boolean shouldFillBox = false;
     
     public static int blueHueMin = 80;
-    public static int blueHueMax = 120;
-    public static int blueSatBrightMin = 50;
+    public static int blueHueMax = 115;
+    public static int blueSatBrightMin = 90;
     public static int blueSatBrightMax = 255;
     
     public static int redHueLowMin = 0;
-    public static int redHueLowMax = 15;
+    public static int redHueLowMax = 0;
     public static int redHueHighMin = 165;
     public static int redHueHighMax = 180;
-    public static int redSatBrightMin = 50;
+    public static int redSatBrightMin = 10;
     public static int redSatBrightMax = 255;
     
     // -----------------
