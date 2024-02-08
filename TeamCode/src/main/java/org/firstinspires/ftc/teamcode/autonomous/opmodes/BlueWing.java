@@ -75,13 +75,13 @@ public class BlueWing extends BaseAutonOp {
             
             case CENTER: {
                 purple_pixel = drive.trajectoryBuilder(getStartPose())
-                        .lineToConstantHeading(new Vector2d(-40, 32))
-                        .splineToSplineHeading(new Pose2d(-40, 26.5, 90), 0, SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL / 2.2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .lineToConstantHeading(new Vector2d(-40, 35))
+                        .splineToSplineHeading(new Pose2d(-36, 27.5, radian(91)), radian(-45), SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL / 2.2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
-                yellow_prep = drive.trajectoryBuilder(purple_pixel.end())
-                        .back(4)
-                        .splineToSplineHeading(new Pose2d(-36, 24, 0), 0)
+                yellow_prep = drive.trajectoryBuilder(purple_pixel.end(), true)
+                        .back(5)
+                        .splineToSplineHeading(new Pose2d(-36, 24, radian(0)), radian(45), SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL / 2.2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 waitUntilTimeMS = 18_000;

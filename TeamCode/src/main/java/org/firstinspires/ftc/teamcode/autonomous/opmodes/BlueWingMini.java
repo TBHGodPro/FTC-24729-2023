@@ -50,8 +50,8 @@ public class BlueWingMini extends BaseAutonOp {
             
             case CENTER: {
                 purple_pixel = drive.trajectoryBuilder(getStartPose())
-                        .lineToConstantHeading(new Vector2d(-40, 32))
-                        .splineToSplineHeading(new Pose2d(-40, 26.5, 90), 0, SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL / 2.2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .lineToConstantHeading(new Vector2d(-40, 35))
+                        .splineToSplineHeading(new Pose2d(-36, 27.5, radian(91)), radian(-45), SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL / 2.2, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 break;
             }

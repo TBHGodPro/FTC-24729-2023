@@ -25,7 +25,7 @@ public class PropDetection implements VisionProcessor {
     
     public static int blueHueMin = 80;
     public static int blueHueMax = 115;
-    public static int blueSatBrightMin = 90;
+    public static int blueSatBrightMin = 60;
     public static int blueSatBrightMax = 255;
     
     public static int redHueLowMin = 0;
@@ -50,11 +50,11 @@ public class PropDetection implements VisionProcessor {
     public static final int SCREEN_HEIGHT = 480;
     
     public static final int REGION_WIDTH = SCREEN_WIDTH / 3;
-    public static final int REGION_HEIGHT = SCREEN_HEIGHT - 275;
+    public static final int REGION_HEIGHT = SCREEN_HEIGHT - 150;
     
-    public static final Point REGION1_TOPLEFT_ANCHOR = new Point(0, 75);
-    public static final Point REGION2_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 3, 75);
-    public static final Point REGION3_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 1.5, 75);
+    public static final Point REGION1_TOPLEFT_ANCHOR = new Point(0, 140);
+    public static final Point REGION2_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 3, 140);
+    public static final Point REGION3_TOPLEFT_ANCHOR = new Point(SCREEN_WIDTH / 1.5, 140);
     
     public static final Point region1_A = new Point(
             REGION1_TOPLEFT_ANCHOR.x,
