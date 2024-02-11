@@ -56,6 +56,8 @@ public abstract class BaseAutonOp extends LinearOpMode {
     public void runOpMode() {
         this.runtime = new ElapsedTime();
         
+        hardwareMap.get(Servo.class, "drone").setPosition(DroneController.holdPosition);
+        
         // http://192.168.43.1:8080/dash
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
@@ -74,7 +76,6 @@ public abstract class BaseAutonOp extends LinearOpMode {
         runtime.reset();
         
         hardwareMap.get(Servo.class, "hang").setPosition(HangController.servoHeld);
-        hardwareMap.get(Servo.class, "drone").setPosition(DroneController.holdPosition);
         
         hardwareMap.get(Servo.class, "claw_right").setPosition(ArmController.handRightOpenPos - 0.1);
         claw = hardwareMap.get(Servo.class, "claw_left");

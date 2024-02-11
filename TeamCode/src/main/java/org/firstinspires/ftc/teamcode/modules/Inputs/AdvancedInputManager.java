@@ -1,15 +1,26 @@
 package org.firstinspires.ftc.teamcode.modules.Inputs;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MainOp;
 
+@Config
 public class AdvancedInputManager extends InputManager {
+    // --- Constants ---
+    
+    public static int overheadHoldTime = 1_500;
+    
+    // -----------------
+    
     public AdvancedInputManager(MainOp op) {
         super(op);
     }
+    
+    public ElapsedTime heldATime = new ElapsedTime();
     
     public boolean lastLeftBumper = false;
     public boolean lastRightBumper = false;
@@ -47,6 +58,10 @@ public class AdvancedInputManager extends InputManager {
         armBackboardPosition = gamepad.a;
         // armOverheadPosition = gamepad.y;
         armSafePosition = gamepad.y || gamepad.left_stick_button;
+        
+        if (!gamepad.a) heldATime.reset();
+        if (heldATime.milliseconds() > overheadHoldTime) armOverheadPosition = true;
+        else armOverheadPosition = false;
         
         boolean leftHandState;
         if (gamepad.left_bumper) {

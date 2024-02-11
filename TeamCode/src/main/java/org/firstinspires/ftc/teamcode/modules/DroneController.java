@@ -32,7 +32,7 @@ public class DroneController extends BaseModule {
     }
     
     @Override
-    public void op_start() {
+    public void init() {
         servo.setPosition(holdPosition);
         
         released = false;

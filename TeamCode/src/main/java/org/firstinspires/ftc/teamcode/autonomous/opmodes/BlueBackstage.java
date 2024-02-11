@@ -67,13 +67,13 @@ public class BlueBackstage extends BaseAutonOp {
                 
                 yellow_pixel = drive.trajectoryBuilder(purple_pixel.end())
                         .strafeTo(new Vector2d(14, 48))
-                        .splineToSplineHeading(new Pose2d(42.5, 39, radian(0)), 0)
+                        .splineToSplineHeading(new Pose2d(42.5, 41, radian(0)), 0)
                         .forward(9.2, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
                 
                 park = drive.trajectoryBuilder(yellow_pixel.end(), true)
                         .back(6, SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                        .splineToSplineHeading(new Pose2d(53, 62, radian(-90)), radian(0))
+                        .splineToSplineHeading(new Pose2d(53, 64, radian(-90)), radian(0))
                         .build();
                 break;
             }
